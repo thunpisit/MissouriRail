@@ -36,7 +36,6 @@
 
                     if($searchresult->num_rows > 0){
                         while($row = $searchresult->fetch_assoc()){
-                            echo "Hi there";
                             echo password_verify($password, $row["password"]);
                             if($username == $row["username"] && password_verify($password, $row["password"]) == 0){
                                 $match = 1;
