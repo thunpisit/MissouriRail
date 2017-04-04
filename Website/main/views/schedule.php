@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<?php
+  include '../controller.php';
+  topStart();
+ ?>
 <html>
   <head>
     <meta charset="utf-8">

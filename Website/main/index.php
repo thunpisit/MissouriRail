@@ -54,7 +54,7 @@
                 padding-bottom: 20px;
                 padding-right: 20px;
                 height: 50px;
-                
+
                 overflow: hidden;
             }
             .wrapper-hero {
@@ -103,16 +103,16 @@
             .button-blank {
                 font-size: 14px;
                 text-align: center;
-                
+
                 border: 2px solid #3B5998;
                 border-radius: 10px 10px 10px 10px;
                 background-color: white;
                 color: #3B5998;
-                
+
                 width: 120px;
                 padding: 9px 0px 9px 0px;
                 display: inline-block;
-                
+
                 -webkit-transition-duration: 0.3s;
                 transition-duration: 0.3s;
                 -webkit-transition-property: color, background-color;
@@ -126,16 +126,16 @@
             .button-solid {
                 font-size: 14px;
                 text-align: center;
-                
+
                 border: 2px solid #3B5998;
                 border-radius: 10px 10px 10px 10px;
                 background-color: #3B5998;
                 color: white;
-                
+
                 width: 120px;
                 padding: 9px 0px 9px 0px;
                 display: inline-block;
-                
+
                 -webkit-transition-duration: 0.3s;
                 transition-duration: 0.3s;
                 -webkit-transition-property: color, background-color;
@@ -154,13 +154,13 @@
                     <a class="link-menu" href="#">Our Fleets</a>
                     <a class="link-menu" href="#">Schedules</a>
                     <a class="link-menu" href="#">Contacts</a>
-                    <button class="button-blank">Signup</button>
-                    <button class="button-solid">Login</button>
+                    <a class="button-blank" href="views/signup.php">Signup</a>
+                    <a class="button-solid" href="views/login.php">Login</a>
                 </div>
             </header>
             <section class="wrapper-hero">
-                
+
             </section>
-        </div>    
+        </div>
     </body>
 </html>
