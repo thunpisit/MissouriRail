@@ -15,11 +15,17 @@
     return $conn;
   }
 
-  function login($user, $pass){
+  function login($conn, $user, $pass){
+    include("../model/userDAL.php");
+    echo "<br />login() in controller";
     if(q_checkUser($conn ,$user) > 0){
-      q_loginUser($conn, $user, $pass);
+      if(q_loginUser($conn, $user, $pass) == 1){
+        echo "logged in";
+      } else {
+        echo "password incorrect";
+      }
     } else {
-      echo "account not found";
+      echo "user_id not found";
     }
   }
 

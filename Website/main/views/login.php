@@ -33,14 +33,15 @@
           </div>
           <div class="row">
             <div class="col-md-2">
-              <input class="btn btn-primary" type="button" name="submit" value="Submit">
+              <button type="submit" name="submit" class="btn btn-default">Submit</button>
             </div>
           </div>
         </form>
         <?php
           if(isset($_POST['submit'])){
             $conn = connectDB();
-            
+            login($conn, htmlspecialchars($_POST['user']), htmlspecialchars($_POST['pwd']));
+
           }
          ?>
       </div>
