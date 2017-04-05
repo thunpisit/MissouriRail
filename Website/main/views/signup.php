@@ -6,14 +6,35 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Login</title>
+    <title>Sign Up</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   </head>
   <body>
     <div class="container">
       <div class="jumbotron">
-        <h1>Signup</h1>
-        <hr>
+        <!-- navbar -->
+        <div class="row">
+          <div class="col-lg-12">
+            <nav class="navbar navbar-default">
+              <div class="container-fluid">
+                <div class="navbar-header">
+                  <a class="navbar-brand" href="#">MissouriRail</a>
+                </div>
+                <ul class="nav navbar-nav">
+                  <li><a href="../index.php">Home</a></li>
+                  <li><a href="about.php">About</a></li>
+                  <li><a href="#">Our Fleets</a></li>
+                  <li><a href="schedule.php">Schedules</a></li>
+                  <li><a href="contact.php">Contacts</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                  <li class="active"><a href="#"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
+                  <li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                </ul>
+              </div>
+            </nav>
+          </div>
+        </div>
 
         <form class="form-horizontal" action="signup.php" method="post">
 
@@ -136,19 +157,19 @@
             <div class="col-md-4">
               <input class="form-control" type="text" name="ssn" value="">
             </div>
-          </div>
+          </div><hr>
           <div class="row">
             <div class="col-md-offset-2 col-md-7">
               <div class="alert alert-info">
                 <strong>Info!</strong> Do not include dashes. Sample Input: 123456789
               </div>
             </div>
-          </div><hr>
+          </div>
 
           <!-- submit -->
           <div class="row">
-            <div class="col-md-offset-2 col-md-4">
-              <button type="submit" name="submit" class="btn btn-default">Submit</button>
+            <div class="col-md-offset-2 col-md-7">
+              <input type="submit" name="submit" class="btn btn-success btn-block">
             </div>
           </div>
         </form>
@@ -168,7 +189,7 @@
 
             if(signUp($conn, $user, $pass, $add_equipment, $add_equipment,
             $add_conductor, $monitor_train, $add_train, $add_engineer,
-            $reset_pass, $edit_user, $ssn) == 1){
+            $reset_pass, $edit_user, $ssn) > 0){
               echo "signup successful";
             } else {
               echo "signup failed";

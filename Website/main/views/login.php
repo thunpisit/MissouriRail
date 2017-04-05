@@ -7,33 +7,55 @@
   <head>
     <meta charset="utf-8">
     <title>Login</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   </head>
   <body>
     <div class="container">
       <div class="jumbotron">
-        <h1>Login</h1>
+        <!-- navbar -->
+        <div class="row">
+          <div class="col-lg-12">
+            <nav class="navbar navbar-default">
+              <div class="container-fluid">
+                <div class="navbar-header">
+                  <a class="navbar-brand" href="#">MissouriRail</a>
+                </div>
+                <ul class="nav navbar-nav">
+                  <li><a href="../index.php">Home</a></li>
+                  <li><a href="about.php">About</a></li>
+                  <li><a href="#">Our Fleets</a></li>
+                  <li><a href="schedule.php">Schedules</a></li>
+                  <li><a href="contact.php">Contacts</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                  <li><a href="signup.php"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
+                  <li class="active"><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                </ul>
+              </div>
+            </nav>
+          </div>
+        </div>
 
         <form class="form-horizontal" action="login.php" method="post">
           <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-offset-2 col-md-3">
               <label for="usr">User:</label>
             </div>
             <div class="col-md-4">
               <input class="form-control" type="text" name="user" value="">
             </div>
-          </div>
+          </div><hr>
           <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-offset-2 col-md-3">
               <label for="pwd">Password:</label>
             </div>
             <div class="col-md-4">
               <input class="form-control" type="password" name="pwd" value="">
             </div>
-          </div>
+          </div><hr>
           <div class="row">
-            <div class="col-md-4">
-              <button type="submit" name="submit" class="btn btn-default">Submit</button>
+            <div class="col-md-offset-2 col-md-7">
+              <input type="submit" name="submit" class="btn btn-success btn-block">
             </div>
           </div>
         </form>

@@ -32,11 +32,11 @@
   function signUp($conn, $user){
     include("../model/userDAL.php");
     if(q_checkUser($conn, $user) < 1){
-      if(q_signUp($conn, $user, htmlspecialchars($_POST['pwd']), htmlspecialchars($_POST['add_equipment']),
+      q_signUp($conn, $user, htmlspecialchars($_POST['pwd']), htmlspecialchars($_POST['add_equipment']),
       htmlspecialchars($_POST['add_conductor']), htmlspecialchars($_POST['monitor_train']),
       htmlspecialchars($_POST['add_train']), htmlspecialchars($_POST['add_engineer']),
       htmlspecialchars($_POST['reset_pass']), htmlspecialchars($_POST['edit_user']),
-      htmlspecialchars($_POST['ssn'])) == 'TRUE')
+      htmlspecialchars($_POST['ssn']));
       return 1;
     } else {
       return 0;
