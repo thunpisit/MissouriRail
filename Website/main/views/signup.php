@@ -1,14 +1,182 @@
 <!DOCTYPE html>
 <?php
-  include '../controller.php';
+  include("../controller.php");
   topStart();
  ?>
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Signup</title>
+    <title>Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   </head>
   <body>
-    <h1>Signup</h1>
+    <div class="container">
+      <div class="jumbotron">
+        <h1>Signup</h1>
+        <hr>
+
+        <form class="form-horizontal" action="signup.php" method="post">
+
+          <!-- user_id -->
+          <div class="row">
+            <div class="col-md-offset-2 col-md-3">
+              <label for="usr">User:</label>
+            </div>
+            <div class="col-md-4">
+              <input class="form-control" type="text" name="user" value="">
+            </div>
+          </div><hr>
+
+          <!-- password -->
+          <div class="row">
+            <div class="col-md-offset-2 col-md-3">
+              <label for="pwd">Password:</label>
+            </div>
+            <div class="col-md-4">
+              <input class="form-control" type="password" name="pwd" value="">
+            </div>
+          </div><hr>
+
+          <!-- add_equipment -->
+          <div class="row">
+            <div class="col-md-offset-2 col-md-3">
+              <label for="add_equipment">Add Equipment Permission:</label>
+            </div>
+            <div class="col-md-4">
+              <select class="form-control" name="add_equipment">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+          </div><hr>
+
+          <!-- add_conductor -->
+          <div class="row">
+            <div class="col-md-offset-2 col-md-3">
+              <label for="add_conductor">Add Conductor Permission:</label>
+            </div>
+            <div class="col-md-4">
+              <select class="form-control" name="add_conductor">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+          </div><hr>
+
+          <!-- monitor_train -->
+          <div class="row">
+            <div class="col-md-offset-2 col-md-3">
+              <label for="monitor_train">Monitor Train Permission:</label>
+            </div>
+            <div class="col-md-4">
+              <select class="form-control" name="monitor_train">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+          </div><hr>
+
+          <!-- add_train -->
+          <div class="row">
+            <div class="col-md-offset-2 col-md-3">
+              <label for="add_train">Add Train Permission:</label>
+            </div>
+            <div class="col-md-4">
+              <select class="form-control" name="add_train">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+          </div><hr>
+
+          <!-- add_engineer -->
+          <div class="row">
+            <div class="col-md-offset-2 col-md-3">
+              <label for="add_engineer">Add Engineer Permission:</label>
+            </div>
+            <div class="col-md-4">
+              <select class="form-control" name="add_engineer">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+          </div><hr>
+
+          <!-- reset_pass -->
+          <div class="row">
+            <div class="col-md-offset-2 col-md-3">
+              <label for="reset_pass">Reset Password Permission:</label>
+            </div>
+            <div class="col-md-4">
+              <select class="form-control" name="reset_pass">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+          </div><hr>
+
+          <!-- edit_user -->
+          <div class="row">
+            <div class="col-md-offset-2 col-md-3">
+              <label for="edit_user">Edit User Permission:</label>
+            </div>
+            <div class="col-md-4">
+              <select class="form-control" name="edit_user">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+          </div><hr>
+
+          <!-- ssn -->
+          <div class="row">
+            <div class="col-md-offset-2 col-md-3">
+              <label for="ssn">Social Security:</label>
+            </div>
+            <div class="col-md-4">
+              <input class="form-control" type="text" name="ssn" value="">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-offset-2 col-md-7">
+              <div class="alert alert-info">
+                <strong>Info!</strong> Do not include dashes. Sample Input: 123456789
+              </div>
+            </div>
+          </div><hr>
+
+          <!-- submit -->
+          <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+              <button type="submit" name="submit" class="btn btn-default">Submit</button>
+            </div>
+          </div>
+        </form>
+        <?php
+          if(isset($_POST['submit'])){
+            $conn = connectDB();
+            $user = htmlspecialchars($_POST['user']);
+            $pass = htmlspecialchars($_POST['pwd']);
+            $add_equipment = htmlspecialchars($_POST['add_equipment']);
+            $add_conductor = htmlspecialchars_decode($_POST['add_conductor']);
+            $monitor_train = htmlspecialchars_decode($_POST['monitor_train']);
+            $add_train = htmlspecialchars_decode($_POST['add_train']);
+            $add_engineer = htmlspecialchars_decode($_POST['add_engineer']);
+            $reset_pass = htmlspecialchars_decode($_POST['reset_pass']);
+            $edit_user = htmlspecialchars_decode($_POST['edit_user']);
+            $ssn = htmlspecialchars_decode($_POST['ssn']);
+
+            if(signUp($conn, $user, $pass, $add_equipment, $add_equipment,
+            $add_conductor, $monitor_train, $add_train, $add_engineer,
+            $reset_pass, $edit_user, $ssn) == 1){
+              echo "signup successful";
+            } else {
+              echo "signup failed";
+            }
+            $conn->close();
+          }
+         ?>
+      </div>
+    </div>
   </body>
 </html>

@@ -17,7 +17,6 @@
 
   function login($conn, $user, $pass){
     include("../model/userDAL.php");
-    echo "<br />login() in controller";
     if(q_checkUser($conn ,$user) > 0){
       if(q_loginUser($conn, $user, $pass) == 1){
         echo "logged in";
@@ -28,6 +27,22 @@
       echo "user_id not found";
     }
   }
+
+  // signs user up then returns 1 on success and 0 on fail
+  function signUp($conn, $user){
+    include("../model/userDAL.php");
+    if(q_checkUser($conn, $user) < 1){
+      if(q_signUp($conn, $user, htmlspecialchars($_POST['pwd']), htmlspecialchars($_POST['add_equipment']),
+      htmlspecialchars($_POST['add_conductor']), htmlspecialchars($_POST['monitor_train']),
+      htmlspecialchars($_POST['add_train']), htmlspecialchars($_POST['add_engineer']),
+      htmlspecialchars($_POST['reset_pass']), htmlspecialchars($_POST['edit_user']),
+      htmlspecialchars($_POST['ssn'])) == 'TRUE')
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+
 
 
 

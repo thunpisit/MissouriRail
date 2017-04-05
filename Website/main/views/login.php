@@ -16,7 +16,7 @@
 
         <form class="form-horizontal" action="login.php" method="post">
           <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-4">
               <label for="usr">User:</label>
             </div>
             <div class="col-md-4">
@@ -24,7 +24,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-4">
               <label for="pwd">Password:</label>
             </div>
             <div class="col-md-4">
@@ -32,7 +32,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-4">
               <button type="submit" name="submit" class="btn btn-default">Submit</button>
             </div>
           </div>
@@ -41,7 +41,7 @@
           if(isset($_POST['submit'])){
             $conn = connectDB();
             login($conn, htmlspecialchars($_POST['user']), htmlspecialchars($_POST['pwd']));
-
+            $conn->close();
           }
          ?>
       </div>
