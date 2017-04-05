@@ -6,8 +6,12 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/stylesheet.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="scripts.js"></script>
   </head>
   <body>
     <div class="container">
@@ -26,10 +30,22 @@
                   <li><a href="#">Our Fleets</a></li>
                   <li><a href="schedule.php">Schedules</a></li>
                   <li><a href="contact.php">Contacts</a></li>
+                  <li><a href="dashboard.php">Dashboard</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                   <li class="active"><a href="#"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
-                  <li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                  <li>
+                    <?php if(isset($_SESSION['user_id'])){
+                      echo '<form action="../model/logout.php" method="post">
+                              <span class=navbar-btn>
+                                <input id="height100" type="submit" name="submit" class="btn btn-danger" value="Logout">
+                              </span>
+                            </form>';
+                    } else {
+                      echo '<a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a>';
+                    } ?>
+                  </li>
+                  <!-- <li id="authentication"><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li> -->
                 </ul>
               </div>
             </nav>

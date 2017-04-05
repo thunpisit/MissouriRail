@@ -19,7 +19,9 @@
     include("../model/userDAL.php");
     if(q_checkUser($conn ,$user) > 0){
       if(q_loginUser($conn, $user, $pass) == 1){
-        echo "logged in";
+        $_SESSION['user_id'] = $user;
+        // echo "trying to redirect";
+        header("Location: dashboard.php");
       } else {
         echo "password incorrect";
       }
