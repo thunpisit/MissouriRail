@@ -4,7 +4,7 @@
     $query = "SELECT * FROM authentication WHERE user_id=?";
     $stmt = $conn->stmt_init();
     if(!mysqli_stmt_prepare($stmt, $query)) {
-        print "Failed to prepare statement\n";
+        printf("Error: %s.\n", $stmt->error);
     } else {
     mysqli_stmt_bind_param($stmt, "s", $user);
     $stmt->execute();
