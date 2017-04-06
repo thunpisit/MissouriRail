@@ -34,7 +34,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                   <li class="active"><a href="#"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
-                  <li id="#text-white"><?php primaryMenuBar();?></li>
+                  <li id="text-white"><?php primaryMenuBar();?></li>
                 </ul>
               </div>
             </nav>
