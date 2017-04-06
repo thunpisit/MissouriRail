@@ -93,4 +93,19 @@
     } else {
       echo '<a href="adminlog.php">Admin Portal</a>';
     }
+  }
+
+  function getLog(){
+    q_putLog($ip, $action, $date_time, $user_id);
+  }
+
+  function ipAddress(){
+    if(!empty($_SERVER['HTTP_CLIENT_IP'])){
+      $ip = $_SERVER['HTTP_CLIENT_IP'];
+    } elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
+      $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    } else {
+      $ip = $_SERVER['REMOTE_ADDR'];
+    }
+    q_ipAddress()$ip;
   }?>
