@@ -1,0 +1,14 @@
+GitHub
+to pull before working
+	git pull origin <branch_name>
+
+
+to push completed work:
+	git add
+	git commit -m "your message of what you changed here"
+	git push orgin <branch_name>
+
+
+to switch to new branch
+	git branch -r
+	git checkout <branch_name>

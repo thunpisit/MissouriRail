@@ -133,4 +133,21 @@
       $result = $stmt->get_result();
       return $result->fetch_array();
     }
-  }?>
+  }
+
+  function q_putLog($conn, $ip, $action, $date_time, $user_id){
+    $query = "INSERT INTO log (ip_address, action, date_time, user_id) VALUES(?, ?, ?, ?)";
+    $stmt = $mysqli->stmt_init();
+
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+      return;
+    }
+
+    $stmt->bind_param("ssss", $ip, $action, $date_time, $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    return $result;
+  }
+  ?>
