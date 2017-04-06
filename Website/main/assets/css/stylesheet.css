@@ -131,6 +131,10 @@ f {
     =transition-property: color, background-color;
 }
 
+.centerText{
+  text-align: center;
+}
+
 #height100{
   height: 50px;
 }

@@ -55,7 +55,7 @@
 
         <div class="row">
           <div class="col-md-12">
-            <h2 class="text-center">Welcome back <?= $_SESSION['user_id'] ?></h2>
+            <h2 class="text-center">Admin Portal</h2>
           </div>
         </div>
         <div class="row">
@@ -66,13 +66,20 @@
                   <a class="navbar-brand" href="#">Dashboard Menu</a>
                 </div>
                 <ul class="nav navbar-nav">
-                  <li class="active"><a href="#">Dashboard</a></li>
-                  <li><a href="adminlog.php">Admin Portal</a></li>
+                  <li><a href="dashboard.php">Dashboard</a></li>
+                  <li class="active"><a href="#">Admin Portal</a></li>
                 </ul>
               </div>
             </nav>
           </div>
         </div>
+        <?php echo "reset_pass permission = " . $_SESSION['reset_pass']; ?>
+        <?php echo "add_equipment permission = " . $_SESSION['add_equipment']; ?>
+        <?php echo "add_conductor permission = " . $_SESSION['add_conductor']; ?>
+        <?php echo "monitor_train permission = " . $_SESSION['monitor_train']; ?>
+        <?php echo "add_train permission = " . $_SESSION['add_train']; ?>
+        <?php echo "add_engineer permission = " . $_SESSION['add_engineer']; ?>
+        <?php echo "edit_user permission = " . $_SESSION['edit_user']; ?>
 
 
       </div>

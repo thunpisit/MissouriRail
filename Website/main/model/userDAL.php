@@ -43,4 +43,94 @@
     $stmt->execute();
     $result = $stmt->get_result();
     }
+  }
+
+  function q_resetPass($conn, $user){
+    $query = "SELECT reset_pass FROM authentication WHERE user_id=?";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+    } else {
+      mysqli_stmt_bind_param($stmt, "s", $user);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      return $result->fetch_array();
+    }
+  }
+  function q_addEquipment($conn, $user){
+    $query = "SELECT add_equipment FROM authentication WHERE user_id=?";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+    } else {
+      mysqli_stmt_bind_param($stmt, "s", $user);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      return $result->fetch_array();
+    }
+  }
+
+  function q_addConductor($conn, $user){
+    $query = "SELECT add_conductor FROM authentication WHERE user_id=?";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+    } else {
+      mysqli_stmt_bind_param($stmt, "s", $user);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      return $result->fetch_array();
+    }
+  }
+
+  function q_monitorTrain($conn, $user){
+    $query = "SELECT monitor_train FROM authentication WHERE user_id=?";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+    } else {
+      mysqli_stmt_bind_param($stmt, "s", $user);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      return $result->fetch_array();
+    }
+  }
+
+  function q_addTrain($conn, $user){
+    $query = "SELECT add_train FROM authentication WHERE user_id=?";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+    } else {
+      mysqli_stmt_bind_param($stmt, "s", $user);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      return $result->fetch_array();
+    }
+  }
+
+  function q_addEnginner($conn, $user){
+    $query = "SELECT add_engineer FROM authentication WHERE user_id=?";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+    } else {
+      mysqli_stmt_bind_param($stmt, "s", $user);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      return $result->fetch_array();
+    }
+  }
+
+  function q_editUser($conn, $user){
+    $query = "SELECT edit_user FROM authentication WHERE user_id=?";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+    } else {
+      mysqli_stmt_bind_param($stmt, "s", $user);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      return $result->fetch_array();
+    }
   }?>
