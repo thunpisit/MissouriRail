@@ -188,31 +188,29 @@
               <input type="submit" name="submit" class="btn btn-success btn-block">
             </div>
           </div>
-        </form>
-        <?php
+        </form><?php
           if(isset($_POST['submit'])){
             $conn = connectDB();
             $user = htmlspecialchars($_POST['user']);
             $pass = htmlspecialchars($_POST['pwd']);
             $add_equipment = htmlspecialchars($_POST['add_equipment']);
-            $add_conductor = htmlspecialchars_decode($_POST['add_conductor']);
-            $monitor_train = htmlspecialchars_decode($_POST['monitor_train']);
-            $add_train = htmlspecialchars_decode($_POST['add_train']);
-            $add_engineer = htmlspecialchars_decode($_POST['add_engineer']);
-            $reset_pass = htmlspecialchars_decode($_POST['reset_pass']);
-            $edit_user = htmlspecialchars_decode($_POST['edit_user']);
-            $ssn = htmlspecialchars_decode($_POST['ssn']);
+            $add_conductor = htmlspecialchars($_POST['add_conductor']);
+            $monitor_train = htmlspecialchars($_POST['monitor_train']);
+            $add_train = htmlspecialchars($_POST['add_train']);
+            $add_engineer = htmlspecialchars($_POST['add_engineer']);
+            $reset_pass = htmlspecialchars($_POST['reset_pass']);
+            $edit_user = htmlspecialchars($_POST['edit_user']);
+            $ssn = htmlspecialchars($_POST['ssn']);
 
             if(signUp($conn, $user, $pass, $add_equipment, $add_equipment,
             $add_conductor, $monitor_train, $add_train, $add_engineer,
             $reset_pass, $edit_user, $ssn) > 0){
-              echo "signup successful";
+
             } else {
               echo "signup failed";
             }
             $conn->close();
-          }
-         ?>
+          }?>
       </div>
     </div>
   </body>

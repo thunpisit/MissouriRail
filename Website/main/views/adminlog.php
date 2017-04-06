@@ -4,6 +4,14 @@
   topStart();
   if(!isset($_SESSION['user_id'])){
     header("Location: login.php");
+  } else {
+    if(!isset($_SESSION['reset_pass'])){
+      header("Location: login.php");
+    } else {
+      if($_SESSION['reset_pass'] == 0){
+        header("Location: dashboard.php");
+      }
+    }
   }
  ?>
 <html>
