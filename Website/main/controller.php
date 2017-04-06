@@ -61,7 +61,36 @@
     }
   }
 
+  function adminOnly(){
+    if(!isset($_SESSION['user_id'])){
+      header("Location: login.php");
+    } else {
+      if(!isset($_SESSION['reset_pass'])){
+        header("Location: login.php");
+      } else {
+        if($_SESSION['reset_pass'] == 0){
+          header("Location: dashboard.php");
+        }
+      }
+    }
+  }
 
+  function primaryMenuBar(){
+    if(isset($_SESSION['user_id'])){
+      echo '<form action="../model/logout.php" method="post">
+              <span class=navbar-btn>
+                <input id="height100" type="submit" name="submit" class="btn btn-danger" value="Logout">
+              </span>
+            </form>';
+    } else {
+      echo '<a id="text-white" class="btn btn-success" href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a>';
+    }
+  }
 
-
- ?>
+  function secondaryMenuBar(){
+    if($_SESSION['reset_pass'] != 1){
+      echo '<a href="#">Portal</a>';
+    } else {
+      echo '<a href="adminlog.php">Admin Portal</a>';
+    }
+  }?>

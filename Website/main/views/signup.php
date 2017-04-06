@@ -34,18 +34,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                   <li class="active"><a href="#"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
-                  <li>
-                    <?php if(isset($_SESSION['user_id'])){
-                      echo '<form action="../model/logout.php" method="post">
-                              <span class=navbar-btn>
-                                <input id="height100" type="submit" name="submit" class="btn btn-danger" value="Logout">
-                              </span>
-                            </form>';
-                    } else {
-                      echo '<a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a>';
-                    } ?>
-                  </li>
-                  <!-- <li id="authentication"><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li> -->
+                  <li id="#text-white"><?php primaryMenuBar();?></li>
                 </ul>
               </div>
             </nav>
