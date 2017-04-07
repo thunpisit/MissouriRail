@@ -122,7 +122,6 @@ include("model/userDAL.php");
   }
 
   function getDateTime(){
-    date_default_timezone_set('Australia/Melbourne');
     $date = time();
     return $date;
   }?>
