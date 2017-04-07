@@ -96,7 +96,15 @@
   }
 
   function getLog(){
-    q_putLog($ip, $action, $date_time, $user_id);
+    $ip = ipAddress();
+    $action = getAction();
+    $date_time = getDateTime();
+    if(getUserId() != 0){
+      $user = getUserId();
+    } else {
+      echo "user not set";
+    }
+    q_putLog($conn, $ip, $action, $date_time, $user_id);
   }
 
   function ipAddress(){
@@ -107,5 +115,23 @@
     } else {
       $ip = $_SERVER['REMOTE_ADDR'];
     }
-    q_ipAddress()$ip;
+    return $ip;
+  }
+
+  function getAction(){
+    
+  }
+
+  function getDateTime(){
+    date_default_timezone_set('Australia/Melbourne');
+    $date = date('m/d/Y h:i:s a', time());
+    return $date;
+  }
+
+  function getUserId(){
+    if(isset($_SESSION['user_id'])){
+      return $_SESSION['user_id'];
+    } else {
+      return 0;
+    }
   }?>
