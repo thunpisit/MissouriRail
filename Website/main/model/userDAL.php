@@ -135,6 +135,18 @@
     }
   }
 
+  function q_printTable($conn, $table){
+    $query = "SELECT * FROM $table";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        die("table does not exist");
+    } else {
+      $stmt->execute();
+      $result = $stmt->get_result();
+      return $result;
+    }
+  }
+
   function q_putLog($conn, $ip, $action, $date_time, $user_id){
     $query = "INSERT INTO log (ip_address, action, date_time, user_id) VALUES(?, ?, FROM_UNIXTIME(?), ?)";
     $stmt = $conn->stmt_init();
@@ -149,5 +161,4 @@
     $result = $stmt->get_result();
 
     return $result;
-  }
-  ?>
+  }?>

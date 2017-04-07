@@ -62,37 +62,11 @@
           </div>
         </div>
 
-        <form class="form-horizontal" action="" method="post">
-          <div class="row">
-            <div class="col-md-offset-2 col-md-3">
-              <label for="usr">User:</label>
-            </div>
-            <div class="col-md-4">
-              <input class="form-control" type="text" name="user" value="">
-            </div>
-          </div><hr>
-          <div class="row">
-            <div class="col-md-offset-2 col-md-3">
-              <label for="pwd">Password:</label>
-            </div>
-            <div class="col-md-4">
-              <input class="form-control" type="password" name="pwd" value="">
-            </div>
-          </div><hr>
-          <div class="row">
-            <div class="col-md-offset-2 col-md-7">
-              <input type="submit" name="submit" class="btn btn-success btn-block">
-            </div>
-          </div>
-        </form>
         <?php
-          if(isset($_POST['submit'])){
             $conn = connectDB();
-            $user = $_SESSION['user_id'];
-            getLog($conn, $user);
-            // echo "<br /><br />user = " . $_SESSION['user_id'];
+            printTable($conn, "log");
             $conn->close();
-          }?>
+          ?>
 
       </div>
     </div>

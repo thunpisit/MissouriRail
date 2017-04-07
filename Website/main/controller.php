@@ -95,6 +95,27 @@ include("model/userDAL.php");
     }
   }
 
+  function printTable($conn, $table){
+    $result = q_printTable($conn, $table);
+    if($result->num_rows > 0){
+      // output data of each row
+      echo "<label>Number of rows in result:</label> $result->num_rows";
+      echo "<table class='table table-striped table-bordered'><thead><tr>";
+      while($fieldName = mysqli_fetch_field($result)) {
+          echo "<th>" . $fieldName->name . "</th>";
+      }
+      echo "</tr></thead><tbody>";
+      while($row = $result->fetch_array(MYSQLI_NUM)) {
+        echo "<tr>";
+        foreach ($row as $data) {
+          echo "<td>" . $data . "</td>";
+        }
+        echo "</tr>";
+      }
+      echo "</tbody></table>";
+    }
+  }
+
   function getLog($conn, $user){
     $ip = ipAddress();
     $action = getAction();
