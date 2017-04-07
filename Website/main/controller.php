@@ -35,8 +35,9 @@ include("model/userDAL.php");
         $_SESSION['add_train'] = $add_trainArray[0];
         $_SESSION['add_engineer'] = $add_engineerArray[0];
         $_SESSION['edit_user'] = $edit_userArray[0];
+        $action = $_SESSION['action'];
 
-        getLog($conn, $user);
+        getLog($conn, $user, $action);
         header("Location: dashboard.php");
       } else {
         echo "password incorrect";
@@ -55,6 +56,10 @@ include("model/userDAL.php");
       htmlspecialchars($_POST['add_train']), htmlspecialchars($_POST['add_engineer']),
       htmlspecialchars($_POST['reset_pass']), htmlspecialchars($_POST['edit_user']),
       htmlspecialchars($_POST['ssn']));
+
+      $user = $_SESSION['signup_user'];
+      $action = 'signup by user on ';
+      getLog($conn, $user, $action);
       header("Location: login.php");
     } else {
       return 0;
@@ -116,9 +121,9 @@ include("model/userDAL.php");
     }
   }
 
-  function getLog($conn, $user){
+  function getLog($conn, $user, $action){
     $ip = ipAddress();
-    $action = getAction();
+    $action = getAction($action);
     $date_time = getDateTime();
     // echo 'ip = ' . $ip . '<br />action = ' . $action . '<br />date_time = ' . $date_time . '<br />user = ' . $user;
     q_putLog($conn, $ip, $action, $date_time, $user);
@@ -135,12 +140,12 @@ include("model/userDAL.php");
     return $ip;
   }
 
-  function getAction(){
+  function getAction($action){
     // form submission on currentPage
     $currentPage = $_SERVER['PHP_SELF'];
-    $submissionString = 'form submission on ' . $currentPage;
-    return $submissionString;
-  }
+    $actionString = $action . $currentPage;
+    return $actionString;
+    }
 
   function getDateTime(){
     $date = time();

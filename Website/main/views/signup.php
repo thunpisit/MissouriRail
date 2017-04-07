@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/stylesheet.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-    <script src="scripts.js"></script>
+    <script src="../assets/javascript/scripts.js"></script>
   </head>
   <body>
     <div class="container">
@@ -174,7 +174,7 @@
           <!-- submit -->
           <div class="row">
             <div class="col-md-offset-2 col-md-7">
-              <input type="submit" name="submit" class="btn btn-success btn-block">
+              <input type="submit" name="submit" onclick="return form_submission()" class="btn btn-success btn-block">
             </div>
           </div>
         </form><?php
@@ -190,11 +190,12 @@
             $reset_pass = htmlspecialchars($_POST['reset_pass']);
             $edit_user = htmlspecialchars($_POST['edit_user']);
             $ssn = htmlspecialchars($_POST['ssn']);
+            $_SESSION['signup_user'] = $user;
 
             if(signUp($conn, $user, $pass, $add_equipment, $add_equipment,
             $add_conductor, $monitor_train, $add_train, $add_engineer,
             $reset_pass, $edit_user, $ssn) > 0){
-              getLog($conn);
+
             } else {
               echo "signup failed";
             }
