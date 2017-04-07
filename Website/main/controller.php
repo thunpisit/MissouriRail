@@ -102,7 +102,7 @@
     if(getUserId() != 0){
       $user = getUserId();
     } else {
-      echo "user not set";
+      $user = 'no user_id set';
     }
     q_putLog($conn, $ip, $action, $date_time, $user_id);
   }
@@ -119,7 +119,10 @@
   }
 
   function getAction(){
-    
+    // form submission on currentPage
+    $currentPage = $_SERVER['PHP_SELF'];
+    $submissionString = 'form submission on ' . $currentPage;
+    return $submissionString;
   }
 
   function getDateTime(){

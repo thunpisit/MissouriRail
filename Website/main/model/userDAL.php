@@ -137,7 +137,7 @@
 
   function q_putLog($conn, $ip, $action, $date_time, $user_id){
     $query = "INSERT INTO log (ip_address, action, date_time, user_id) VALUES(?, ?, ?, ?)";
-    $stmt = $mysqli->stmt_init();
+    $stmt = $conn->stmt_init();
 
     if(!mysqli_stmt_prepare($stmt, $query)) {
         printf("Error: %s.\n", $stmt->error);
