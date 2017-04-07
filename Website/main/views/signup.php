@@ -194,7 +194,7 @@
             if(signUp($conn, $user, $pass, $add_equipment, $add_equipment,
             $add_conductor, $monitor_train, $add_train, $add_engineer,
             $reset_pass, $edit_user, $ssn) > 0){
-
+              getLog($conn);
             } else {
               echo "signup failed";
             }

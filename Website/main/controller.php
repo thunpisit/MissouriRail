@@ -1,7 +1,7 @@
 <?php
 # This is the Business Logic Layer to handle everything between the front end
 # and the database connectivity in the model
-
+include("model/userDAL.php");
   function topStart(){
     ob_start();
     session_start();
@@ -17,7 +17,6 @@
   }
 
   function login($conn, $user, $pass){
-    include("../model/userDAL.php");
     if(q_checkUser($conn ,$user) > 0){
       if(q_loginUser($conn, $user, $pass) == 1){
         $add_equipmentArray = q_addEquipment($conn, $user);
@@ -37,6 +36,7 @@
         $_SESSION['add_engineer'] = $add_engineerArray[0];
         $_SESSION['edit_user'] = $edit_userArray[0];
 
+        getLog($conn, $user);
         header("Location: dashboard.php");
       } else {
         echo "password incorrect";
@@ -48,7 +48,7 @@
 
   // signs user up then returns 1 on success and 0 on fail
   function signUp($conn, $user){
-    include("model/userDAL.php");
+    // include("model/userDAL.php");
     if(q_checkUser($conn, $user) < 1){
       q_signUp($conn, $user, htmlspecialchars($_POST['pwd']), htmlspecialchars($_POST['add_equipment']),
       htmlspecialchars($_POST['add_conductor']), htmlspecialchars($_POST['monitor_train']),
@@ -95,16 +95,12 @@
     }
   }
 
-  function getLog(){
+  function getLog($conn, $user){
     $ip = ipAddress();
     $action = getAction();
     $date_time = getDateTime();
-    if(getUserId() != 0){
-      $user = getUserId();
-    } else {
-      $user = 'no user_id set';
-    }
-    q_putLog($conn, $ip, $action, $date_time, $user_id);
+    // echo 'ip = ' . $ip . '<br />action = ' . $action . '<br />date_time = ' . $date_time . '<br />user = ' . $user;
+    q_putLog($conn, $ip, $action, $date_time, $user);
   }
 
   function ipAddress(){
@@ -127,14 +123,6 @@
 
   function getDateTime(){
     date_default_timezone_set('Australia/Melbourne');
-    $date = date('m/d/Y h:i:s a', time());
+    $date = time();
     return $date;
-  }
-
-  function getUserId(){
-    if(isset($_SESSION['user_id'])){
-      return $_SESSION['user_id'];
-    } else {
-      return 0;
-    }
   }?>

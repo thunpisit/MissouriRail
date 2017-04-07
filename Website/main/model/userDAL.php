@@ -136,7 +136,7 @@
   }
 
   function q_putLog($conn, $ip, $action, $date_time, $user_id){
-    $query = "INSERT INTO log (ip_address, action, date_time, user_id) VALUES(?, ?, ?, ?)";
+    $query = "INSERT INTO log (ip_address, action, date_time, user_id) VALUES(?, ?, FROM_UNIXTIME(?), ?)";
     $stmt = $conn->stmt_init();
 
     if(!mysqli_stmt_prepare($stmt, $query)) {
@@ -144,7 +144,7 @@
       return;
     }
 
-    $stmt->bind_param("ssss", $ip, $action, $date_time, $user_id);
+    $stmt->bind_param("ssis", $ip, $action, $date_time, $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
 

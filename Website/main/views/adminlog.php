@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php
-  include '../controller.php';
+  include ("../controller.php");
   topStart();
   adminOnly();
  ?>
@@ -61,14 +61,38 @@
             </nav>
           </div>
         </div>
-        <?php echo "reset_pass permission = " . $_SESSION['reset_pass']; ?>
-        <?php echo "add_equipment permission = " . $_SESSION['add_equipment']; ?>
-        <?php echo "add_conductor permission = " . $_SESSION['add_conductor']; ?>
-        <?php echo "monitor_train permission = " . $_SESSION['monitor_train']; ?>
-        <?php echo "add_train permission = " . $_SESSION['add_train']; ?>
-        <?php echo "add_engineer permission = " . $_SESSION['add_engineer']; ?>
-        <?php echo "edit_user permission = " . $_SESSION['edit_user']; ?>
 
+        <form class="form-horizontal" action="" method="post">
+          <div class="row">
+            <div class="col-md-offset-2 col-md-3">
+              <label for="usr">User:</label>
+            </div>
+            <div class="col-md-4">
+              <input class="form-control" type="text" name="user" value="">
+            </div>
+          </div><hr>
+          <div class="row">
+            <div class="col-md-offset-2 col-md-3">
+              <label for="pwd">Password:</label>
+            </div>
+            <div class="col-md-4">
+              <input class="form-control" type="password" name="pwd" value="">
+            </div>
+          </div><hr>
+          <div class="row">
+            <div class="col-md-offset-2 col-md-7">
+              <input type="submit" name="submit" class="btn btn-success btn-block">
+            </div>
+          </div>
+        </form>
+        <?php
+          if(isset($_POST['submit'])){
+            $conn = connectDB();
+            $user = $_SESSION['user_id'];
+            getLog($conn, $user);
+            // echo "<br /><br />user = " . $_SESSION['user_id'];
+            $conn->close();
+          }?>
 
       </div>
     </div>
