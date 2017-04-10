@@ -7,10 +7,6 @@ include("model/userDAL.php");
     session_start();
   }
 
-  function topStart(){
-    session_start();
-  }
-
   function connectDB(){
     include("secure/database.php");
     $conn = new mysqli(HOST, USERNAME, PASSWORD, DBNAME);
