@@ -11,7 +11,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/stylesheet.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
     <script src="../assets/javascript/scripts.js"></script>
+
+    <script src="scripts.js"></script>
+
   </head>
   <body>
     <div class="container">
@@ -177,12 +181,16 @@
               <input type="submit" name="submit" onclick="return form_submission()" class="btn btn-success btn-block">
             </div>
           </div>
-        </form><?php
+        </form>
+
+        <?php
+
           if(isset($_POST['submit'])){
             $conn = connectDB();
             $user = htmlspecialchars($_POST['user']);
             $pass = htmlspecialchars($_POST['pwd']);
             $add_equipment = htmlspecialchars($_POST['add_equipment']);
+
             $add_conductor = htmlspecialchars($_POST['add_conductor']);
             $monitor_train = htmlspecialchars($_POST['monitor_train']);
             $add_train = htmlspecialchars($_POST['add_train']);
@@ -196,11 +204,15 @@
             $add_conductor, $monitor_train, $add_train, $add_engineer,
             $reset_pass, $edit_user, $ssn) > 0){
 
+              echo "signup successful";
+
             } else {
               echo "signup failed";
             }
             $conn->close();
+
           }?>
+
       </div>
     </div>
   </body>

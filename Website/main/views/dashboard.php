@@ -43,6 +43,7 @@
           </div>
         </div>
 
+
         <div class="row">
           <div class="col-md-12">
             <h2 class="text-center">Welcome back <?= $_SESSION['user_id'] ?></h2>
@@ -63,6 +64,12 @@
             </nav>
           </div>
         </div>
+
+
+        <?php
+          echo $_SESSION['user_id'] . " is logged in";
+         ?>
+
 
 
       </div>

@@ -11,7 +11,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="../assets/css/stylesheet.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
     <script src="../assets/javascript/scripts.js"></script>
+
   </head>
   <body>
     <div class="container">
@@ -61,15 +63,21 @@
           </div><hr>
           <div class="row">
             <div class="col-md-offset-2 col-md-7">
+
               <input type="submit" name="submit" onclick="return form_submission()" class="btn btn-success btn-block">
+
+              <input type="submit" name="submit" class="btn btn-success btn-block">
+
             </div>
           </div>
         </form>
         <?php
           if(isset($_POST['submit'])){
             $conn = connectDB();
+
             // for getLog action in controller
             $_SESSION['action'] = 'login on ';
+
             login($conn, htmlspecialchars($_POST['user']), htmlspecialchars($_POST['pwd']));
             $conn->close();
           }

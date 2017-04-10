@@ -41,6 +41,7 @@
     $password = password_hash($pass, PASSWORD_DEFAULT);
     mysqli_stmt_bind_param($stmt, "ssiiiiiiis", $user, $password, $add_equipment, $add_conductor, $monitor_train, $add_train, $add_engineer, $reset_pass, $edit_user, $ssn);
     $stmt->execute();
+
     // $result = $stmt->get_result();
     }
   }
@@ -161,4 +162,8 @@
     $result = $stmt->get_result();
 
     return $result;
+
+    $result = $stmt->get_result();
+    }
+
   }?>
