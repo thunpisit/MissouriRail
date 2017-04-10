@@ -164,6 +164,4 @@
     return $result;
 
     $result = $stmt->get_result();
-    }
-
-  }?>
+    }?>
