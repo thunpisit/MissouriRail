@@ -131,6 +131,23 @@ f {
     =transition-property: color, background-color;
 }
 
+
+.centerText{
+  text-align: center;
+}
+
+#text-white{
+  color: white;
+}
+
+#text-white:active{
+  background-color: #478E47;
+}
+
+#text-white:hover{
+  background-color: #478E47;
+}
+
 #height100{
   height: 50px;
 }

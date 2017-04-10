@@ -36,25 +36,40 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                   <li><a href="signup.php"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
-                  <li>
-                    <?php if(isset($_SESSION['user_id'])){
-                      echo '<form action="../model/logout.php" method="post">
-                              <span class=navbar-btn>
-                                <input id="height100" type="submit" name="submit" class="btn btn-danger" value="Logout">
-                              </span>
-                            </form>';
-                    } else {
-                      echo '<a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a>';
-                    } ?>
-                  </li>
+                  <li id="#text-white"><?php primaryMenuBar();?></li>
                 </ul>
               </div>
             </nav>
           </div>
         </div>
+
+
+        <div class="row">
+          <div class="col-md-12">
+            <h2 class="text-center">Welcome back <?= $_SESSION['user_id'] ?></h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-offset-2 col-md-8">
+            <nav class="navbar navbar-inverse">
+              <div class="container-fluid">
+                <div class="navbar-header">
+                  <a class="navbar-brand" href="#">Dashboard Menu</a>
+                </div>
+                <ul class="nav navbar-nav">
+                  <li class="active"><a href="#">Dashboard</a></li>
+                  <li><?php secondaryMenuBar();?></li>
+                </ul>
+              </div>
+            </nav>
+          </div>
+        </div>
+
+
         <?php
           echo $_SESSION['user_id'] . " is logged in";
          ?>
+
 
 
       </div>
