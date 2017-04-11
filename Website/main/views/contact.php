@@ -11,6 +11,10 @@
     <link rel="stylesheet" href="../assets/css/stylesheet.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <title>Contact</title>
+    <script type="text/javascript">
+      form_submission();
+
+    </script>
   </head>
   <body>
     <div class="container">
@@ -33,15 +37,66 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                   <li><a href="signup.php"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
-                  <li id="#text-white"><?php primaryMenuBar();?></li>
+                  <li>
+                    <?php if(isset($_SESSION['user_id'])){
+                      echo '<form action="../model/logout.php" method="post">
+                              <span class=navbar-btn>
+                                <input id="height100" type="submit" name="submit" class="btn btn-danger" value="Logout">
+                              </span>
+                            </form>';
+                    } else {
+                      echo '<a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a>';
+                    } ?>
+                  </li>
                 </ul>
               </div>
             </nav>
           </div>
         </div>
-
-
       </div>
     </div>
+    <div class="formwrapper" name="form-control">
+      <form method="POST" action="contact.php">
+        Name:
+        <input type="text" name="name" value="" /><br />
+        Email:
+        <input type="text" name="email" value=""/><br />
+        Subject:
+        <input type="text" name="subject" value=""/><br />
+        Message:
+        <input type="text" name="message" value="" style="height:150px;" /><br />
+        <input type="submit" name="submit" value="Send" />
+      </form>
+    </div>
+    <? php
+      if(isset($_POST['submit'])){
+        $name=$_POST['name'];
+        $email=$_POST['email'];
+        $subject=$_POST['subject'];
+        $message=$_POST['message'];
+
+        // if(empty($name) && empty($email) && empty($subject) && empty($message)){
+        //     echo "Please fill in all the field.";
+        // }
+        // elseif(empty($name)){
+        //   echo "Please enter a name.";
+        // }
+        // elseif(empty($email)){
+        //   echo "Please enter an email.";
+        // }
+        // elseif(empty($subject)){
+        //   echo "Please enter a subject";
+        // }
+        // elseif(empty($message)){
+        //   echo "Please add a message.";
+        // }
+        // else{
+        //   mail("support@missourirail.com",$subject,$message);
+        // }
+
+
+      }
+
+    ?>
   </body>
 </html>
