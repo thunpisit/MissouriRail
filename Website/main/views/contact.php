@@ -55,13 +55,13 @@
     <div class="formwrapper">
       <form method="POST" action="contact.php">
         Name:
-        <input type="text" name="name" value="" name="form-control"/><br />
+        <input type="text" name="name" value="" class="form-control"/><br />
         Email:
-        <input type="text" name="email" value="" name="form-control"/><br />
+        <input type="text" name="email" value="" class="form-control"/><br />
         Subject:
-        <input type="text" name="subject" value="" name="form-control"/><br />
+        <input type="text" name="subject" value="" class="form-control"/><br />
         Message:
-        <input type="text" name="message" value="" style="height:150px;" name="form-control" /><br />
+        <input type="text" name="message" value="" style="height:150px;" class="form-control" /><br />
         <input type="submit" name="submit" value="Send" onclick="return form_submission()"/>
       </form>
     </div>
@@ -71,9 +71,7 @@
         $email=$_POST['email'];
         $subject=$_POST['subject'];
         $message=$_POST['message'];
-        if(form_submission()!=false){
-          mail("support@mail.missourirail.com",$subject,$message);
-        }
+        mail("support@mail.missourirail.com",$subject,$message);
 
         // if(empty($name) && empty($email) && empty($subject) && empty($message)){
         //     echo "Please fill in all the field.";
