@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="../assets/css/stylesheet.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="../assets/javascript/scripts.js" charset="utf-8"></script>
     <title>Contact</title>
   </head>
   <body>
@@ -51,26 +52,26 @@
         </div>
       </div>
     </div>
-    <div class="formwrapper" name="form-control">
+    <div class="formwrapper">
       <form method="POST" action="contact.php">
         Name:
-        <input type="text" name="name" value="" /><br />
+        <input type="text" name="name" value="" name="form-control"/><br />
         Email:
-        <input type="text" name="email" value=""/><br />
+        <input type="text" name="email" value="" name="form-control"/><br />
         Subject:
-        <input type="text" name="subject" value=""/><br />
+        <input type="text" name="subject" value="" name="form-control"/><br />
         Message:
-        <input type="text" name="message" value="" style="height:150px;" /><br />
-        <input type="submit" name="submit" value="Send" />
+        <input type="text" name="message" value="" style="height:150px;" name="form-control" /><br />
+        <input type="submit" name="submit" value="Send" onclick="return form_submission()"/>
       </form>
     </div>
-    <? php
+    <?php
       if(isset($_POST['submit'])){
         $name=$_POST['name'];
         $email=$_POST['email'];
         $subject=$_POST['subject'];
         $message=$_POST['message'];
-        if(form_submission!=false){
+        if(form_submission()!=false){
           mail("support@mail.missourirail.com",$subject,$message);
         }
 
