@@ -11,10 +11,6 @@
     <link rel="stylesheet" href="../assets/css/stylesheet.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <title>Contact</title>
-    <script type="text/javascript">
-      form_submission();
-
-    </script>
   </head>
   <body>
     <div class="container">
@@ -70,10 +66,7 @@
     </div>
     <? php
       if(isset($_POST['submit'])){
-        $name=$_POST['name'];
-        $email=$_POST['email'];
-        $subject=$_POST['subject'];
-        $message=$_POST['message'];
+        form_submission();
 
         // if(empty($name) && empty($email) && empty($subject) && empty($message)){
         //     echo "Please fill in all the field.";
