@@ -66,7 +66,13 @@
     </div>
     <? php
       if(isset($_POST['submit'])){
-        form_submission();
+        $name=$_POST['name'];
+        $email=$_POST['email'];
+        $subject=$_POST['subject'];
+        $message=$_POST['message'];
+        if(form_submission!=false){
+          mail("support@mail.missourirail.com",$subject,$message);
+        }
 
         // if(empty($name) && empty($email) && empty($subject) && empty($message)){
         //     echo "Please fill in all the field.";
