@@ -8,7 +8,7 @@ include("model/userDAL.php");
   }
 
   function connectDB(){
-    include("secure/database.php");
+    require_once("secure/database.php");
     $conn = new mysqli(HOST, USERNAME, PASSWORD, DBNAME);
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
@@ -150,4 +150,24 @@ include("model/userDAL.php");
   function getDateTime(){
     $date = time();
     return $date;
+  }
+
+  function printCustomers(){
+    $conn = connectDB();
+    echo "<div class='row'>";
+    printTable($conn, 'customer');
+    echo "</div>";
+  }
+
+  function createCustomer(){
+    include("model/customerBLL.php");
+    $conn = connectDB();
+    $id = $_POST['user_id'];
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
+    $email = $_POST['email'];
+    $phone_number = $_POST['phone_number'];
+    $address = $_POST['address'];
+
+    q_createCustomer($conn, $id, $first_name, $last_name, $email, $phone_number, $address);
   }?>

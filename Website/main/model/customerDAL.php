@@ -3,16 +3,16 @@
   class Customer{
     public $customer_id;
     public $first_name;
-    public $middle_name;
+    // public $middle_name;
     public $last_name;
     public $email;
     public $phone_number;
     public $address;
 
-    function __construct($id, $fName, $mName, $lName, $em, $phone, $add){
+    function __construct($id, $fName, $lName, $em, $phone, $add){
       $this->$customer_id = $id;
       $this->$first_name = $fName;
-      $this->$middle_name = $mName;
+      // $this->$middle_name = $mName;
       $this->$last_name = $lName;
       $this->$email = $em;
       $this->$phone_number = $phone;
@@ -27,9 +27,9 @@
       return $this->$first_name;
     }
 
-    public function get_middle_name(){
-      return $this->$middle_name;
-    }
+    // public function get_middle_name(){
+    //   return $this->$middle_name;
+    // }
 
     public function get_last_name(){
       return $this->$last_name;
@@ -66,8 +66,8 @@
     return $customerInfo;
   }
 
-  function q_createCustomer($conn, $id, $fName, $mName, $lName, $email, $phone, $address){
-    $query = "INSERT INTO customer (customer_id, first_name, middle_name, last_name, email, phone_number, address) VALUES(?, ?, ?, ?, ?, ?, ?)";
+  function q_createCustomer($conn, $id, $fName, $lName, $email, $phone, $address){
+    $query = "INSERT INTO customer (user_id, first_name, last_name, email, phone_number, address) VALUES(?, ?, ?, ?, ?, ?)";
     $stmt = $conn->stmt_init();
 
     if(!mysqli_stmt_prepare($stmt, $query)) {
@@ -75,7 +75,7 @@
       return;
     }
 
-    $stmt->bind_param("sssssis", $id, $fName, $mName, $lName, $email, $pnone, $address);
+    $stmt->bind_param("ssssis", $id, $fName, $lName, $email, $phone, $address);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -83,7 +83,7 @@
   }
 
   function q_editCustomer($conn, $id, $fName, $mName, $lName, $email, $phone, $address){
-    $query = "UPDATE customer SET (first_name, middle_name, last_name, email, phone_number, address) VALUES(?, ?, ?, ?, ?, ?) wHERE customer_id = ?";
+    $query = "UPDATE customer SET (first_name, last_name, email, phone_number, address) VALUES(?, ?, ?, ?, ?) WHERE customer_id = ?";
     $stmt = $conn->stmt_init();
 
     if(!mysqli_stmt_prepare($stmt, $query)) {
@@ -91,7 +91,7 @@
       return;
     }
 
-    $stmt->bind_param("ssssiss", $fName, $mName, $lName, $email, $pnone, $address, $id);
+    $stmt->bind_param("sssiss", $fName, $lName, $email, $pnone, $address, $id);
     $stmt->execute();
     $result = $stmt->get_result();
 
