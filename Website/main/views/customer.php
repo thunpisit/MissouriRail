@@ -15,8 +15,53 @@
     <title>Customer</title>
     <script>
       $(function(){
-        $("#createCustomer").hide()
-      });
+        $("#createCustomer").hide();
+        $("#printCustomers").click(function(){
+          $.ajax({
+             url: '../controller.php',
+             data: {action: 'printCustomers'},
+             type: 'post',
+             success: function(output) {
+                          $("#customerTable").html(output);
+                      }
+          });
+          $("#customerTable").toggle();
+        });
+
+        $("#createCustomerBtn").click(function(){
+          $("#createCustomer").toggle(); });
+
+          $("#submitCreate").click(function(){
+            user_id = $("#user_id").val();
+            var first_name = $("#first_name").val();
+            var last_name = $("#last_name").val();
+            var email = $("#email").val();
+            var phone_number = $("#phone_number").val();
+            var address = $("#address").val();
+            // alert(user_id);
+            // console.log(first_name);
+            // console.log(last_name);
+            // console.log(email);
+            // console.log(phone_number);
+            // console.log(address);
+
+            $.ajax({
+               url: '../controller.php',
+               data: {action: 'createCustomer',
+                      user_id: user_id,
+                      first_name: first_name,
+                      last_name: last_name,
+                      email: email,
+                      phone_number: phone_number,
+                      address: address},
+               type: 'post',
+               success: function(output) {
+                            $("#createCustomer").hide();
+                        }
+            });
+          });
+
+        });
 
       function formToggle(id){
         console.log(id);
@@ -61,13 +106,13 @@
         <div class="row center">
           <!-- create customer -->
           <div class="col-md-*">
-            <button onclick="formToggle('#createCustomer')" type="button" class="btn btn-warning">Create Customer</button>
+            <button id="createCustomerBtn" type="button" class="btn btn-warning">Create Customer</button>
             <div id="createCustomer">
               <div class="panel panel-success">
                 <div class="panel-body">
 
 
-              <form class="form-horizontal" action="customer.php" method="post">
+              <form class="form-horizontal" >
                 <input type="hidden" name="formType" value="createCustomer">
                 <!-- user_id -->
                 <div class="row">
@@ -75,7 +120,7 @@
                     <label for="usr">User:</label>
                   </div>
                   <div class="col-md-4">
-                    <input class="form-control checkMe" type="text" name="user_id" value="">
+                    <input id="user_id" class="form-control checkMe" type="text" name="user_id" value="">
                   </div>
                 </div><hr>
                 <!-- first_name -->
@@ -84,7 +129,7 @@
                     <label for="usr">First Name:</label>
                   </div>
                   <div class="col-md-4">
-                    <input class="form-control checkMe" type="text" name="first_name" value="">
+                    <input id="first_name" class="form-control checkMe" type="text" name="first_name" value="">
                   </div>
                 </div><hr>
                 <!-- last_name -->
@@ -93,7 +138,7 @@
                     <label for="usr">Last Name:</label>
                   </div>
                   <div class="col-md-4">
-                    <input class="form-control checkMe" type="text" name="last_name" value="">
+                    <input id="last_name" class="form-control checkMe" type="text" name="last_name" value="">
                   </div>
                 </div><hr>
                 <!-- email -->
@@ -102,7 +147,7 @@
                     <label for="usr">Email:</label>
                   </div>
                   <div class="col-md-4">
-                    <input class="form-control checkMe" type="text" name="email" value="">
+                    <input id="email" class="form-control checkMe" type="text" name="email" value="">
                   </div>
                 </div><hr>
                 <!-- phone_number -->
@@ -111,7 +156,7 @@
                     <label for="usr">Phone Number:</label>
                   </div>
                   <div class="col-md-4">
-                    <input class="form-control checkMe" type="text" name="phone_number" value="">
+                    <input id="phone_number" class="form-control checkMe" type="text" name="phone_number" value="">
                   </div>
                 </div><hr>
                 <!-- address -->
@@ -120,13 +165,13 @@
                     <label for="usr">Address:</label>
                   </div>
                   <div class="col-md-4">
-                    <input class="form-control checkMe" type="text" name="address" value="">
+                    <input id="address" class="form-control checkMe" type="text" name="address" value="">
                   </div>
                 </div><hr>
                 <!-- submit -->
                 <div class="row">
                   <div class="col-md-*">
-                    <input type="submit" name="submit" onclick="return form_submissionCreateCustomer()" class="btn btn-success btn-block">
+                    <button id="#submitCreate" class="btn btn-success btn-block">Add Customer</button>
                   </div>
                 </div>
               </form>
@@ -220,16 +265,20 @@
         <!-- print all customers -->
         <div class="row">
           <div class="col-md-12">
-            <?php printCustomers(); ?>
+            <button id="printCustomers" type="button" class="btn btn-primary" name="button">Print Customers</button>
+            <div id="customerTable">
+
+            </div>
           </div>
         </div>
 
         <?php
-          if(isset($_POST['submit'])){
-            if($_POST['formType'] == 'createCustomer'){
-              createCustomer();
-            }
-          }
+          // replaced with ajax call
+          // if(isset($_POST['submit'])){
+          //   if($_POST['formType'] == 'createCustomer'){
+          //     createCustomer();
+          //   }
+          // }
          ?>
 
       </div>
