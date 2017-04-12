@@ -131,7 +131,7 @@
 
           <!-- edit customer -->
           <div class="col-md-*">
-            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Customer Information</button>
+            <!-- this is now in the controller <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Customer Information</button> -->
             <!-- Modal -->
             <div class="modal fade" id="myModal" role="dialog">
               <div class="modal-dialog">
@@ -147,7 +147,7 @@
                         <label for="usr">User:</label>
                       </div>
                       <div class="col-md-4">
-                        <input class="form-control" type="text" name="user_id" value="" readonly>
+                        <input id="user_id" class="form-control" type="text" name="user_id" value="" readonly>
                       </div>
                     </div><hr>
                     <!-- first_name -->
@@ -156,7 +156,7 @@
                         <label for="usr">First Name:</label>
                       </div>
                       <div class="col-md-4">
-                        <input class="form-control" type="text" name="first_name" value="" readonly>
+                        <input id="first_name" class="form-control" type="text" name="first_name" value="" readonly>
                       </div>
                     </div><hr>
                     <!-- last_name -->
@@ -165,7 +165,7 @@
                         <label for="usr">Last Name:</label>
                       </div>
                       <div class="col-md-4">
-                        <input class="form-control" type="text" name="last_name" value="" readonly>
+                        <input id="last_name" class="form-control" type="text" name="last_name" value="" readonly>
                       </div>
                     </div><hr>
                     <!-- email -->

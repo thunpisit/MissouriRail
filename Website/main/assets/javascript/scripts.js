@@ -8,6 +8,7 @@ function form_submission(){
   }
 }
 
-// function formToggle(id){
-//   $(id).slideToggle("slow");
-// }
+function modalFill(first_name, last_name){
+  $("#first_name").val(first_name);
+  $("#last_name").val(last_name)
+}

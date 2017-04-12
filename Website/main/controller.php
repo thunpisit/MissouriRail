@@ -153,11 +153,35 @@ include("model/userDAL.php");
   }
 
   function printCustomers(){
+    include("model/customerBLL.php");
     $conn = connectDB();
     echo "<div class='row'>";
-    printTable($conn, 'customer');
+    $result = q_customerNames($conn);
+    if($result->num_rows > 0){
+      // output data of each row
+      echo "<label>Number of rows in result:</label> $result->num_rows";
+      echo "<table class='table table-striped table-bordered'><thead><tr>";
+      while($fieldName = mysqli_fetch_field($result)) {
+          echo "<th>" . $fieldName->name . "</th>";
+      }
+      echo "<th>Customer Information</th>";
+      echo "</tr></thead><tbody>";
+      while($row = $result->fetch_array(MYSQLI_NUM)) {
+        echo "<tr>";
+        echo "<td>" . $row[0] . "</td>";
+        echo "<td>" . $row[1] . "</td>";
+        $first_name = "'" . $row[0] . "'";
+        $last_name = "'" . $row[1] . "'";
+        echo '<td>
+                <button type="button" onclick="modalFill('.$first_name.','.$last_name.')" class="btn btn-info" data-toggle="modal" data-target="#myModal">Customer Information</button>
+              </td>';
+        }
+        echo "</tr>";
+      }
+      echo "</tbody></table>";
     echo "</div>";
-  }
+    }
+
 
   function createCustomer(){
     include("model/customerBLL.php");
