@@ -155,12 +155,16 @@ include("model/userDAL.php");
   function printCustomers(){
     include("model/customerBLL.php");
     $conn = connectDB();
-    echo "<div class='row'>";
+    echo "<div class='row'>
+            <div class='panel panel-info'>
+              <div class='panel-body'>
+
+              ";
     $result = q_customerNames($conn);
     if($result->num_rows > 0){
       // output data of each row
-      echo "<label>Number of rows in result:</label> $result->num_rows";
-      echo "<table class='table table-striped table-bordered'><thead><tr>";
+      echo "<label>Total Customers:</label> $result->num_rows";
+      echo "<table class='table table-responsive table-hover table-bordered'><thead><tr>";
       while($fieldName = mysqli_fetch_field($result)) {
           echo "<th>" . $fieldName->name . "</th>";
       }
@@ -173,13 +177,15 @@ include("model/userDAL.php");
         $first_name = "'" . $row[0] . "'";
         $last_name = "'" . $row[1] . "'";
         echo '<td>
-                <button type="button" onclick="modalFill('.$first_name.','.$last_name.')" class="btn btn-info" data-toggle="modal" data-target="#myModal">Customer Information</button>
+                <button type="button" onclick="modalFill('.$first_name.','.$last_name.')" class="btn btn-info btn-block" data-toggle="modal" data-target="#myModal">Customer Information</button>
               </td>';
         }
         echo "</tr>";
       }
       echo "</tbody></table>";
-    echo "</div>";
+    echo "</div>
+          </div>
+        </div>";
     }
 
 

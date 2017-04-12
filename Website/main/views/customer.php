@@ -63,6 +63,10 @@
           <div class="col-md-*">
             <button onclick="formToggle('#createCustomer')" type="button" class="btn btn-warning">Create Customer</button>
             <div id="createCustomer">
+              <div class="panel panel-success">
+                <div class="panel-body">
+
+
               <form class="form-horizontal" action="customer.php" method="post">
                 <input type="hidden" name="formType" value="createCustomer">
                 <!-- user_id -->
@@ -126,6 +130,8 @@
                   </div>
                 </div>
               </form>
+            </div>
+          </div>
             </div>
           </div>
 
