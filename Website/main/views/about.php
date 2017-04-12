@@ -11,6 +11,11 @@
     <link rel="stylesheet" href="../assets/css/stylesheet.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <title>About</title>
+    <style>
+      .aboutpage{
+        text-align: center;
+      }
+    </style>
   </head>
   <body>
     <div class="container">
@@ -33,15 +38,31 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                   <li><a href="signup.php"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
-                  <li id="#text-white"><?php primaryMenuBar();?></li>
+                  <li>
+                    <?php if(isset($_SESSION['user_id'])){
+                      echo '<form action="../model/logout.php" method="post">
+                              <span class=navbar-btn>
+                                <input id="height100" type="submit" name="submit" class="btn btn-danger" value="Logout">
+                              </span>
+                            </form>';
+                    } else {
+                      echo '<a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a>';
+                    } ?>
+                  </li>
                 </ul>
               </div>
             </nav>
           </div>
         </div>
-
-
       </div>
+    </div>
+    <div id="aboutpage">
+      <p>
+        We are a 45 year old railway company.
+        <br />We were founded by Donald Joe Guillium.
+        Our goal is to deliever your merchanises or yourself in a timely manner.<br />
+        We have trains that can reach across the whole United States of America.
+      </p>
     </div>
   </body>
 </html>
