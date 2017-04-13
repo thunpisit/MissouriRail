@@ -146,7 +146,7 @@
                         <label for="usr">First Name:</label>
                       </div>
                       <div class="col-md-4">
-                        <input id="first_name" class="form-control" type="text" name="first_name" value="" readonly>
+                        <input id="first_name" class="form-control modalInput" type="text" name="first_name" value="" readonly>
                       </div>
                     </div><hr>
                     <!-- last_name -->
@@ -155,7 +155,7 @@
                         <label for="usr">Last Name:</label>
                       </div>
                       <div class="col-md-4">
-                        <input id="last_name" class="form-control" type="text" name="last_name" value="" readonly>
+                        <input id="last_name" class="form-control modalInput" type="text" name="last_name" value="" readonly>
                       </div>
                     </div><hr>
                     <!-- email -->
@@ -164,7 +164,7 @@
                         <label for="usr">Email:</label>
                       </div>
                       <div class="col-md-4">
-                        <input id="email" class="form-control" type="text" name="email" value="" readonly>
+                        <input id="email" class="form-control modalInput" type="text" name="email" value="" readonly>
                       </div>
                     </div><hr>
                     <!-- phone_number -->
@@ -173,7 +173,7 @@
                         <label for="usr">Phone Number:</label>
                       </div>
                       <div class="col-md-4">
-                        <input id="phone_number" class="form-control" type="text" name="phone_number" value="" readonly>
+                        <input id="phone_number" class="form-control modalInput" type="text" name="phone_number" value="" readonly>
                       </div>
                     </div><hr>
                     <!-- address -->
@@ -182,13 +182,14 @@
                         <label for="usr">Address:</label>
                       </div>
                       <div class="col-md-4">
-                        <input id="address" class="form-control" type="text" name="address" value="" readonly>
+                        <input id="address" class="form-control modalInput" type="text" name="address" value="" readonly>
                       </div>
                     </div>
 
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="editCustomerBtn" type="button" class="btn btn-info"></button>
+                    <button id="closeModal" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                   </div>
                 </div>
               </div>

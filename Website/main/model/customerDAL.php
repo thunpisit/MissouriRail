@@ -82,8 +82,8 @@
     return $result;
   }
 
-  function q_editCustomer($conn, $id, $fName, $mName, $lName, $email, $phone, $address){
-    $query = "UPDATE customer SET (first_name, last_name, email, phone_number, address) VALUES(?, ?, ?, ?, ?) WHERE customer_id = ?";
+  function q_editCustomer($conn, $id, $fName, $lName, $email, $phone, $address){
+    $query = "UPDATE customer SET first_name=?, last_name=?, email=?, phone_number=?, address=?  WHERE user_id = ?";
     $stmt = $conn->stmt_init();
 
     if(!mysqli_stmt_prepare($stmt, $query)) {
@@ -91,7 +91,7 @@
       return;
     }
 
-    $stmt->bind_param("sssiss", $fName, $lName, $email, $pnone, $address, $id);
+    $stmt->bind_param("sssiss", $fName, $lName, $email, $phone, $address, $id);
     $stmt->execute();
     $result = $stmt->get_result();
 

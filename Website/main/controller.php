@@ -8,6 +8,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
   switch($action) {
       case 'printCustomers' : printCustomers(); break;
       case 'createCustomer' : createCustomer(); break;
+      case 'editCustomer' : editCustomer(); break;
   }
 }
 
@@ -208,7 +209,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
 
   function createCustomer(){
     $conn = connectDB();
-    echo "got to createCustomer php";
+    echo "customer created";
     $id = $_POST['user_id'];
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
@@ -217,4 +218,17 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
     $address = $_POST['address'];
 
     q_createCustomer($conn, $id, $first_name, $last_name, $email, $phone_number, $address);
+  }
+
+  function editCustomer(){
+    $conn = connectDB();
+    echo "customer editted";
+    $id = $_POST['user_id'];
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
+    $email = $_POST['email'];
+    $phone_number = $_POST['phone_number'];
+    $address = $_POST['address'];
+    q_editCustomer($conn, $id, $first_name, $last_name, $email, $phone_number, $address);
+    $conn->close();
   }?>

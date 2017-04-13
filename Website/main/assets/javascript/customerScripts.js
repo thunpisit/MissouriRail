@@ -12,7 +12,6 @@ function printCustomers(){
        type: 'post',
        success: function(output) {
                     $("#customerTable").html(output);
-                    $("#customerTable").slideDown('slow');
                 }
     });
 
@@ -20,12 +19,52 @@ function printCustomers(){
 }
 
 function modalFill(user_id, first_name, last_name, email, phone_number, address){
+  $("#editCustomerBtn").html("Edit");
   $("#user_id").val(user_id)
   $("#first_name").val(first_name);
   $("#last_name").val(last_name);
   $("#email").val(email);
   $("#phone_number").val(phone_number);
   $("#address").val(address);
+  $("#editCustomerBtn").click(function(){
+    $(".modalInput").removeAttr("readonly");
+    $("#editCustomerBtn").html('Save').removeClass('btn-info').addClass('btn-success');
+    $("#editCustomerBtn").click(function(){
+      $("#editCustomerBtn").html('Changes Saved').removeClass('btn-success').addClass('btn-info');
+      $(".modalInput").attr("readonly", true);
+      // edit customer ajax call
+      user_id = $("#user_id").val()
+      first_name = $("#first_name").val();
+      last_name = $("#last_name").val();
+      email = $("#email").val();
+      phone_number = $("#phone_number").val();
+      address = $("#address").val();
+      $.ajax({
+         url: '../controller.php',
+         data: {action: 'editCustomer',
+                user_id: user_id,
+                first_name: first_name,
+                last_name: last_name,
+                email: email,
+                phone_number: phone_number,
+                address: address},
+         type: 'post',
+         success: function(output) {
+                    console.log(output);
+                  }
+              });
+        $("#closeModal").click(function(){
+          $.ajax({
+             url: '../controller.php',
+             data: {action: 'printCustomers'},
+             type: 'post',
+             success: function(output) {
+                          $("#customerTable").html(output);
+                      }
+          });
+        });
+    });
+  });
 }
 
 function createCustomer(){
