@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php
-  include '../controller.php';
+  include 'controller.php';
   topStart();
  ?>
 <html>
