@@ -188,8 +188,13 @@
 
                   </div>
                   <div class="modal-footer">
-                    <button id="editCustomerBtn" type="button" class="btn btn-info"></button>
-                    <button id="closeModal" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <div style="float: left;">
+                      <button id="deleteBtn" style="text-align: left;" type="button" class="btn btn-danger">Delete</button>
+                    </div>
+                    <div style="float: right;">
+                      <button id="editCustomerBtn" type="button" class="btn btn-info"></button>
+                      <button id="closeModal" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
                   </div>
                 </div>
               </div>

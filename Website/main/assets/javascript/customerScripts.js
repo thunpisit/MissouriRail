@@ -1,8 +1,17 @@
 $(function(){
+  $("#deleteTextInput").hide();
   $("#createCustomer").hide();
+  modalCloseCleanup();
   printCustomers();
   createCustomer();
   });
+
+function modalCloseCleanup(){
+  $("#closeModal").click(function(){
+    $("#deleteBtn, #editCustomerBtn").show();
+  });
+
+}
 
 function printCustomers(){
   $("#printCustomers").click(function(){
@@ -30,10 +39,11 @@ function modalFill(user_id, first_name, last_name, email, phone_number, address)
     $(".modalInput").removeAttr("readonly");
     $("#editCustomerBtn").html('Save').removeClass('btn-info').addClass('btn-success');
     $("#editCustomerBtn").click(function(){
+      $("#deleteBtn").hide();
       $("#editCustomerBtn").html('Changes Saved').removeClass('btn-success').addClass('btn-info');
       $(".modalInput").attr("readonly", true);
       // edit customer ajax call
-      user_id = $("#user_id").val()
+      user_id = $("#user_id").val();
       first_name = $("#first_name").val();
       last_name = $("#last_name").val();
       email = $("#email").val();
@@ -51,6 +61,7 @@ function modalFill(user_id, first_name, last_name, email, phone_number, address)
          type: 'post',
          success: function(output) {
                     console.log(output);
+                    $("#deleteBtn").show();
                   }
               });
         $("#closeModal").click(function(){
@@ -64,6 +75,40 @@ function modalFill(user_id, first_name, last_name, email, phone_number, address)
           });
         });
     });
+  });
+
+  $("#deleteBtn").click(function(){
+
+      if(confirm("Are you sure you want to delete " + $("#user_id").val() + "?")){
+        user_id = $("#user_id").val();
+        $.ajax({
+           url: '../controller.php',
+           data: {action: 'deleteCustomer',
+                  user_id: user_id},
+           type: 'post',
+           success: function(output) {
+                      console.log(output);
+                      $("#user_id").val(user_id + " deleted");
+                      $("#first_name, #last_name, #email, #phone_number, #address").val("deleted");
+                      $("#deleteBtn, #editCustomerBtn").hide();
+                      $("#closeModal").focus();
+                      refreshTable();
+                    }
+                });
+      }
+
+  });//end deleteBtn
+
+}
+
+function refreshTable(){
+  $.ajax({
+     url: '../controller.php',
+     data: {action: 'printCustomers'},
+     type: 'post',
+     success: function(output) {
+                  $("#customerTable").html(output);
+              }
   });
 }
 

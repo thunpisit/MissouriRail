@@ -9,6 +9,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
       case 'printCustomers' : printCustomers(); break;
       case 'createCustomer' : createCustomer(); break;
       case 'editCustomer' : editCustomer(); break;
+      case 'deleteCustomer': deleteCustomer(); break;
   }
 }
 
@@ -230,5 +231,13 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
     $phone_number = $_POST['phone_number'];
     $address = $_POST['address'];
     q_editCustomer($conn, $id, $first_name, $last_name, $email, $phone_number, $address);
+    $conn->close();
+  }
+
+  function deleteCustomer(){
+    $conn = connectDB();
+    echo "customer editted";
+    $id = $_POST['user_id'];
+    q_deleteCustomer($conn, $id);
     $conn->close();
   }?>
