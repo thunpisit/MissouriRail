@@ -8,7 +8,21 @@ function form_submission(){
   }
 }
 
-function modalFill(first_name, last_name){
+function form_submissionCreateCustomer(){
+  var $inputs = $(".checkMe");
+  $($inputs).each(function(){
+    if($(this).val() == ''){
+      alert("Fill in entire form");
+      return false;
+    }
+  });
+}
+
+function modalFill(user_id, first_name, last_name, email, phone_number, address){
+  $("#user_id").val(user_id)
   $("#first_name").val(first_name);
-  $("#last_name").val(last_name)
+  $("#last_name").val(last_name);
+  $("#email").val(email);
+  $("#phone_number").val(phone_number);
+  $("#address").val(address);
 }

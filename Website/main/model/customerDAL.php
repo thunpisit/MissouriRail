@@ -48,18 +48,6 @@
     }
   }//End of Class
 
-  function q_customerNames($conn){
-    $query = "SELECT first_name as 'First Name', last_name as 'Last Name' FROM customer";
-    $stmt = $conn->stmt_init();
-    if(!mysqli_stmt_prepare($stmt, $query)) {
-        printf("Error: %s.\n", $stmt->error);
-      return;
-    }
-    $stmt->execute();
-    $result = $stmt->get_result();
-    return $result;
-  }
-
   function q_customerInfo($conn, $first_name, $last_name){
     $query = "SELECT * FROM customer WHERE first_name = ? AND last_name = ?";
     $stmt = $conn->stmt_init();
@@ -109,5 +97,19 @@
 
     return $result;
   }
+
+
+  function q_getCustomers($conn){
+    $query = "SELECT user_id, first_name as 'First Name', last_name as 'Last Name', email, phone_number, address  FROM customer";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+      return;
+    }
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result;
+  }
+
 
 ?>

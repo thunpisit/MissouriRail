@@ -75,7 +75,7 @@
                     <label for="usr">User:</label>
                   </div>
                   <div class="col-md-4">
-                    <input class="form-control" type="text" name="user_id" value="">
+                    <input class="form-control checkMe" type="text" name="user_id" value="">
                   </div>
                 </div><hr>
                 <!-- first_name -->
@@ -84,7 +84,7 @@
                     <label for="usr">First Name:</label>
                   </div>
                   <div class="col-md-4">
-                    <input class="form-control" type="text" name="first_name" value="">
+                    <input class="form-control checkMe" type="text" name="first_name" value="">
                   </div>
                 </div><hr>
                 <!-- last_name -->
@@ -93,7 +93,7 @@
                     <label for="usr">Last Name:</label>
                   </div>
                   <div class="col-md-4">
-                    <input class="form-control" type="text" name="last_name" value="">
+                    <input class="form-control checkMe" type="text" name="last_name" value="">
                   </div>
                 </div><hr>
                 <!-- email -->
@@ -102,7 +102,7 @@
                     <label for="usr">Email:</label>
                   </div>
                   <div class="col-md-4">
-                    <input class="form-control" type="text" name="email" value="">
+                    <input class="form-control checkMe" type="text" name="email" value="">
                   </div>
                 </div><hr>
                 <!-- phone_number -->
@@ -111,7 +111,7 @@
                     <label for="usr">Phone Number:</label>
                   </div>
                   <div class="col-md-4">
-                    <input class="form-control" type="text" name="phone_number" value="">
+                    <input class="form-control checkMe" type="text" name="phone_number" value="">
                   </div>
                 </div><hr>
                 <!-- address -->
@@ -120,13 +120,13 @@
                     <label for="usr">Address:</label>
                   </div>
                   <div class="col-md-4">
-                    <input class="form-control" type="text" name="address" value="">
+                    <input class="form-control checkMe" type="text" name="address" value="">
                   </div>
                 </div><hr>
                 <!-- submit -->
                 <div class="row">
                   <div class="col-md-*">
-                    <input type="submit" name="submit" onclick="return form_submission()" class="btn btn-success btn-block">
+                    <input type="submit" name="submit" onclick="return form_submissionCreateCustomer()" class="btn btn-success btn-block">
                   </div>
                 </div>
               </form>
@@ -180,7 +180,7 @@
                         <label for="usr">Email:</label>
                       </div>
                       <div class="col-md-4">
-                        <input class="form-control" type="text" name="email" value="" readonly>
+                        <input id="email" class="form-control" type="text" name="email" value="" readonly>
                       </div>
                     </div><hr>
                     <!-- phone_number -->
@@ -189,7 +189,7 @@
                         <label for="usr">Phone Number:</label>
                       </div>
                       <div class="col-md-4">
-                        <input class="form-control" type="text" name="phone_number" value="" readonly>
+                        <input id="phone_number" class="form-control" type="text" name="phone_number" value="" readonly>
                       </div>
                     </div><hr>
                     <!-- address -->
@@ -198,7 +198,7 @@
                         <label for="usr">Address:</label>
                       </div>
                       <div class="col-md-4">
-                        <input class="form-control" type="text" name="address" value="" readonly>
+                        <input id="address" class="form-control" type="text" name="address" value="" readonly>
                       </div>
                     </div>
 

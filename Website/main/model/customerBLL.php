@@ -1,10 +1,10 @@
 <?php
-  include("customerDAL.php");
+  // include("customerDAL.php");
 
-  function getCustomers($conn){
-    $listOfCustomers[] = q_getAllCustomers($conn);
-
-    $conn->close();
-    return $listOfCustomers;
-  }
+  // function getCustomers($conn){
+  //   $listOfCustomers[] = q_getAllCustomers($conn);
+  //
+  //   $conn->close();
+  //   return $listOfCustomers;
+  // }
  ?>

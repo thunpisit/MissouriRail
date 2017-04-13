@@ -2,6 +2,8 @@
 # This is the Business Logic Layer to handle everything between the front end
 # and the database connectivity in the model
 include("model/userDAL.php");
+include("model/customerDAL.php");
+
   function topStart(){
     ob_start();
     session_start();
@@ -153,31 +155,38 @@ include("model/userDAL.php");
   }
 
   function printCustomers(){
-    include("model/customerBLL.php");
     $conn = connectDB();
     echo "<div class='row'>
             <div class='panel panel-info'>
               <div class='panel-body'>
 
               ";
-    $result = q_customerNames($conn);
+    $result = q_getCustomers($conn);
     if($result->num_rows > 0){
       // output data of each row
       echo "<label>Total Customers:</label> $result->num_rows";
       echo "<table class='table table-responsive table-hover table-bordered'><thead><tr>";
+      $x = 0;
       while($fieldName = mysqli_fetch_field($result)) {
+        if($x == 1 || $x == 2){
           echo "<th>" . $fieldName->name . "</th>";
+        }
+        $x++;
       }
       echo "<th>Customer Information</th>";
       echo "</tr></thead><tbody>";
       while($row = $result->fetch_array(MYSQLI_NUM)) {
         echo "<tr>";
-        echo "<td>" . $row[0] . "</td>";
         echo "<td>" . $row[1] . "</td>";
-        $first_name = "'" . $row[0] . "'";
-        $last_name = "'" . $row[1] . "'";
+        echo "<td>" . $row[2] . "</td>";
+        $user_id = "'" . $row[0] . "'";
+        $first_name = "'" . $row[1] . "'";
+        $last_name = "'" . $row[2] . "'";
+        $email = "'" . $row[3] . "'";
+        $phone_number = "'" . $row[4] . "'";
+        $address = "'" . $row[5] . "'";
         echo '<td>
-                <button type="button" onclick="modalFill('.$first_name.','.$last_name.')" class="btn btn-info btn-block" data-toggle="modal" data-target="#myModal">Customer Information</button>
+                <button type="button" onclick="modalFill('.$user_id.','.$first_name.','.$last_name.','.$email.','.$phone_number.','.$address.')" class="btn btn-info btn-block" data-toggle="modal" data-target="#myModal">Customer Information</button>
               </td>';
         }
         echo "</tr>";
@@ -190,7 +199,6 @@ include("model/userDAL.php");
 
 
   function createCustomer(){
-    include("model/customerBLL.php");
     $conn = connectDB();
     $id = $_POST['user_id'];
     $first_name = $_POST['first_name'];
