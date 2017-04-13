@@ -31,35 +31,31 @@
         $("#createCustomerBtn").click(function(){
           $("#createCustomer").toggle(); });
 
-          $("#submitCreate").click(function(){
-            user_id = $("#user_id").val();
-            var first_name = $("#first_name").val();
-            var last_name = $("#last_name").val();
-            var email = $("#email").val();
-            var phone_number = $("#phone_number").val();
-            var address = $("#address").val();
-            // alert(user_id);
-            // console.log(first_name);
-            // console.log(last_name);
-            // console.log(email);
-            // console.log(phone_number);
-            // console.log(address);
+        $("#submitCreate").click(function(){
+          // alert("click");
+          user_id = $("#user_idCreate").val();
+          first_name = $("#first_nameCreate").val();
+          last_name = $("#last_nameCreate").val();
+          email = $("#emailCreate").val();
+          phone_number = $("#phone_numberCreate").val();
+          address = $("#addressCreate").val();
 
-            $.ajax({
-               url: '../controller.php',
-               data: {action: 'createCustomer',
-                      user_id: user_id,
-                      first_name: first_name,
-                      last_name: last_name,
-                      email: email,
-                      phone_number: phone_number,
-                      address: address},
-               type: 'post',
-               success: function(output) {
-                            $("#createCustomer").hide();
-                        }
-            });
-          });
+          $.ajax({
+             url: '../controller.php',
+             data: {action: 'createCustomer',
+                    user_id: user_id,
+                    first_name: first_name,
+                    last_name: last_name,
+                    email: email,
+                    phone_number: phone_number,
+                    address: address},
+             type: 'post',
+             success: function(output) {
+                          $("#createCustomer").hide();
+                          console.log(output);
+                      }
+                  });
+        });
 
         });
 
@@ -112,15 +108,15 @@
                 <div class="panel-body">
 
 
-              <form class="form-horizontal" >
-                <input type="hidden" name="formType" value="createCustomer">
+              <!-- <form class="form-horizontal" >
+                <input type="hidden" name="formType" value="createCustomer"> -->
                 <!-- user_id -->
                 <div class="row">
                   <div class="col-md-offset-2 col-md-3">
                     <label for="usr">User:</label>
                   </div>
                   <div class="col-md-4">
-                    <input id="user_id" class="form-control checkMe" type="text" name="user_id" value="">
+                    <input id="user_idCreate" class="form-control checkMe" type="text" name="user_id" value="">
                   </div>
                 </div><hr>
                 <!-- first_name -->
@@ -129,7 +125,7 @@
                     <label for="usr">First Name:</label>
                   </div>
                   <div class="col-md-4">
-                    <input id="first_name" class="form-control checkMe" type="text" name="first_name" value="">
+                    <input id="first_nameCreate" class="form-control checkMe" type="text" name="first_name" value="">
                   </div>
                 </div><hr>
                 <!-- last_name -->
@@ -138,7 +134,7 @@
                     <label for="usr">Last Name:</label>
                   </div>
                   <div class="col-md-4">
-                    <input id="last_name" class="form-control checkMe" type="text" name="last_name" value="">
+                    <input id="last_nameCreate" class="form-control checkMe" type="text" name="last_name" value="">
                   </div>
                 </div><hr>
                 <!-- email -->
@@ -147,7 +143,7 @@
                     <label for="usr">Email:</label>
                   </div>
                   <div class="col-md-4">
-                    <input id="email" class="form-control checkMe" type="text" name="email" value="">
+                    <input id="emailCreate" class="form-control checkMe" type="text" name="email" value="">
                   </div>
                 </div><hr>
                 <!-- phone_number -->
@@ -156,7 +152,7 @@
                     <label for="usr">Phone Number:</label>
                   </div>
                   <div class="col-md-4">
-                    <input id="phone_number" class="form-control checkMe" type="text" name="phone_number" value="">
+                    <input id="phone_numberCreate" class="form-control checkMe" type="text" name="phone_number" value="">
                   </div>
                 </div><hr>
                 <!-- address -->
@@ -165,16 +161,16 @@
                     <label for="usr">Address:</label>
                   </div>
                   <div class="col-md-4">
-                    <input id="address" class="form-control checkMe" type="text" name="address" value="">
+                    <input id="addressCreate" class="form-control checkMe" type="text" name="address" value="">
                   </div>
                 </div><hr>
                 <!-- submit -->
                 <div class="row">
                   <div class="col-md-*">
-                    <button id="#submitCreate" class="btn btn-success btn-block">Add Customer</button>
+                    <button id="submitCreate" class="btn btn-success btn-block">Add Customer</button>
                   </div>
                 </div>
-              </form>
+              <!-- </form> -->
             </div>
           </div>
             </div>
