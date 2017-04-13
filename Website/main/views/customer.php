@@ -13,57 +13,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="../assets/javascript/scripts.js" charset="utf-8"></script>
     <title>Customer</title>
-    <script>
-      $(function(){
-        $("#createCustomer").hide();
-        $("#printCustomers").click(function(){
-          $.ajax({
-             url: '../controller.php',
-             data: {action: 'printCustomers'},
-             type: 'post',
-             success: function(output) {
-                          $("#customerTable").html(output);
-                      }
-          });
-          $("#customerTable").toggle();
-        });
-
-        $("#createCustomerBtn").click(function(){
-          $("#createCustomer").toggle(); });
-
-        $("#submitCreate").click(function(){
-          // alert("click");
-          user_id = $("#user_idCreate").val();
-          first_name = $("#first_nameCreate").val();
-          last_name = $("#last_nameCreate").val();
-          email = $("#emailCreate").val();
-          phone_number = $("#phone_numberCreate").val();
-          address = $("#addressCreate").val();
-
-          $.ajax({
-             url: '../controller.php',
-             data: {action: 'createCustomer',
-                    user_id: user_id,
-                    first_name: first_name,
-                    last_name: last_name,
-                    email: email,
-                    phone_number: phone_number,
-                    address: address},
-             type: 'post',
-             success: function(output) {
-                          $("#createCustomer").hide();
-                          console.log(output);
-                      }
-                  });
-        });
-
-        });
-
-      function formToggle(id){
-        console.log(id);
-        $("#createCustomer").slideToggle("slow");
-      }
-    </script>
+    <script src="../assets/javascript/customerScripts.js"></script>
   </head>
   <body>
     <div class="container">
@@ -102,15 +52,11 @@
         <div class="row center">
           <!-- create customer -->
           <div class="col-md-*">
-            <button id="createCustomerBtn" type="button" class="btn btn-warning">Create Customer</button>
-            <div id="createCustomer">
-              <div class="panel panel-success">
+            <button id="createCustomerBtn" type="button" class="btn btn-warning" data-toggle="collapse" data-target="#collapseMe1">Create Customer</button>
+            <div id="collapseMe1" class="collapse">
+              <div id="createCustomer" class="panel panel-success">
+                <div class="panel-heading">Create Customer Form</div>
                 <div class="panel-body">
-
-
-              <!-- <form class="form-horizontal" >
-                <input type="hidden" name="formType" value="createCustomer"> -->
-                <!-- user_id -->
                 <div class="row">
                   <div class="col-md-offset-2 col-md-3">
                     <label for="usr">User:</label>
@@ -173,7 +119,6 @@
               <!-- </form> -->
             </div>
           </div>
-            </div>
           </div>
 
           <!-- edit customer -->
@@ -261,21 +206,14 @@
         <!-- print all customers -->
         <div class="row">
           <div class="col-md-12">
-            <button id="printCustomers" type="button" class="btn btn-primary" name="button">Print Customers</button>
-            <div id="customerTable">
+            <button id="printCustomers" type="button" class="btn btn-primary" data-toggle="collapse" data-target="#collapseMe" name="button">Print Customers</button>
+            <div id="collapseMe" class="collapse">
+              <div id="customerTable">
 
+              </div>
             </div>
           </div>
         </div>
-
-        <?php
-          // replaced with ajax call
-          // if(isset($_POST['submit'])){
-          //   if($_POST['formType'] == 'createCustomer'){
-          //     createCustomer();
-          //   }
-          // }
-         ?>
 
       </div>
     </div>
