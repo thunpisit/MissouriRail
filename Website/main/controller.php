@@ -3,6 +3,13 @@
 # and the database connectivity in the model
 include("model/userDAL.php");
 include("model/customerDAL.php");
+if(isset($_POST['action']) && !empty($_POST['action'])) {
+  $action = $_POST['action'];
+  switch($action) {
+      case 'printCustomers' : printCustomers(); break;
+      case 'createCustomer' : createCustomer(); break;
+  }
+}
 
   function topStart(){
     ob_start();
@@ -155,6 +162,7 @@ include("model/customerDAL.php");
   }
 
   function printCustomers(){
+
     $conn = connectDB();
     echo "<div class='row'>
             <div class='panel panel-info'>
@@ -200,6 +208,7 @@ include("model/customerDAL.php");
 
   function createCustomer(){
     $conn = connectDB();
+    echo "got to createCustomer php";
     $id = $_POST['user_id'];
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
