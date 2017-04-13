@@ -52,8 +52,7 @@
         <div class="row center">
           <!-- create customer -->
           <div class="col-md-*">
-            <button id="createCustomerBtn" type="button" class="btn btn-warning" data-toggle="collapse" data-target="#collapseMe1">Create Customer</button>
-            <div id="collapseMe1" class="collapse">
+            <button id="createCustomerBtn" type="button" class="btn btn-warning">Create Customer</button>
               <div id="createCustomer" class="panel panel-success">
                 <div class="panel-heading">Create Customer Form</div>
                 <div class="panel-body">
@@ -118,7 +117,6 @@
                 </div>
               <!-- </form> -->
             </div>
-          </div>
           </div>
 
           <!-- edit customer -->
