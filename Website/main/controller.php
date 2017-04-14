@@ -49,7 +49,11 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         $action = $_SESSION['action'];
 
         getLog($conn, $user, $action);
-        header("Location: dashboard.php");
+        if($_SESSION['reset_pass'] == 1){
+          header("Location: adminlog.php");
+        } else{
+          header("Location: dashboard.php");
+        }
       } else {
         echo "password incorrect";
       }

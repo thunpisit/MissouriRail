@@ -45,10 +45,10 @@
 
         <div class="row">
           <div class="col-md-12">
-            <h2 class="text-center">Welcome back <?= $_SESSION['user_id'] ?></h2>
+            <h2 class="text-center"><?= $_SESSION['user_id'] ?>'s dashbaord</h2>
           </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-md-offset-2 col-md-8">
             <nav class="navbar navbar-inverse">
               <div class="container-fluid">
@@ -57,12 +57,12 @@
                 </div>
                 <ul class="nav navbar-nav">
                   <li class="active"><a href="#">Dashboard</a></li>
-                  <li><?php secondaryMenuBar();?></li>
+                  <li><?php #secondaryMenuBar();?></li>
                 </ul>
               </div>
             </nav>
           </div>
-        </div>
+        </div> -->
 
 
       </div>

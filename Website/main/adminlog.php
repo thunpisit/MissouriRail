@@ -49,10 +49,10 @@
 
         <div class="row">
           <div class="col-md-12">
-            <h2 class="text-center">Admin Portal</h2>
+            <h2 class="text-center"><?= $_SESSION['user_id'] ?>'s admin portal</h2>
           </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-md-offset-2 col-md-8">
             <nav class="navbar navbar-inverse">
               <div class="container-fluid">
@@ -66,12 +66,12 @@
               </div>
             </nav>
           </div>
-        </div>
+        </div> -->
 
         <?php
-            $conn = connectDB();
-            printTable($conn, "log");
-            $conn->close();
+            // $conn = connectDB();
+            // printTable($conn, "log");
+            // $conn->close();
           ?>
 
       </div>
