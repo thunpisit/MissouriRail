@@ -10,6 +10,11 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
       case 'createCustomer' : createCustomer(); break;
       case 'editCustomer' : editCustomer(); break;
       case 'deleteCustomer': deleteCustomer(); break;
+      case 'printLog':
+        $conn = connectDB();
+        printTable($conn, 'log');
+      break;
+
   }
 }
 
@@ -119,8 +124,8 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
     $result = q_printTable($conn, $table);
     if($result->num_rows > 0){
       // output data of each row
-      echo "<label>Number of rows in result:</label> $result->num_rows";
-      echo "<table class='table table-striped table-bordered'><thead><tr>";
+      echo "<div class='row'><label>Number of rows in result:</label> $result->num_rows";
+      echo "<table class='table table-responsive table-hover table-bordered'><thead><tr>";
       while($fieldName = mysqli_fetch_field($result)) {
           echo "<th>" . $fieldName->name . "</th>";
       }
@@ -132,7 +137,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         }
         echo "</tr>";
       }
-      echo "</tbody></table>";
+      echo "</tbody></table></div>";
     }
   }
 
@@ -170,11 +175,6 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
   function printCustomers(){
 
     $conn = connectDB();
-    echo "<div class='row'>
-            <div class='panel panel-info'>
-              <div class='panel-body'>
-
-              ";
     $result = q_getCustomers($conn);
     if($result->num_rows > 0){
       // output data of each row
@@ -206,9 +206,6 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         echo "</tr>";
       }
       echo "</tbody></table>";
-    echo "</div>
-          </div>
-        </div>";
     }
 
 

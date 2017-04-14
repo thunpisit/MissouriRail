@@ -2,7 +2,7 @@
   include 'controller.php';
 
   function printAllCustomersHTML(){
-    echo '<button id="printCustomers" type="button" class="btn btn-primary" data-toggle="collapse" data-target="#collapseMe" name="button">Print Customers</button>
+    echo '<button id="printCustomers" type="button" class="btn btn-primary btn-block" data-toggle="collapse" data-target="#collapseMe" name="button">Show Customers</button>
           <div id="collapseMe" class="collapse">
             <div id="customerTable">
 

@@ -14,6 +14,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="assets/javascript/customerScripts.js"></script>
+    <script src="assets/javascript/logScripts.js"></script>
+    <style>
+      .modal-body {
+        position: relative;
+        overflow-y: auto;
+        max-height: 400px;
+        padding: 15px;
+      }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-default">
@@ -58,15 +67,24 @@
         <div class="row">
 
           <!-- quadrant 2 -->
-          <div class="col-md-6">
-
-            <button id="createCustomerBtn" type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal">Create Customer</button>
-                                            <!-- onclick="modalFill('', '', '', '', '', '')" -->
-            <?php printAllCustomersHTML();?><!-- button also located here -->
+          <div class="col-md-offset-1 col-md-5 well">
+            <div class="row">
+              <h3>Customer Management</h3>
+            </div>
+            <div class="row">
+              <button id="createCustomerBtn" type="button" class="btn btn-warning btn-block" data-toggle="modal" data-target="#myModal">Create Customer</button>
+            </div>
+            <div class="row">
+              <?php printAllCustomersHTML();?><!-- button also located here -->
+            </div>
           </div>
 
           <!-- quadrant 1 -->
-          <div class="col-md-6">
+          <div class="col-md-5 well">
+            <div class="row">
+              <h3>Manage Equipment</h3>
+            </div>
+
 
           </div>
 
@@ -74,12 +92,24 @@
         <div class="row">
 
           <!-- quadrant 3 -->
-          <div class="col-md-6">
+          <div class="col-md-offset-1 col-md-5 well">
+            <div class="row">
+              <h3>Employee Management</h3>
+            </div>
+            <div class="row">
+              <button id="logBtn" type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#myModal">View User Logs</button>
+            </div>
+            <!-- <div id="logTable" class="row">
+
+            </div> -->
 
           </div>
 
           <!-- quadrant 4 -->
-          <div class="col-md-6">
+          <div class="col-md-5 well">
+            <div class="row">
+              <h3>Schedule Managment</h3>
+            </div>
 
           </div>
         </div>
