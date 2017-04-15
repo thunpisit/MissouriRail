@@ -2,13 +2,29 @@
 # This is the Business Logic Layer to handle everything between the front end
 # and the database connectivity in the model
 include("model/userDAL.php");
+include("model/customerDAL.php");
+if(isset($_POST['action']) && !empty($_POST['action'])) {
+  $action = $_POST['action'];
+  switch($action) {
+      case 'printCustomers' : printCustomers(); break;
+      case 'createCustomer' : createCustomer(); break;
+      case 'editCustomer' : editCustomer(); break;
+      case 'deleteCustomer': deleteCustomer(); break;
+      case 'printLog':
+        $conn = connectDB();
+        printTable($conn, 'log');
+      break;
+
+  }
+}
+
   function topStart(){
     ob_start();
     session_start();
   }
 
   function connectDB(){
-    include("secure/database.php");
+    require_once("secure/database.php");
     $conn = new mysqli(HOST, USERNAME, PASSWORD, DBNAME);
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
@@ -38,7 +54,11 @@ include("model/userDAL.php");
         $action = $_SESSION['action'];
 
         getLog($conn, $user, $action);
-        header("Location: dashboard.php");
+        if($_SESSION['reset_pass'] == 1){
+          header("Location: dashboard-admin.php");
+        } else{
+          header("Location: dashboard.php");
+        }
       } else {
         echo "password incorrect";
       }
@@ -104,8 +124,8 @@ include("model/userDAL.php");
     $result = q_printTable($conn, $table);
     if($result->num_rows > 0){
       // output data of each row
-      echo "<label>Number of rows in result:</label> $result->num_rows";
-      echo "<table class='table table-striped table-bordered'><thead><tr>";
+      echo "<div class='row'><label>Number of rows in result:</label> $result->num_rows";
+      echo "<table class='table table-responsive table-hover table-bordered'><thead><tr>";
       while($fieldName = mysqli_fetch_field($result)) {
           echo "<th>" . $fieldName->name . "</th>";
       }
@@ -117,7 +137,7 @@ include("model/userDAL.php");
         }
         echo "</tr>";
       }
-      echo "</tbody></table>";
+      echo "</tbody></table></div>";
     }
   }
 
@@ -150,4 +170,75 @@ include("model/userDAL.php");
   function getDateTime(){
     $date = time();
     return $date;
+  }
+
+  function printCustomers(){
+
+    $conn = connectDB();
+    $result = q_getCustomers($conn);
+    if($result->num_rows > 0){
+      // output data of each row
+      echo "<label>Total Customers:</label> $result->num_rows";
+      echo "<table class='table table-responsive table-hover table-bordered'><thead><tr>";
+      $x = 0;
+      while($fieldName = mysqli_fetch_field($result)) {
+        if($x == 1 || $x == 2){
+          echo "<th>" . $fieldName->name . "</th>";
+        }
+        $x++;
+      }
+      echo "<th>Customer Information</th>";
+      echo "</tr></thead><tbody>";
+      while($row = $result->fetch_array(MYSQLI_NUM)) {
+        echo "<tr>";
+        echo "<td>" . $row[1] . "</td>";
+        echo "<td>" . $row[2] . "</td>";
+        $user_id = "'" . $row[0] . "'";
+        $first_name = "'" . $row[1] . "'";
+        $last_name = "'" . $row[2] . "'";
+        $email = "'" . $row[3] . "'";
+        $phone_number = "'" . $row[4] . "'";
+        $address = "'" . $row[5] . "'";
+        echo '<td>
+                <button type="button" onclick="modalFill('.$user_id.','.$first_name.','.$last_name.','.$email.','.$phone_number.','.$address.')" class="btn btn-info btn-block" data-toggle="modal" data-target="#myModal">Customer Information</button>
+              </td>';
+        }
+        echo "</tr>";
+      }
+      echo "</tbody></table>";
+    }
+
+
+  function createCustomer(){
+    $conn = connectDB();
+    echo "customer created";
+    $id = $_POST['user_id'];
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
+    $email = $_POST['email'];
+    $phone_number = $_POST['phone_number'];
+    $address = $_POST['address'];
+
+    q_createCustomer($conn, $id, $first_name, $last_name, $email, $phone_number, $address);
+  }
+
+  function editCustomer(){
+    $conn = connectDB();
+    echo "customer editted";
+    $id = $_POST['user_id'];
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
+    $email = $_POST['email'];
+    $phone_number = $_POST['phone_number'];
+    $address = $_POST['address'];
+    q_editCustomer($conn, $id, $first_name, $last_name, $email, $phone_number, $address);
+    $conn->close();
+  }
+
+  function deleteCustomer(){
+    $conn = connectDB();
+    echo "customer editted";
+    $id = $_POST['user_id'];
+    q_deleteCustomer($conn, $id);
+    $conn->close();
   }?>
