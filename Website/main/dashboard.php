@@ -52,10 +52,11 @@
 
         <div class="container">
             <div class="alert alert-info text-center" role="alert">
-                <a href="#" class="alert-link">Hello!, Customer: <?= $_SESSION['user_id'] ?></a>
+                <a href="#" class="alert-link">Hello!, Customer: <?= $_SESSION['user_id'] ?></a><br><br><button id="logBtn" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Edit my profile</button>
             </div>
         </div>  
       
+<!--
         <div class="row">
           <div class="col-md-offset-2 col-md-8">
             <nav class="navbar navbar-inverse">
@@ -70,6 +71,36 @@
               </div>
             </nav>
           </div>
+        </div>
+-->
+      <div class="container">
+             <div class="col-md-4">
+                <div class="panel panel-default text-center">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">My Reservation</h2>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <button id="logBtn" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Make new reservation</button><br><br>
+                            <button id="logBtn" type="button" class="btn btn-warning btn-md" data-toggle="modal" data-target="#myModal">Show all my reservations</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          <div class="col-md-4">
+                <div class="panel panel-default text-center">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">Reservation Tools</h2>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <button id="logBtn" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Search Trains</button><br><br>
+                            <button id="logBtn" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Search Schedules</button><br><br>
+                            <button id="logBtn" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Search Destinations</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
 
