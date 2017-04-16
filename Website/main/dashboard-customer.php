@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <?php
-  include 'controller.php';
+  include ("controller.php");
   topStart();
-  if(!isset($_SESSION['user_id'])){
-    header("Location: login.php");
-  }
  ?>
 <html>
   <head>
@@ -12,14 +9,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="../assets/css/stylesheet.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/stylesheet.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="assets/javascript/customerScripts.js"></script>
-    <script src="assets/javascript/logScripts.js"></script>
+    <script src="assets/javascript/portalScripts.js"></script>
+    <style>
+      .modal-dialog{
+        position: relative;
+        display: table;
+        overflow-y: auto;
+        overflow-x: auto;
+        width: auto;
+        min-width: 600px;
+      }
+
+      .modal-body {
+        position: relative;
+        overflow-y: auto;
+        max-height: 400px;
+        padding: 15px;
+        width:100%;
+      }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-default">
@@ -52,57 +63,60 @@
 
         <div class="container">
             <div class="alert alert-info text-center" role="alert">
-                <a href="#" class="alert-link">Hello!, Customer: <?= $_SESSION['user_id'] ?></a><br><br><button id="logBtn" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Edit my profile</button>
+                <a href="#" class="alert-link">Hello!, Customer: <?= $_SESSION['user_id'] ?></a>
             </div>
         </div>
-        <h1>OLD DASHBOARD</h1>
-
-<!--
-        <div class="row">
-          <div class="col-md-offset-2 col-md-8">
-            <nav class="navbar navbar-inverse">
-              <div class="container-fluid">
-                <div class="navbar-header">
-                  <a class="navbar-brand" href="#">Dashboard Menu</a>
+        <?php printModalEmployeeHTML();?>
+        <div class="container">
+            <div class="col-md-4">
+                <div class="panel panel-default text-center">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">Your Info</h2>
+                    </div>
+                    <div class="panel-body">
+                        <div id="information" class="row">
+                            <!-- <button id="createCustomerBtn" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">View Basic Information</button> -->
+                        </div><br>
+                    </div>
                 </div>
-                <ul class="nav navbar-nav">
-                  <li class="active"><a href="#">Dashboard</a></li>
-                  <li><?php secondaryMenuBar();?></li>
-                </ul>
-              </div>
-            </nav>
-          </div>
-        </div>
--->
-      <!-- <div class="container">
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default text-center">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">Your Reservation</h2>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <button id="logBtn" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">View Current Reservation</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
              <div class="col-md-4">
                 <div class="panel panel-default text-center">
                     <div class="panel-heading">
-                        <h2 class="panel-title">My Reservation</h2>
+                        <h2 class="panel-title">New Reservation</h2>
                     </div>
                     <div class="panel-body">
                         <div class="row">
-                            <button id="logBtn" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Make new reservation</button><br><br>
-                            <button id="logBtn" type="button" class="btn btn-warning btn-md" data-toggle="modal" data-target="#myModal">Show all my reservations</button>
+                            <button id="newReserveBtn" type="button" class="btn btn-primary btn-md">Make New Reservation</button><br><br>
+
+                            <div id="companyForm">
+                              <form>
+                                <div class="form-group">
+                                  <label for="companyID">Company ID:</label>
+                                  <input id="company_id" type="text" name="company_id" value="">
+                                  <button id="submitCompanyID" type="button" class="btn btn-success btn-block" name="button" data-toggle="modal" data-target="#myModal">Search For Cars</button>
+                                </div>
+                              </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-          <div class="col-md-4">
-                <div class="panel panel-default text-center">
-                    <div class="panel-heading">
-                        <h2 class="panel-title">Reservation Tools</h2>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
-                            <button id="logBtn" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Search Trains</button><br><br>
-                            <button id="logBtn" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Search Schedules</button><br><br>
-                            <button id="logBtn" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Search Destinations</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
+        </div>
+
+
 
 
       </div>

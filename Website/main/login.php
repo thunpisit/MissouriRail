@@ -15,10 +15,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
 <!--
-     Latest compiled and minified JavaScript 
+     Latest compiled and minified JavaScript
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 -->
-      
+
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
       <script src="assets/javascript/scripts.js"></script>
 
@@ -53,12 +53,12 @@
                   </ul>
                   <form class="navbar-form navbar-right">
                     <a class="btn btn-default btn-md" href="login.php" role="button">Login</a>
-                    <a class="btn btn-primary btn-md" href="signup.php" role="button">Signup</a>
+                    <a class="btn btn-primary btn-md" href="signup2.php" role="button">Signup</a>
                   </form>
                 </div><!-- /.navbar-collapse -->
 <!--              </div> /.container-fluid -->
           </nav>
-          
+
         <div class="container">
             <div class="jumbotron">
                 <h2 class="text-center">Login</h2><br>
@@ -75,14 +75,15 @@
                     <div class="text-center">
                         <input class="btn btn-primary btn-md" type="submit" value="Login" name="submit" role="button" onclick="return form_submission()">
                     </div>
-                    
+
                 </form>
                 <?php
                   if(isset($_POST['submit'])){
                     $conn = connectDB();
                     // for getLog action in controller
-                    $_SESSION['action'] = 'login on ';
-                    login($conn, htmlspecialchars($_POST['email']), htmlspecialchars($_POST['password']));
+                    $email=htmlspecialchars($_POST['email']);
+                    $password= htmlspecialchars($_POST['password']);
+                    loginUser($conn,$email,$password);
                     $conn->close();
                   }
                  ?>

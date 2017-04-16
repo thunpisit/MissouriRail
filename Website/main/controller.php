@@ -3,6 +3,7 @@
 # and the database connectivity in the model
 include("model/userDAL.php");
 include("model/customerDAL.php");
+include("portalController.php");
 if(isset($_POST['action']) && !empty($_POST['action'])) {
   $action = $_POST['action'];
   switch($action) {
@@ -10,11 +11,39 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
       case 'createCustomer' : createCustomer(); break;
       case 'editCustomer' : editCustomer(); break;
       case 'deleteCustomer': deleteCustomer(); break;
+      case 'getCars':
+        $conn = connectDB();
+        $company_id = $_POST['company_id'];
+        $location = $_POST['location'];
+        printCarsTable($conn, $company_id, $location);
+        break;
+
+      case 'updateInfo':
+        session_start();
+        $user = $_SESSION['user_id'];
+        echo "user = " . $user;
+        $first_name = $_POST['first_name'];
+        $last_name = $_POST['last_name'];
+        $status = $_POST['status'];
+        $rank = $_POST['rank'];
+        updateEmployeeInfo($user, $first_name, $last_name, $status, $rank);
+        break;
+
       case 'printLog':
         $conn = connectDB();
         printTable($conn, 'log');
       break;
 
+      case 'getInfo' :
+      session_start();
+      $user = $_SESSION['user_id'];
+      getEmployeeInfo($user);
+
+      break;
+
+      default:
+        echo "action post set and messed up your function call";
+      break;
   }
 }
 
@@ -32,32 +61,34 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
     return $conn;
   }
 
-  function login($conn, $user, $pass){
+  function loginUser($conn, $user, $pass){
     if(q_checkUser($conn ,$user) > 0){
       if(q_loginUser($conn, $user, $pass) == 1){
-        $add_equipmentArray = q_addEquipment($conn, $user);
-        $add_conductorArray = q_addConductor($conn, $user);
-        $monitor_trainArray = q_monitorTrain($conn, $user);
-        $add_trainArray = q_addTrain($conn, $user);
-        $add_engineerArray = q_addEnginner($conn, $user);
-        $reset_passArray = q_resetPass($conn, $user);
-        $edit_userArray = q_editUser($conn, $user);
-
+        if(q_checkEngineer($conn, $user) == 1){
+          $_SESSION['engineer'] = 1;
+        } else {
+          $_SESSION['engineer'] = NULL;
+        }
+        if(q_checkCustomer($conn, $user) == 1){
+          $_SESSION['customer'] = 1;
+        } else {
+          $_SESSION['customer'] = NULL;
+        }
+        $permissions = q_getPermissions($conn, $user);
+        $permissionsArray = $permissions->fetch_array();
+        $counter = 0;
+        while($fieldName = mysqli_fetch_field($permissions)) {
+            $_SESSION[$fieldName->name] = $permissionsArray[$counter];
+            $counter++;
+        }
         $_SESSION['user_id'] = $user;
-        $_SESSION['reset_pass'] = $reset_passArray[0];
-        $_SESSION['add_equipment'] = $add_equipmentArray[0];
-        $_SESSION['add_conductor'] = $add_conductorArray[0];
-        $_SESSION['monitor_train'] = $monitor_trainArray[0];
-        $_SESSION['add_train'] = $add_trainArray[0];
-        $_SESSION['add_engineer'] = $add_engineerArray[0];
-        $_SESSION['edit_user'] = $edit_userArray[0];
-        $action = $_SESSION['action'];
-
-        getLog($conn, $user, $action);
+        getLog($conn, $user, 'login on ');
         if($_SESSION['reset_pass'] == 1){
-          header("Location: adminlog.php");
-        } else{
-          header("Location: dashboard.php");
+          header("Location: dashboard-admin.php");
+        } else if($_SESSION['monitor_train'] == 1){
+          header("Location: dashboard-employee.php");
+        } else {
+          header("Location: dashboard-customer.php");
         }
       } else {
         echo "password incorrect";
@@ -68,19 +99,17 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
   }
 
   // signs user up then returns 1 on success and 0 on fail
-  function signUp($conn, $user){
-    // include("model/userDAL.php");
+  function signUp($conn, $user, $pass, $add_equipment,
+  $add_conductor, $monitor_train, $add_train, $add_engineer,
+  $reset_pass, $edit_user, $ssn){
     if(q_checkUser($conn, $user) < 1){
-      q_signUp($conn, $user, htmlspecialchars($_POST['pwd']), htmlspecialchars($_POST['add_equipment']),
-      htmlspecialchars($_POST['add_conductor']), htmlspecialchars($_POST['monitor_train']),
-      htmlspecialchars($_POST['add_train']), htmlspecialchars($_POST['add_engineer']),
-      htmlspecialchars($_POST['reset_pass']), htmlspecialchars($_POST['edit_user']),
-      htmlspecialchars($_POST['ssn']));
+      q_signUp($conn, $user, $pass, $add_equipment,
+      $add_conductor, $monitor_train, $add_train, $add_engineer,
+      $reset_pass, $edit_user, $ssn);
 
       $user = $_SESSION['signup_user'];
       $action = 'signup by user on ';
       getLog($conn, $user, $action);
-      header("Location: login.php");
     } else {
       return 0;
     }
@@ -196,11 +225,10 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         $user_id = "'" . $row[0] . "'";
         $first_name = "'" . $row[1] . "'";
         $last_name = "'" . $row[2] . "'";
-        $email = "'" . $row[3] . "'";
-        $phone_number = "'" . $row[4] . "'";
-        $address = "'" . $row[5] . "'";
+        $phone_number = "'" . $row[3] . "'";
+        $address = "'" . $row[4] . "'";
         echo '<td>
-                <button type="button" onclick="modalFill('.$user_id.','.$first_name.','.$last_name.','.$email.','.$phone_number.','.$address.')" class="btn btn-info btn-block" data-toggle="modal" data-target="#myModal">Customer Information</button>
+                <button type="button" onclick="modalFill('.$user_id.','.$first_name.','.$last_name.','.$phone_number.','.$address.')" class="btn btn-info btn-block" data-toggle="modal" data-target="#myModal">Customer Information</button>
               </td>';
         }
         echo "</tr>";
@@ -212,33 +240,31 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
   function createCustomer(){
     $conn = connectDB();
     echo "customer created";
-    $id = $_POST['user_id'];
+    $id = $_POST['email'];
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
-    $email = $_POST['email'];
     $phone_number = $_POST['phone_number'];
     $address = $_POST['address'];
 
-    q_createCustomer($conn, $id, $first_name, $last_name, $email, $phone_number, $address);
+    q_createCustomer($conn, $id, $first_name, $last_name, $phone_number, $address);
   }
 
   function editCustomer(){
     $conn = connectDB();
     echo "customer editted";
-    $id = $_POST['user_id'];
+    $id = $_POST['email'];
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
-    $email = $_POST['email'];
     $phone_number = $_POST['phone_number'];
     $address = $_POST['address'];
-    q_editCustomer($conn, $id, $first_name, $last_name, $email, $phone_number, $address);
+    q_editCustomer($conn, $id, $first_name, $last_name, $phone_number, $address);
     $conn->close();
   }
 
   function deleteCustomer(){
     $conn = connectDB();
     echo "customer editted";
-    $id = $_POST['user_id'];
+    $id = $_POST['email'];
     q_deleteCustomer($conn, $id);
     $conn->close();
   }?>

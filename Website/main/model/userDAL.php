@@ -46,93 +46,30 @@
     }
   }
 
-  function q_resetPass($conn, $user){
-    $query = "SELECT reset_pass FROM authentication WHERE user_id=?";
+  function q_getPermissions($conn, $user){
+    $query = "SELECT add_equipment, add_conductor, monitor_train, add_train, add_engineer, reset_pass, edit_user
+    FROM authentication WHERE user_id = ?";
     $stmt = $conn->stmt_init();
     if(!mysqli_stmt_prepare($stmt, $query)) {
         printf("Error: %s.\n", $stmt->error);
     } else {
-      mysqli_stmt_bind_param($stmt, "s", $user);
-      $stmt->execute();
-      $result = $stmt->get_result();
-      return $result->fetch_array();
-    }
-  }
-  function q_addEquipment($conn, $user){
-    $query = "SELECT add_equipment FROM authentication WHERE user_id=?";
-    $stmt = $conn->stmt_init();
-    if(!mysqli_stmt_prepare($stmt, $query)) {
-        printf("Error: %s.\n", $stmt->error);
-    } else {
-      mysqli_stmt_bind_param($stmt, "s", $user);
-      $stmt->execute();
-      $result = $stmt->get_result();
-      return $result->fetch_array();
+    mysqli_stmt_bind_param($stmt, "s", $user);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result;
     }
   }
 
-  function q_addConductor($conn, $user){
-    $query = "SELECT add_conductor FROM authentication WHERE user_id=?";
+  function q_checkEngineer($conn, $user){
+    $query = "SELECT * FROM engineer WHERE user_id=?";
     $stmt = $conn->stmt_init();
     if(!mysqli_stmt_prepare($stmt, $query)) {
-        printf("Error: %s.\n", $stmt->error);
+        die("something went wrong");
     } else {
       mysqli_stmt_bind_param($stmt, "s", $user);
       $stmt->execute();
       $result = $stmt->get_result();
-      return $result->fetch_array();
-    }
-  }
-
-  function q_monitorTrain($conn, $user){
-    $query = "SELECT monitor_train FROM authentication WHERE user_id=?";
-    $stmt = $conn->stmt_init();
-    if(!mysqli_stmt_prepare($stmt, $query)) {
-        printf("Error: %s.\n", $stmt->error);
-    } else {
-      mysqli_stmt_bind_param($stmt, "s", $user);
-      $stmt->execute();
-      $result = $stmt->get_result();
-      return $result->fetch_array();
-    }
-  }
-
-  function q_addTrain($conn, $user){
-    $query = "SELECT add_train FROM authentication WHERE user_id=?";
-    $stmt = $conn->stmt_init();
-    if(!mysqli_stmt_prepare($stmt, $query)) {
-        printf("Error: %s.\n", $stmt->error);
-    } else {
-      mysqli_stmt_bind_param($stmt, "s", $user);
-      $stmt->execute();
-      $result = $stmt->get_result();
-      return $result->fetch_array();
-    }
-  }
-
-  function q_addEnginner($conn, $user){
-    $query = "SELECT add_engineer FROM authentication WHERE user_id=?";
-    $stmt = $conn->stmt_init();
-    if(!mysqli_stmt_prepare($stmt, $query)) {
-        printf("Error: %s.\n", $stmt->error);
-    } else {
-      mysqli_stmt_bind_param($stmt, "s", $user);
-      $stmt->execute();
-      $result = $stmt->get_result();
-      return $result->fetch_array();
-    }
-  }
-
-  function q_editUser($conn, $user){
-    $query = "SELECT edit_user FROM authentication WHERE user_id=?";
-    $stmt = $conn->stmt_init();
-    if(!mysqli_stmt_prepare($stmt, $query)) {
-        printf("Error: %s.\n", $stmt->error);
-    } else {
-      mysqli_stmt_bind_param($stmt, "s", $user);
-      $stmt->execute();
-      $result = $stmt->get_result();
-      return $result->fetch_array();
+      return $result->num_rows;
     }
   }
 
@@ -145,6 +82,35 @@
       $stmt->execute();
       $result = $stmt->get_result();
       return $result;
+    }
+  }
+
+  function q_printCarsTable($conn, $company_id, $location){
+    if($location == 'all'){
+      $query = "SELECT `car`.`serial_num`, `car`.`load_capacity`, `car`.`type`, `car`.`location`, `car`.`price`, `car`.`customer_id`
+      FROM `car`, `train`  WHERE `train`.`company_id` = ? AND `train`.`train_num` = `car`.`train_num`";
+      $stmt = $conn->stmt_init();
+      if(!mysqli_stmt_prepare($stmt, $query)) {
+          die("table does not exist");
+      } else {
+        mysqli_stmt_bind_param($stmt, "s", $company_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result;
+      }
+    } else {
+      $query = "SELECT `car`.`serial_num`, `car`.`load_capacity`, `car`.`type`, `car`.`location`, `car`.`price`, `car`.`customer_id`
+      FROM `car`, `train`  WHERE `train`.`company_id` = ? AND `train`.`train_num` = `car`.`train_num`
+      AND `car`.`location` = ?";
+      $stmt = $conn->stmt_init();
+      if(!mysqli_stmt_prepare($stmt, $query)) {
+          die("table does not exist");
+      } else {
+        mysqli_stmt_bind_param($stmt, "ss", $company_id, $location);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result;
+      }
     }
   }
 
@@ -164,4 +130,17 @@
     return $result;
 
     $result = $stmt->get_result();
-    }?>
+    }
+
+  function q_checkCustomer($conn, $user){
+    $query = "SELECT * FROM customer WHERE email=?";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        die("something went wrong");
+    } else {
+      mysqli_stmt_bind_param($stmt, "s", $user);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      return $result->num_rows;
+    }
+  }?>

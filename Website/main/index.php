@@ -50,7 +50,7 @@
                   </ul>
                   <form class="navbar-form navbar-right">
                     <a class="btn btn-default btn-md" href="login.php" role="button">Login</a>
-                    <a class="btn btn-primary btn-md" href="signup.php" role="button">Signup</a>
+                    <a class="btn btn-primary btn-md" href="signup2.php" role="button">Signup</a>
                   </form>
                 </div><!-- /.navbar-collapse -->
 <!--              </div> /.container-fluid -->
@@ -64,7 +64,7 @@
                 <a class="btn btn-primary btn-md" type="button" href="about.php">Learn more</a>
             </div>
         </div>
-          
+
           <div style="text-align:center;">
           <p>
             We are a 45 year old railway company.
@@ -72,7 +72,7 @@
             Our goal is to deliever your merchanises or yourself in a timely manner.<br />
             We have trains that can reach across the whole United States of America.
           </p>
-              
+
           </div>
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

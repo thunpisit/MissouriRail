@@ -26,14 +26,13 @@ function printCustomers(){
   });
 }
 
-function modalFill(user_id, first_name, last_name, email, phone_number, address){
+function modalFill(email, first_name, last_name, phone_number, address){
   $("#createBtn").hide();
   $(".modal-title").html('Customer Information');
   $("#editCustomerBtn").html("Edit");
-  $("#user_id").val(user_id).attr("readonly", true);
+  $("#email").val(email).attr("readonly", true);
   $("#first_name").val(first_name).attr("readonly", true);
   $("#last_name").val(last_name).attr("readonly", true);
-  $("#email").val(email).attr("readonly", true);
   $("#phone_number").val(phone_number).attr("readonly", true);
   $("#address").val(address).attr("readonly", true);
   $("#editCustomerBtn").click(function(){
@@ -44,19 +43,17 @@ function modalFill(user_id, first_name, last_name, email, phone_number, address)
       $("#editCustomerBtn").html('Changes Saved').removeClass('btn-success').addClass('btn-info');
       $(".modalInput").attr("readonly", true);
       // edit customer ajax call
-      user_id = $("#user_id").val();
+      email = $("#email").val();
       first_name = $("#first_name").val();
       last_name = $("#last_name").val();
-      email = $("#email").val();
       phone_number = $("#phone_number").val();
       address = $("#address").val();
       $.ajax({
          url: 'controller.php',
          data: {action: 'editCustomer',
-                user_id: user_id,
+                email: email,
                 first_name: first_name,
                 last_name: last_name,
-                email: email,
                 phone_number: phone_number,
                 address: address},
          type: 'post',
@@ -81,16 +78,16 @@ function modalFill(user_id, first_name, last_name, email, phone_number, address)
   $("#deleteBtn").click(function(){
 
       if(confirm("Are you sure you want to delete " + $("#user_id").val() + "?")){
-        user_id = $("#user_id").val();
+        email = $("#email").val();
         $.ajax({
            url: 'controller.php',
            data: {action: 'deleteCustomer',
-                  user_id: user_id},
+                  email: email},
            type: 'post',
            success: function(output) {
                       console.log(output);
-                      $("#user_id").val(user_id + " deleted");
-                      $("#first_name, #last_name, #email, #phone_number, #address").val("deleted");
+                      $("#email").val(email + " deleted");
+                      $("#first_name, #last_name, #phone_number, #address").val("deleted");
                       $("#deleteBtn, #editCustomerBtn").hide();
                       $("#closeModal").focus();
                       refreshTable();
