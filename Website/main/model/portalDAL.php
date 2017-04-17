@@ -42,8 +42,22 @@
 
   }
 
-  function q_updateEmployeeInfo($conn, $user, $first_name, $last_name, $status, $rank){
-    $query = "UPDATE conductor SET first_name=?, last_name=?, status=?, employee_rank=?  WHERE user_id = ?";
+  function q_updateEmployeeInfo($conn, $user, $first_name, $last_name, $status, $rank, $hours){
+    if($hours == 0){
+      $query = "UPDATE conductor SET first_name=?, last_name=?, status=?, employee_rank=?  WHERE user_id = ?";
+      $stmt = $conn->stmt_init();
+
+      if(!mysqli_stmt_prepare($stmt, $query)) {
+          printf("Error: %s.\n", $stmt->error);
+        return;
+      }
+
+      $stmt->bind_param("sssss", $first_name, $last_name, $status, $rank, $user);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      return $result;
+  } else {
+    $query = "UPDATE engineer SET first_name=?, last_name=?, status=?, employee_rank=?, hours_traveling=?  WHERE user_id = ?";
     $stmt = $conn->stmt_init();
 
     if(!mysqli_stmt_prepare($stmt, $query)) {
@@ -51,9 +65,10 @@
       return;
     }
 
-    $stmt->bind_param("sssss", $first_name, $last_name, $status, $rank, $user);
+    $stmt->bind_param("ssssss", $first_name, $last_name, $status, $rank, $hours, $user);
     $stmt->execute();
     $result = $stmt->get_result();
     return $result;
+  }
   }
  ?>

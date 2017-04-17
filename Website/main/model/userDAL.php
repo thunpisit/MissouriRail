@@ -114,6 +114,20 @@
     }
   }
 
+  function q_getMyReservations($conn, $user){
+    $query = "SELECT serial_num, load_capacity, type, location, price FROM car
+    WHERE customer_id=?";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        die("table does not exist");
+    } else {
+      mysqli_stmt_bind_param($stmt, "s", $user);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      return $result;
+    }
+  }
+
   function q_putLog($conn, $ip, $action, $date_time, $user_id){
     $query = "INSERT INTO log (ip_address, action, date_time, user_id) VALUES(?, ?, FROM_UNIXTIME(?), ?)";
     $stmt = $conn->stmt_init();

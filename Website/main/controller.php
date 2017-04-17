@@ -4,11 +4,26 @@
 include("model/userDAL.php");
 include("model/customerDAL.php");
 include("portalController.php");
+include 'model/carDAL.php';
+
 if(isset($_POST['action']) && !empty($_POST['action'])) {
   $action = $_POST['action'];
   switch($action) {
       case 'printCustomers' : printCustomers(); break;
       case 'createCustomer' : createCustomer(); break;
+      case 'reserveCarsForm':
+        $serial_num = $_POST['serial_num'];
+        $conn = connectDB();
+        reserveCarsForm($conn, $serial_num);
+        break;
+      case 'createCustomerAuthentication':
+        $conn = connectDB();
+        $user = $_POST['user_id'];
+        $pass = $_POST['password'];
+        signUp($conn, $user, $pass, 0,
+        0, 0, 0, 0,
+        0, 0, 0);
+        break;
       case 'editCustomer' : editCustomer(); break;
       case 'deleteCustomer': deleteCustomer(); break;
       case 'getCars':
@@ -26,20 +41,36 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         $last_name = $_POST['last_name'];
         $status = $_POST['status'];
         $rank = $_POST['rank'];
-        updateEmployeeInfo($user, $first_name, $last_name, $status, $rank);
+        $hours = $_POST['hours'];
+
+        updateEmployeeInfo($user, $first_name, $last_name, $status, $rank, $hours);
         break;
 
       case 'printLog':
         $conn = connectDB();
         printTable($conn, 'log');
-      break;
+        break;
 
       case 'getInfo' :
-      session_start();
-      $user = $_SESSION['user_id'];
-      getEmployeeInfo($user);
+        session_start();
+        $user = $_SESSION['user_id'];
+        getEmployeeInfo($user);
+        break;
 
-      break;
+      case 'reserveCar':
+        session_start();
+        $conn = connectDB();
+        $customer_id = $_SESSION['user_id'];
+        $serial = $_POST['serial_num'];
+        reserveCar($conn, $customer_id, $serial);
+        break;
+
+      case 'getMyReservations':
+        session_start();
+        $conn = connectDB();
+        $customer_id = $_SESSION['user_id'];
+        getMyReservations($conn, $customer_id);
+        break;
 
       default:
         echo "action post set and messed up your function call";
@@ -107,7 +138,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
       $add_conductor, $monitor_train, $add_train, $add_engineer,
       $reset_pass, $edit_user, $ssn);
 
-      $user = $_SESSION['signup_user'];
+
       $action = 'signup by user on ';
       getLog($conn, $user, $action);
     } else {
@@ -239,7 +270,6 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
 
   function createCustomer(){
     $conn = connectDB();
-    echo "customer created";
     $id = $_POST['email'];
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
@@ -247,12 +277,46 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
     $address = $_POST['address'];
 
     q_createCustomer($conn, $id, $first_name, $last_name, $phone_number, $address);
+    echo '<div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Customer Information</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-offset-2 col-md-3">
+                  <label for="usr">User:</label>
+                </div>
+                <div class="col-md-4">
+                  <input id="user_id" class="form-control" type="text" name="user_id" value="'.$id.'" readonly>
+                </div>
+              </div><hr>
+              <div class="row">
+                <div class="col-md-offset-2 col-md-3">
+                  <label for="usr">Password:</label>
+                </div>
+                <div class="col-md-4">
+                  <input id="password" class="form-control modalInput" type="pwd" name="password" value="">
+                </div>
+              </div><hr>
+              <div class="modal-footer">
+                <button id="createAuthenticationBtn" style="text-align: center;" type="button" class="btn btn-success">Submit</button>
+                <button id="closeModal" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>';
   }
 
   function editCustomer(){
+    session_start();
     $conn = connectDB();
     echo "customer editted";
-    $id = $_POST['email'];
+    if(isset($_POST['email'])){
+      $id = $_POST['email'];
+    } else {
+      $id = $_SESSION['user_id'];
+    }
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
     $phone_number = $_POST['phone_number'];

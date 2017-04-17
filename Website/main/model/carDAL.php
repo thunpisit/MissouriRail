@@ -9,7 +9,7 @@ class Car{
   public $train_num;
   public $customer_id;
 
-  public __construct($serial, $load, $type, $location, $manufacturer, $price, $train, $customer){
+  public function __construct($serial, $load, $type, $location, $manufacturer, $price, $train, $customer){
     $this->$serial_num = $serial;
     $this->$load_capacity = $load;
     $this->$type = $type;
@@ -21,8 +21,9 @@ class Car{
   }
 }
 
-function q_reserveCar($conn, $serial, $train, $customer){
-  $query = "UPDATE car SET train_num = ?, customer_id = ? WHERE serial_num=?";
+function q_getCarInfo($conn, $serial){
+  $query = "SELECT load_capacity, type, location, price FROM car
+  WHERE serial_num=?";
   $stmt = $conn->stmt_init();
 
   if(!mysqli_stmt_prepare($stmt, $query)) {
@@ -30,7 +31,24 @@ function q_reserveCar($conn, $serial, $train, $customer){
     return;
   }
 
-  $stmt->bind_param("iss", $train, $customer, $serial);
+  $stmt->bind_param("s", $serial);
+
+  $stmt->execute();
+  $result = $stmt->get_result();
+  return $result->fetch_array();
+
+}
+
+function q_reserveCar($conn, $customer, $serial){
+  $query = "UPDATE car SET customer_id = ? WHERE serial_num=?";
+  $stmt = $conn->stmt_init();
+
+  if(!mysqli_stmt_prepare($stmt, $query)) {
+      printf("Error: %s.\n", $stmt->error);
+    return;
+  }
+
+  $stmt->bind_param("ss", $customer, $serial);
   $stmt->execute();
   $result = $stmt->get_result();
 

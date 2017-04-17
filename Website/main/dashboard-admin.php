@@ -113,6 +113,23 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-4">
+              <div class="panel panel-default text-center">
+                <div class="panel-heading">
+                  Your Information
+                </div>
+                <div class="panel-body">
+                  <div class="row">
+                    <!-- your information button -->
+                    <div id="information">
+
+                    </div>
+
+                    <!-- reset your pass button -->
+                  </div>
+                </div>
+              </div>
+            </div>
         </div>
 
 

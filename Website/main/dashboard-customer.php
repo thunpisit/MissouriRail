@@ -87,7 +87,7 @@
                     </div>
                     <div class="panel-body">
                         <div class="row">
-                            <button id="logBtn" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">View Current Reservation</button>
+                            <button id="myReservation" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">View Current Reservation</button>
                         </div>
                     </div>
                 </div>

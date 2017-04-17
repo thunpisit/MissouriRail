@@ -128,39 +128,64 @@ function createCustomer(){
         alert('Fill out customer information completely or NA if not known');
         return false;
       } else {
-        user_id = $("#user_id").val();
+        email = $("#email").val();
         first_name = $("#first_name").val();
         last_name = $("#last_name").val();
-        email = $("#email").val();
         phone_number = $("#phone_number").val();
         address = $("#address").val();
+        preAuthenticationCreationContent = $(".modal-content").html();
+
 
         $.ajax({
            url: 'controller.php',
            data: {action: 'createCustomer',
-                  user_id: user_id,
+                  email: email,
                   first_name: first_name,
                   last_name: last_name,
-                  email: email,
                   phone_number: phone_number,
                   address: address},
            type: 'post',
            success: function(output) {
-                        console.log(output);
-                        $("#createBtn").hide();
-                        $("#closeModal").focus();
-                        $("#user_id").attr("readonly", true);
-                        $("#first_name").attr("readonly", true);
-                        $("#last_name").attr("readonly", true);
-                        $("#email").attr("readonly", true);
-                        $("#phone_number").attr("readonly", true);
-                        $("#address").attr("readonly", true);
-                        printCustomers();
+                        $(".modal-content").html(output);
+                        $("#createAuthenticationBtn").click(function(){
+                        if(form_validation('.modalInput') == false){
+                          alert('Fill out customer information completely or NA if not known');
+                          return false;
+                        } else {
+                          user_id = $("#user_id").val();
+                          password = $("#password").val();
+                          $.ajax({
+                             url: 'controller.php',
+                             data: {action: 'createCustomerAuthentication',
+                                    user_id: user_id,
+                                    password: password},
+                             type: 'post',
+                             success: function(output) {
+                               console.log(output);
+                               $("#createAuthenticationBtn").hide();
+                               $("#closeModal").focus();
+                               $(".modal-body").html("<h2>Customer account created</h2>")
+                             }
+                           });
+                          $("#closeModal").click(function(){
+                            $(".modal-content").html(preAuthenticationCreationContent);
+                            $("#createBtn").hide();
+                            $("#closeModal").focus();
+                            $("#user_id").attr("readonly", true);
+                            $("#first_name").attr("readonly", true);
+                            $("#last_name").attr("readonly", true);
+                            $("#email").attr("readonly", true);
+                            $("#phone_number").attr("readonly", true);
+                            $("#address").attr("readonly", true);
+                            printCustomers();
+                          });
+                        }
+
+                        });
                     }
-                });
+                });//end create customer ajax
       }
-    });
-  //end create customer
+    });//end create customer
   }
 
 

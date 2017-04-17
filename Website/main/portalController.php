@@ -2,9 +2,9 @@
   // include 'controller.php';
   include 'model/portalDAL.php';
 
-  function updateEmployeeInfo($user, $first_name, $last_name, $status, $rank){
+  function updateEmployeeInfo($user, $first_name, $last_name, $status, $rank, $hours){
     $conn = connectDB();
-    q_updateEmployeeInfo($conn, $user, $first_name, $last_name, $status, $rank);
+    q_updateEmployeeInfo($conn, $user, $first_name, $last_name, $status, $rank, $hours);
     q_getEmployeeInfo($conn, $user);
     $conn->close();
   }
@@ -82,7 +82,7 @@
     $result = q_printCarsTable($conn, $company_id, $location);
     if($result->num_rows > 0){
       // output data of each row
-      echo "<div class='row'><label>Number of total cars:</label> $result->num_rows";
+      echo "<div id='carsTable' class='row'><label>Number of total cars:</label> $result->num_rows";
       echo "<table class='table table-responsive table-hover table-bordered'><thead><tr>";
       while($fieldName = mysqli_fetch_field($result)) {
         if($fieldName->name == 'customer_id'){
@@ -95,8 +95,9 @@
       while($row = $result->fetch_array(MYSQLI_NUM)) {
         echo "<tr>";
         foreach ($row as $data) {
-          if($data == ''){
-            echo "<td><button>Reserve this car</button></td>";
+          if($data == '0'){
+            $serial_num = "'" . $row[0] . "'";
+            echo '<td><button id="reserveCar" class="btn btn-primary" onclick="reserveCar('.$serial_num.')">Reserve this car</button></td>';
           } else {
             echo "<td>" . $data . "</td>";
           }
@@ -152,15 +153,6 @@
                       <input id="last_name" class="form-control modalInput" type="text" name="last_name" value="" readonly>
                     </div>
                   </div><hr>
-                  <!-- email -->
-                  <!--<div class="row">
-                    <div class="col-md-offset-2 col-md-3">
-                      <label for="usr">Email:</label>
-                    </div>
-                    <div class="col-md-4">
-                      <input id="email" class="form-control modalInput" type="text" name="email" value="" readonly>
-                    </div>
-                  </div><hr> -->
                   <!-- phone_number -->
                   <div class="row">
                     <div class="col-md-offset-2 col-md-3">
@@ -285,7 +277,59 @@
                 </div>
               </div>
             </div>
-          </div>';
+          </div>
+          <input id="typeOfUser" type="hidden" name="typeOfUser" value="">';
   }
 
- ?>
+  function reserveCarsForm($conn, $serial){
+    $carInfo = q_getCarInfo($conn, $serial);
+    // [0] = load_capacity [1] = type [2] = location [3] = price
+    echo '<div class="">
+            <div class="col-md-offset-1 col-md-10">
+              <div class="form-group">
+                <label for="serial">Serial Number:</label>
+                <input value="'.$serial.'" type="text" class="form-control" id="serial_num" readonly>
+              </div>
+              <div class="form-group">
+                <label for="serial">Load Capacity:</label>
+                <input value="'.$carInfo[0].'" type="text" class="form-control" id="load_capacity" readonly>
+              </div>
+              <div class="form-group">
+                <label for="serial">Type:</label>
+                <input value="'.$carInfo[1].'" type="text" class="form-control" id="type" readonly>
+              </div>
+              <div class="form-group">
+                <label for="serial">Location:</label>
+                <input value="'.$carInfo[2].'" type="text" class="form-control" id="location" readonly>
+              </div>
+              <div class="form-group">
+                <label for="serial">Price:</label>
+                <input value="'.$carInfo[3].'" type="text" class="form-control" id="price" readonly>
+              </div>
+            </div>
+          </div>';
+
+  }
+
+  function reserveCar($conn, $customer_id, $serial){
+    q_reserveCar($conn, $customer_id, $serial);
+    echo '<h2 style="text-align: center;">Reservation Confirmed</h2>';
+  }
+
+  function getMyReservations($conn, $user){
+    $result = q_getMyReservations($conn, $user);
+    echo "<div class='row'><label>Total Number of Reservations:</label> $result->num_rows";
+    echo "<table class='table table-responsive table-hover table-bordered'><thead><tr>";
+    while($fieldName = mysqli_fetch_field($result)) {
+        echo "<th>" . $fieldName->name . "</th>";
+    }
+    echo "</tr></thead><tbody>";
+    while($row = $result->fetch_array(MYSQLI_NUM)) {
+      echo "<tr>";
+      foreach ($row as $data) {
+        echo "<td>" . $data . "</td>";
+      }
+      echo "</tr>";
+    }
+    echo "</tbody></table></div>";
+  }?>
