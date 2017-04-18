@@ -12,7 +12,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/stylesheet.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-    <script src="../assets/javascript/scripts.js"></script>
+    <script src="assets/javascript/scripts.js"></script>
+    <script src="assets/javascript/signUpScripts.js"></script>
   </head>
   <body>
     <nav class="navbar navbar-default">
@@ -75,14 +76,65 @@
               <label for="type">Type</label>
             </div>
             <div class="col-md-4">
-              <select class="form-control" name="type">
-                <option value=1>Admin</option>
-                <option value=2>Conductor</option>
-                <option value=3>Engineer</option>
-                <option value=4>Customer</option>
+              <select class="form-control" name="type" id="signupSelect">
+                <option value="">Pick User Type</option>
+                <option value="administrator">Admin</option>
+                <option value="conductor">Conductor</option>
+                <option value="engineer">Engineer</option>
+                <option value="customer">Customer</option>
               </select>
             </div>
           </div><hr>
+
+          <div id="userDetailsForm">
+            <!-- first_name -->
+            <div class="row">
+              <div class="col-md-offset-2 col-md-3">
+                <label for="usr">First Name:</label>
+              </div>
+              <div class="col-md-4">
+                <input class="form-control" type="text" name="first_name" value="">
+              </div>
+            </div><hr>
+            <!-- last_name -->
+            <div class="row">
+              <div class="col-md-offset-2 col-md-3">
+                <label for="usr">Last Name:</label>
+              </div>
+              <div class="col-md-4">
+                <input class="form-control" type="text" name="last_name" value="">
+              </div>
+            </div><hr>
+            <!-- status / phone -->
+            <div class="row">
+              <div class="col-md-offset-2 col-md-3">
+                <label id="input3" for="usr"></label>
+              </div>
+              <div class="col-md-4">
+                <input class="form-control" type="text" name="input3" value="">
+              </div>
+            </div><hr>
+            <!-- rank / title / address -->
+            <div class="row">
+              <div class="col-md-offset-2 col-md-3">
+                <label id="input4" for="usr"></label>
+              </div>
+              <div class="col-md-4">
+                <input class="form-control" type="text" name="input4" value="">
+              </div>
+            </div><hr>
+            <div id="engineerSignUp">
+              <!-- hours_traveling -->
+              <div class="row">
+                <div class="col-md-offset-2 col-md-3">
+                  <label id="input5" for="usr">Hours Traveling:</label>
+                </div>
+                <div class="col-md-4">
+                  <input class="form-control" type="text" name="input5" value="0">
+                </div>
+              </div><hr>
+            </div><!-- end hours_traveling -->
+          </div><!-- end userDetailsForm -->
 
            <!--ssn-->
           <div class="row">
@@ -116,9 +168,8 @@
             $ssn = htmlspecialchars($_POST['ssn']);
             $type = $_POST['type'];
             $_SESSION['signup_user'] = $user;
-            echo "type = " . $type;
             switch($type){
-              case 1:
+              case 'administrator':
                 $add_equipment = 1;
                 $add_conductor = 1;
                 $monitor_train = 1;
@@ -127,7 +178,7 @@
                 $reset_pass = 1;
                 $edit_user = 1;
                 break;
-              case 2:
+              case 'conductor':
                 $add_equipment= 0;
                 $add_conductor= 0;
                 $monitor_train = 1;
@@ -136,7 +187,7 @@
                 $reset_pass= 0;
                 $edit_user= 0;
                 break;
-              case 3:
+              case 'engineer':
                 $add_equipment= 0;
                 $add_conductor= 0;
                 $monitor_train = 1;
@@ -145,7 +196,7 @@
                 $reset_pass= 0;
                 $edit_user= 0;
                 break;
-              case 4:
+              case 'customer':
                 $add_equipment = 0;
                 $add_conductor = 0;
                 $monitor_train = 0;
@@ -156,23 +207,11 @@
                 break;
             }
 
-            // echo 'user = ' . $user;
-            // echo '<br>add_equipment = ' . $add_equipment;
-            // echo '<br>add_conductor = ' . $add_conductor;
-            // echo '<br>monitor train = ' . $monitor_train;
-            // echo '<br>add_train = ' . $add_train;
-            // echo '<br>add_engineer = ' . $add_engineer;
-            // echo '<br>reset_pass = ' . $reset_pass;
-            // echo '<br>edit_user = ' . $edit_user;
-
-
-
-            if(signUp($conn, $user, $pass, $add_equipment,
+            if(signUp($conn, $type, $user, $pass, $add_equipment,
             $add_conductor, $monitor_train, $add_train, $add_engineer,
             $reset_pass, $edit_user, $ssn) > 0){
 
             } else {
-              echo "signup failed";
             }
             $conn->close();
           }?>

@@ -142,17 +142,48 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
     }
   }
 
-  // signs user up then returns 1 on success and 0 on fail
-  function signUp($conn, $user, $pass, $add_equipment,
+  // signs user up then returns 0 on fail
+  function signUp($conn, $typeOfUser, $user, $pass, $add_equipment,
   $add_conductor, $monitor_train, $add_train, $add_engineer,
   $reset_pass, $edit_user, $ssn){
+    $fname = $_POST['first_name'];
+    $lname = $_POST['last_name'];
     if(q_checkUser($conn, $user) < 1){
+      switch ($typeOfUser) {
+        case 'administrator':
+          $status = $_POST['input3'];
+          $title = $_POST['input4'];
+          q_signUpAdmin($conn, $user, $fname, $lname, $status, $title);
+          break;
+
+        case 'conductor':
+          $status = $_POST['input3'];
+          $rank = $_POST['input4'];
+          q_signUpConductor($conn, $user, $fname, $lname, $status, $rank);
+          break;
+
+        case 'engineer':
+          $status = $_POST['input3'];
+          $rank = $_POST['input4'];
+          $hours = $_POST['input5'];
+          q_signUpEngineer($conn, $user, $fname, $lname, $status, $rank, $hours);
+          break;
+
+        case 'customer':
+          $phone = $_POST['input3'];
+          $address = $_POST['input4'];
+          q_signUpCustomer($conn, $user, $fname, $lname, $phone, $address);
+          break;
+
+        default:
+          echo "Error: $typeOfUser is not specified in controller";
+          break;
+      }
       q_signUp($conn, $user, $pass, $add_equipment,
       $add_conductor, $monitor_train, $add_train, $add_engineer,
       $reset_pass, $edit_user, $ssn);
 
-
-      $action = 'signup by user on ';
+      $action = "signup for $typeOfUser account on ";
       getLog($conn, $user, $action);
     } else {
       return 0;

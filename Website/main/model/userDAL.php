@@ -31,6 +31,50 @@
     return 0;
   }
 
+  function q_signUpAdmin($conn, $user, $fname, $lname, $status, $title){
+    $query = "INSERT INTO administrator (user_id, first_name, last_name, status, job_title) VALUES (?,?,?,?,?)";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+      } else {
+        mysqli_stmt_bind_param($stmt, "sssss", $user, $fname, $lname, $status, $title);
+        $result = $stmt->execute();
+      }
+  }
+
+  function q_signUpConductor($conn, $user, $fname, $lname, $status, $rank){
+    $query = "INSERT INTO conductor (user_id, first_name, last_name, status, employee_rank) VALUES (?,?,?,?,?)";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+      } else {
+        mysqli_stmt_bind_param($stmt, "sssss", $user, $fname, $lname, $status, $rank);
+        $stmt->execute();
+      }
+  }
+
+  function q_signUpEngineer($conn, $user, $fname, $lname, $status, $rank, $hours){
+    $query = "INSERT INTO engineer (user_id, first_name, last_name, status, employee_rank, hours_traveling) VALUES (?,?,?,?,?,?)";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+      } else {
+        mysqli_stmt_bind_param($stmt, "ssssss", $user, $fname, $lname, $status, $rank, $hours);
+        $stmt->execute();
+      }
+  }
+
+  function q_signUpCustomer($conn, $user, $fname, $lname, $phone, $address){
+    $query = "INSERT INTO customer (email, first_name, last_name, phone_number, address) VALUES (?,?,?,?,?)";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+      } else {
+        mysqli_stmt_bind_param($stmt, "sssss", $user, $fname, $lname, $phone, $address);
+        $stmt->execute();
+      }
+  }
+
   function q_signUp($conn, $user, $pass, $add_equipment, $add_conductor, $monitor_train, $add_train, $add_engineer, $reset_pass, $edit_user, $ssn){
     $query = "INSERT INTO authentication(user_id, password, add_equipment, add_conductor, monitor_train, add_train, add_engineer, reset_pass, edit_user, ssn)
     VALUES(?,?,?,?,?,?,?,?,?,?);";
