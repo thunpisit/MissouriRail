@@ -55,7 +55,7 @@
           </div><!-- /.navbar-collapse -->
 <!--              </div> /.container-fluid -->
     </nav>
-      
+
       <div class="container">
             <div class="jumbotron text-center">
                 <h2>Your voice matters!</h2><br>
@@ -63,7 +63,7 @@
                     We will not turn your rail experience into fight club. :P</p><br>
             </div>
         </div>
-      
+
     <div class="formwrapper container">
       <form method="POST" action="contact.php">
         Name:

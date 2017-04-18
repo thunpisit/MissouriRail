@@ -3,7 +3,75 @@ $(function(){
   modalCloseCleanup();
   printCustomers();
   createCustomer();
+  viewEquipment();
   });
+
+function editCar(serial){
+  preloadModal = $(".modal-body").html();
+  $.ajax({
+    url: 'controller.php',
+    data:{action: 'getCarInfo',
+          serial_num: serial,
+          type: 'form_admin'},
+    type: 'post',
+    success: function(output) {
+      // console.log(output);
+      $(".modal-body").html(output);
+      $("#editCustomerBtn").html("Submit Changes").show();
+      $(".editMe").removeAttr("readonly");
+    }
+  });
+
+  $("#editCustomerBtn").click(function(){
+    serial = $("#serial_num").val();
+    load = $("#load_capacity").val();
+    type = $("#type").val();
+    locationOfCar = $("#location").val();
+    price = $("#price").val();
+    train_num = $("#train_num").val();
+    customer_id = $("#assignedCustomerID").val();
+    $.ajax({
+      url: 'controller.php',
+      data:{action: 'updateCar',
+            serial_num: serial,
+            load: load,
+            type: type,
+            locationOfCar: locationOfCar,
+            price: price,
+            train_num: train_num,
+            customer_id: customer_id},
+      type: 'post',
+      success: function(output){
+        console.log(output);
+        $(".editMe").attr("readonly", true);
+      }
+    });
+  });
+
+  $("#closeModal").click(function(){
+    $(".modal-body").html(preloadBody);
+  });
+
+}
+
+function viewEquipment(){
+  $("#viewEquipmentBtn").click(function(){
+    preloadBody = $(".modal-body").html();
+    $("#deleteBtn, #editCustomerBtn, #createBtn").hide();
+    $.ajax({
+       url: 'controller.php',
+       data: {action: 'getAllReservations'},
+       type: 'post',
+       success: function(output) {
+                  $(".modal-body").html(output);
+                }
+    });
+    $("#closeModal").click(function(){
+      $(".modal-body").html(preloadBody);
+      $("#deleteBtn, #editCustomerBtn, #createBtn").show();
+    });
+  });
+}
 
 function modalCloseCleanup(){
   $("#closeModal").click(function(){
@@ -121,6 +189,7 @@ function createCustomer(){
       $("#email").val('').removeAttr("readonly");
       $("#phone_number").val('').removeAttr("readonly");
       $("#address").val('').removeAttr("readonly");
+      preloadBody = $(".modal-body").html();
     });
 
     $("#createBtn").click(function(){
@@ -133,7 +202,6 @@ function createCustomer(){
         last_name = $("#last_name").val();
         phone_number = $("#phone_number").val();
         address = $("#address").val();
-        preAuthenticationCreationContent = $(".modal-content").html();
 
 
         $.ajax({
@@ -146,8 +214,8 @@ function createCustomer(){
                   address: address},
            type: 'post',
            success: function(output) {
-                        $(".modal-content").html(output);
-                        $("#createAuthenticationBtn").click(function(){
+                        $(".modal-body").html(output);
+                        $("#createBtn").click(function(){
                         if(form_validation('.modalInput') == false){
                           alert('Fill out customer information completely or NA if not known');
                           return false;
@@ -162,15 +230,14 @@ function createCustomer(){
                              type: 'post',
                              success: function(output) {
                                console.log(output);
-                               $("#createAuthenticationBtn").hide();
+                               $("#createBtn").hide();
                                $("#closeModal").focus();
                                $(".modal-body").html("<h2>Customer account created</h2>")
                              }
                            });
                           $("#closeModal").click(function(){
-                            $(".modal-content").html(preAuthenticationCreationContent);
-                            $("#createBtn").hide();
-                            $("#closeModal").focus();
+                            $(".modal-body").html(preloadBody);
+                            $("#createBtn").show();
                             $("#user_id").attr("readonly", true);
                             $("#first_name").attr("readonly", true);
                             $("#last_name").attr("readonly", true);
@@ -183,7 +250,7 @@ function createCustomer(){
 
                         });
                     }
-                });//end create customer ajax
+                });
       }
     });//end create customer
   }

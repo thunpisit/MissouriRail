@@ -1,6 +1,7 @@
 <?php
   // include 'controller.php';
   include 'model/portalDAL.php';
+  include 'model/trainDAL.php';
 
   function updateEmployeeInfo($user, $first_name, $last_name, $status, $rank, $hours){
     $conn = connectDB();
@@ -60,6 +61,43 @@
     echo '<button id="basicInfoBtn" onclick="fillModalInfo('. $first_name .','. $last_name .','. $status .','. $rank .')" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">View Basic Information</button><br><br>';
     $conn->close();
     }
+  }
+
+  function updateCar(){
+    $conn = connectDB();
+    $serial = $_POST['serial_num'];
+    $load = $_POST['load'];
+    $type = $_POST['type'];
+    $location = $_POST['locationOfCar'];
+    $price = $_POST['price'];
+    $train = $_POST['train_num'];
+    $customer = $_POST['customer_id'];
+    q_updateEquipment($conn, 'car', $serial, $load, $type, $location, $price, $train, 0, 0, 0, $customer);
+    echo "car updated";
+  }
+
+  function getAllCars($conn){
+    $result = q_getAllCars($conn);
+    echo "<div class='row'><div id='carsTable' class='col-md-10'><label>Number of total cars:</label> $result->num_rows";
+    echo "<table class='table table-responsive table-hover table-bordered'><thead><tr>";
+
+    if($result->num_rows > 0){
+      while($fieldName = mysqli_fetch_field($result)){
+        echo "<th>" . $fieldName->name . "</th>";
+      }
+      echo '<th>Update</th>';
+      echo "</tr></thead><tbody>";
+      while($row = $result->fetch_array(MYSQLI_NUM)){
+        echo "<tr>";
+        foreach ($row as $data) {
+        echo "<td>" . $data . "</td>";
+        }
+        $serial_num = "'" . $row[0] . "'";
+        echo '<td><button id="reserveCar" class="btn btn-primary" onclick="editCar('.$serial_num.')">Edit this car</button></td>';
+        echo "</tr>";
+      }
+    }
+    echo "</tbody></table></div></div>";
   }
 
   function printCarsTable($conn, $company_id, $location){
@@ -279,6 +317,134 @@
             </div>
           </div>
           <input id="typeOfUser" type="hidden" name="typeOfUser" value="">';
+  }
+
+  function getCarInfo($conn, $serial, $type){
+    $carInfo = q_getCarInfo($conn, $serial, $type);
+    switch ($type) {
+      case 'form':
+        echo '<div class="">
+                <div class="col-md-offset-1 col-md-10">
+                  <div class="form-group">
+                    <label for="serial">Serial Number:</label>
+                    <input value="'.$serial.'" type="text" class="form-control" id="serial_num" readonly>
+                  </div>
+                  <div class="form-group">
+                    <label for="serial">Load Capacity:</label>
+                    <input value="'.$carInfo[0].'" type="text" class="form-control" id="load_capacity" readonly>
+                  </div>
+                  <div class="form-group">
+                    <label for="serial">Type:</label>
+                    <input value="'.$carInfo[1].'" type="text" class="form-control" id="type" readonly>
+                  </div>
+                  <div class="form-group">
+                    <label for="serial">Location:</label>
+                    <input value="'.$carInfo[2].'" type="text" class="form-control" id="location" readonly>
+                  </div>
+                  <div class="form-group">
+                    <label for="serial">Price:</label>
+                    <input value="'.$carInfo[3].'" type="text" class="form-control" id="price" readonly>
+                  </div>
+                </div>
+              </div>';
+        break;
+
+      case 'form_admin':
+      $trainsResult = q_getTrainNumbers($conn);
+      $customersResult = q_getCustomerID($conn);
+      $locationsResult = q_getLocations($conn);
+      $typesResult = q_getTypes($conn);
+      echo '<div class="">
+              <div class="col-md-offset-1 col-md-10">
+                <div class="form-group">
+                  <!-- serial_num -->
+                  <label for="serial">Serial Number:</label>
+                  <input value="'.$serial.'" type="text" class="form-control" id="serial_num" readonly>
+                </div>
+                <!-- load_capacity -->
+                <div class="form-group">
+                  <label for="serial">Load Capacity:</label>
+                  <input value="'.$carInfo[0].'" type="text" class="form-control editMe" id="load_capacity" readonly>
+                </div>
+                <!-- type -->
+                <div class="form-group">
+                  <label for="serial">Type:</label>
+                  <select class="form-control editMe" id="type">
+                    <option value="'.$carInfo[1].'">'.$carInfo[1].'</option>';
+                    while($typeRow = $typesResult->fetch_array(MYSQLI_NUM)){
+                      foreach($typeRow as $type){
+                        echo '<option value="'.$type.'">'.$type.'</option>';
+                      }
+                    }
+            echo '</select></div>
+                <!-- location -->
+                <div class="form-group">
+                  <label for="serial">Location:</label>
+                  <select class="form-control editMe" id="location">
+                    <option value="'.$carInfo[2].'">'.$carInfo[2].'</option>';
+                    while($locationRow = $locationsResult->fetch_array(MYSQLI_NUM)){
+                      foreach($locationRow as $location){
+                        echo '<option value="'.$location.'">'.$location.'</option>';
+                      }
+                    }
+            echo '</select></div>
+                <!-- price -->
+                <div class="form-group">
+                  <label for="serial">Price:</label>
+                  <input value="'.$carInfo[3].'" type="text" class="form-control editMe" id="price" readonly>
+                </div>
+                <!-- train_num -->
+                <div class="form-group">
+                  <label for="serial">Train Number:</label>
+                  <select class="form-control editMe" id="train_num">
+                    <option value="'.$carInfo[4].'">'.$carInfo[4].'</option>';
+                    while($trainRow = $trainsResult->fetch_array(MYSQLI_NUM)){
+                      foreach($trainRow as $train){
+                        echo '<option value="'.$train.'">'.$train.'</option>';
+                      }
+                    }
+                    echo '<option value="-1">No Train</option>';
+            echo' </select></div>
+                <!-- customer_id -->
+                <div class="form-group">
+                  <label for="serial">Customer ID:</label>
+                  <select class="form-control editMe" id="assignedCustomerID">
+                    <option value="'.$carInfo[8].'">'.$carInfo[8].'</option>';
+                  while($customerRow = $customersResult->fetch_array(MYSQLI_NUM)){
+                    foreach($customerRow as $customer){
+                      echo '<option value="'.$customer.'">'.$customer.'</option>';
+                    }
+                  }
+                  echo '<option value="0">No Customer</option>';
+          echo  '</select></div>
+                <!-- date -->
+                <div class="form-group">
+                  <label for="serial">Date:</label>
+                  <input value="'.$carInfo[5].'" type="text" class="form-control" id="date" readonly>
+                  <p>*** Use View Schedule to Change ***</p>
+                </div>
+                <!-- depart_time -->
+                <div class="form-group">
+                  <label for="serial">Departure Time:</label>
+                  <input value="'.$carInfo[6].'" type="text" class="form-control" id="depart_time" readonly>
+                  <p>*** Use View Schedule to Change ***</p>
+                </div>
+                <!-- dest_time -->
+                <div class="form-group">
+                  <label for="serial">Destination Time:</label>
+                  <input value="'.$carInfo[7].'" type="text" class="form-control" id="dest_time" readonly>
+                  <p>*** Use View Schedule to Change ***</p>
+                </div>
+              </div>
+            </div>';
+
+        break;
+
+      default:
+        echo "Error: $type is not specified correctly to controller";
+        break;
+    }
+
   }
 
   function reserveCarsForm($conn, $serial){

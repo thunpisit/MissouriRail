@@ -87,8 +87,10 @@
 
   function q_printCarsTable($conn, $company_id, $location){
     if($location == 'all'){
-      $query = "SELECT `car`.`serial_num`, `car`.`load_capacity`, `car`.`type`, `car`.`location`, `car`.`price`, `car`.`customer_id`
-      FROM `car`, `train`  WHERE `train`.`company_id` = ? AND `train`.`train_num` = `car`.`train_num`";
+      $query = "SELECT car.serial_num, car.load_capacity, car.type, car.location,
+      schedule.date, schedule.depart_time, schedule.dest_time, car.price, car.customer_id
+      FROM car, train, schedule  WHERE train.company_id = ? AND train.train_num = car.train_num
+      AND car.train_num = schedule.train_num AND car.customer_id = '0'";
       $stmt = $conn->stmt_init();
       if(!mysqli_stmt_prepare($stmt, $query)) {
           die("table does not exist");
@@ -99,9 +101,10 @@
         return $result;
       }
     } else {
-      $query = "SELECT `car`.`serial_num`, `car`.`load_capacity`, `car`.`type`, `car`.`location`, `car`.`price`, `car`.`customer_id`
-      FROM `car`, `train`  WHERE `train`.`company_id` = ? AND `train`.`train_num` = `car`.`train_num`
-      AND `car`.`location` = ?";
+      $query = "SELECT car.serial_num, car.load_capacity, car.type, car.location,
+      schedule.date, schedule.depart_time, schedule.dest_time, car.price, car.customer_id
+      FROM car, train, schedule  WHERE train.company_id = ? AND train.train_num = car.train_num
+      AND car.location = ? AND car.train_num = schedule.train_num LIMIT 1";
       $stmt = $conn->stmt_init();
       if(!mysqli_stmt_prepare($stmt, $query)) {
           die("table does not exist");
@@ -115,8 +118,9 @@
   }
 
   function q_getMyReservations($conn, $user){
-    $query = "SELECT serial_num, load_capacity, type, location, price FROM car
-    WHERE customer_id=?";
+    $query = "SELECT car.serial_num, car.load_capacity, car.type, car.location,
+    schedule.date, schedule.depart_time, schedule.dest_time, car.price FROM car, schedule
+    WHERE customer_id=? AND car.train_num = schedule.train_num";
     $stmt = $conn->stmt_init();
     if(!mysqli_stmt_prepare($stmt, $query)) {
         die("table does not exist");

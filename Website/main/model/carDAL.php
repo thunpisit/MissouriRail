@@ -21,23 +21,120 @@ class Car{
   }
 }
 
-function q_getCarInfo($conn, $serial){
-  $query = "SELECT load_capacity, type, location, price FROM car
-  WHERE serial_num=?";
+function q_getAllCars($conn){
+  $query = "SELECT * FROM car";
   $stmt = $conn->stmt_init();
-
   if(!mysqli_stmt_prepare($stmt, $query)) {
       printf("Error: %s.\n", $stmt->error);
     return;
   }
-
-  $stmt->bind_param("s", $serial);
-
   $stmt->execute();
   $result = $stmt->get_result();
-  return $result->fetch_array();
+  return $result;
+}
+
+function q_getLocations($conn){
+  $query = "SELECT name FROM city";
+  $stmt = $conn->stmt_init();
+  if(!mysqli_stmt_prepare($stmt, $query)) {
+      printf("Error: %s.\n", $stmt->error);
+    return;
+  }
+  $stmt->execute();
+  $result = $stmt->get_result();
+  return $result;
+}
+
+function q_getTypes($conn){
+  $query = "SELECT DISTINCT type FROM car";
+  $stmt = $conn->stmt_init();
+  if(!mysqli_stmt_prepare($stmt, $query)) {
+      printf("Error: %s.\n", $stmt->error);
+    return;
+  }
+  $stmt->execute();
+  $result = $stmt->get_result();
+  return $result;
+}
+
+function q_getCarInfo($conn, $serial, $type){
+  switch ($type) {
+    case 'form':
+        $query = "SELECT load_capacity, type, location, price FROM car
+        WHERE serial_num=?";
+        $stmt = $conn->stmt_init();
+
+        if(!mysqli_stmt_prepare($stmt, $query)) {
+            printf("Error: %s.\n", $stmt->error);
+          return;
+        }
+
+        $stmt->bind_param("s", $serial);
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_array();
+      break;
+
+    case 'form_admin':
+        $query = "SELECT car.load_capacity, car.type, car.location, car.price,
+        car.train_num, schedule.date, schedule.depart_time, schedule.dest_time,
+        car.customer_id FROM car, schedule WHERE car.train_num = schedule.train_num
+        AND car.serial_num = ?";
+        $stmt = $conn->stmt_init();
+
+        if(!mysqli_stmt_prepare($stmt, $query)) {
+            printf("Error: %s.\n", $stmt->error);
+          return;
+        }
+
+        $stmt->bind_param("s", $serial);
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_array();
+      break;
+
+    default:
+      echo "Error: $type does not exist";
+      break;
+  }
 
 }
+
+function q_updateEquipment($conn, $method, $serial, $load, $type, $location, $price, $train, $date, $depart, $dest, $customer){
+  switch ($method) {
+    case 'car':
+        $query = "UPDATE car SET load_capacity = ?, type = ?, location = ?,
+        price = ?, train_num = ?, customer_id = ? WHERE serial_num = ?";
+        $stmt = $conn->stmt_init();
+        if(!mysqli_stmt_prepare($stmt, $query)) {
+            printf("Error: %s.\n", $stmt->error);
+          return;
+        }
+        $stmt->bind_param("sssssss", $load, $type, $location, $price, $train, $customer, $serial);
+        $stmt->execute();
+      break;
+
+    case 'schedule':
+        // $query = "";
+        // $stmt = $conn->stmt_init();
+        // if(!mysqli_stmt_prepare($stmt, $query)) {
+        //     printf("Error: %s.\n", $stmt->error);
+        //   return;
+        // }
+        // $stmt->bind_param("", );
+        // $stmt->execute();
+        // $result = $stmt->get_result();
+
+      break;
+
+    default:
+      # code...
+      break;
+  }
+}
+
 
 function q_reserveCar($conn, $customer, $serial){
   $query = "UPDATE car SET customer_id = ? WHERE serial_num=?";

@@ -31,6 +31,18 @@
     return $result;
   }
 
+  function q_getCustomerID($conn){
+    $query = "SELECT email FROM customer";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+      return;
+    }
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result;
+  }
+
 
   function q_getCustomers($conn){
     $query = "SELECT email as 'Email', first_name as 'First Name', last_name as 'Last Name',

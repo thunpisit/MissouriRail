@@ -1,26 +1,17 @@
 <!DOCTYPE html>
-<?php
-  include("controller.php");
-  topStart();
- ?>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>MissouriRail : </title>
+    <title>MissouriRail : About US</title>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-<!--
-     Latest compiled and minified JavaScript
+    <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
--->
-
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-      <script src="assets/javascript/scripts.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -28,6 +19,13 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style>
+      img{
+        height:100px;
+        width:200px;
+        margin:auto;
+      }
+    </style>
   </head>
       <body>
           <nav class="navbar navbar-default">
@@ -59,40 +57,44 @@
 <!--              </div> /.container-fluid -->
           </nav>
 
-        <div class="container">
-            <div class="jumbotron">
-                <h2 class="text-center">Login</h2><br>
-                <form action="login.php" method="post">
-                  <div class="form-group">
-                    <label for="InputEmail">Email address</label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Email">
-                  </div>
-                  <div class="form-group">
-                    <label for="InputPassword">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                  </div>
-<!--                  <button type="submit" class="btn btn-default text-center">Submit</button>-->
-                    <div class="text-center">
-                        <input class="btn btn-primary btn-md" type="submit" value="Login" name="submit" role="button" onclick="return form_submission()">
-                    </div>
-
-                </form>
-                <?php
-                  if(isset($_POST['submit'])){
-                    $conn = connectDB();
-                    // for getLog action in controller
-                    $email=htmlspecialchars($_POST['email']);
-                    $password= htmlspecialchars($_POST['password']);
-                    loginUser($conn,$email,$password);
-                    $conn->close();
-                  }
-                 ?>
+        <div class="container text-center">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Premium Quality Fleet</h3>
+              </div>
+              <div class="panel-body">
+                In our company, we have many different types of Cars that serve different purposes. We are proud to annonce that all of our trains are MADE IN U.S.A. with the best company in the world.
+              </div>
             </div>
-        </div>
-
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Our Fleets</h3>
+              </div>
+              <div class="panel-body">
+                <p>
+                  <img src="assets/images/passengercar.jpeg" alt="Passenger Car" />
+                  <br><br>
+                  <b>Passenger Car</b><br><br>Our passenger car holds maximum of 60 people. Furnished with the most comfortable chairs in the world.
+                  We provides drinks and snacks to our customers. Cost is $1.20/mile.
+                  <br><br>
+                  <img src="assets/images/coalcar.jpeg" alt="Coal Car" />
+                  <br><br>
+                  <b>Coal Cargo Car</b><br><br>We transport the majority of coals in the United States of America across the nation. Our coal cargo car is the newest model and can hold approximately 2 tons.
+                  Transportation cost is $.40/mile.
+                   <br><br>
+                   <img src="assets/images/flatbedcar.jpeg" alt="Flatbed Car" />
+                   <br><br>
+                    <b>Steel Cargo Car</b><br><br>Our steel cargo car are flatbed. They can hold any shape. Can hold approximately 1 ton. Transportation cost is $.40/mile.
+                   <br><br>
+                   <img src="assets/images/boxcar.jpeg" alt="Freight Car" />
+                   <br><br>
+                   <b>Freight Car</b><br><br>These type of cars can hold any product, such as laptops. The cost of transporation is $.65/mile.<br>
+                </p>
+              </div>
+            </div>
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<!--        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
-<!--        <script src="js/bootstrap.min.js"></script>-->
+        <script src="js/bootstrap.min.js"></script>
     </body>
 </html>

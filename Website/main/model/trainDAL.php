@@ -1,4 +1,16 @@
 <?php
+  function q_getTrainNumbers($conn){
+    $query = "SELECT train_num FROM train";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+      return;
+    }
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result;
+  }
+
   function q_createTrain($conn, $train, $company){
     $query = "INSERT INTO train (train_num, company_id) VALUES(?, ?)";
     $stmt = $conn->stmt_init();

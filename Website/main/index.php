@@ -50,7 +50,7 @@
                   </ul>
                   <form class="navbar-form navbar-right">
                     <a class="btn btn-default btn-md" href="login.php" role="button">Login</a>
-                    <a class="btn btn-primary btn-md" href="signup2.php" role="button">Signup</a>
+                    <a class="btn btn-primary btn-md" href="signup.php" role="button">Signup</a>
                   </form>
                 </div><!-- /.navbar-collapse -->
 <!--              </div> /.container-fluid -->

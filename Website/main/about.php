@@ -80,11 +80,11 @@
                 <h3 class="panel-title">Board of Directors</h3>
               </div>
               <div class="panel-body">
-                <a>Thunpisit Amnuaikiatloet</a><br>
-                <a>Devin Cargill</a><br>
-                <a>Jonathan Yee</a><br>
-                <a>Jeb Robertson</a><br>
-                <a>Seth John</a><br>
+                <a href="mailto:taf5c@missourirail.com">Thunpisit Amnuaikiatloet</a><br>
+                <a href="mailto:dc23b@missourirail.com">Devin Cargill</a><br>
+                <a href="mailto:jy6vd@missourirail.com">Jonathan Yee</a><br>
+                <a href="mailto:jeb@missourirail.com">Jeb Robertson</a><br>
+                <a href="mailto:scjc68@missourirail.com">Seth John</a><br>
                 </ul>
               </div>
             </div>

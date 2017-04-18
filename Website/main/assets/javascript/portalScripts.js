@@ -206,8 +206,9 @@ function reserveCar(serial_num){
   // console.log(serial_num);
   $.ajax({
     url: 'controller.php',
-    data:{action: 'reserveCarsForm',
-          serial_num: serial_num},
+    data:{action: 'getCarInfo',
+          serial_num: serial_num,
+          type: 'form'},
     type: 'post',
     success: function(output) {
       // console.log(output);

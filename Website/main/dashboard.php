@@ -54,9 +54,8 @@
             <div class="alert alert-info text-center" role="alert">
                 <a href="#" class="alert-link">Hello!, Customer: <?= $_SESSION['user_id'] ?></a><br><br><button id="logBtn" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Edit my profile</button>
             </div>
-        </div>
-        <h1>OLD DASHBOARD</h1>
-
+        </div>  
+      
 <!--
         <div class="row">
           <div class="col-md-offset-2 col-md-8">
@@ -74,7 +73,7 @@
           </div>
         </div>
 -->
-      <!-- <div class="container">
+      <div class="container">
              <div class="col-md-4">
                 <div class="panel panel-default text-center">
                     <div class="panel-heading">
@@ -102,7 +101,7 @@
                     </div>
                 </div>
             </div>
-        </div> -->
+        </div>
 
 
       </div>
