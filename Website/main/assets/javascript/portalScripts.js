@@ -46,6 +46,9 @@ $(function(){
       });
     });
 
+    $("#basicInfoBtn").click(function(){
+      $("#editBtn").show();
+    });
 
     $("#editBtn").click(function(){
       $("#editBtn").html("Save").removeClass("btn-info").addClass("btn-success");
@@ -141,7 +144,7 @@ $(function(){
     });
 
 
-});
+});// end document ready
 
 function fillModalInfo(first_name, last_name, status, rank){
   $(".modal-title").html('Your Information');
@@ -166,7 +169,7 @@ function fillModalInfoEngineer(first_name, last_name, status, rank, hours){
 
 function fillModalInfoCustomer(first_name, last_name, phone_number, address){
   $(".modal-title").html('Your Information');
-  $("#editCustomerBtn").html("Edit");
+  $("#editBtn").html("Edit");
   $("#first_name").val(first_name).attr("readonly", true);
   $("#last_name").val(last_name).attr("readonly", true);
   $("#phone_number").val(phone_number).attr("readonly", true);

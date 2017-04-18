@@ -101,23 +101,24 @@
   }
 
   function printCarsTable($conn, $company_id, $location){
-    echo '<div id="locationSelect">
-            <div class="form-group">
-              <label for="sel1">Locations:</label>
-              <select onchange="getVal(this)" class="form-control" id="city_name">
-                <option value="St. Louis">St. Louis</option>
-                <option value="Cape Girardeau">Cape Girardeau</option>
-                <option value="Columbia">Columbia</option>
-                <option value="Jefferson City">Jefferson City</option>
-                <option value="Joplin">Joplin</option>
-                <option value="Kansas City">Kansas City</option>
-                <option value="Sedalia">Sedalia</option>
-                <option value="Springfield">Springfield</option>
-                <option value="Branson">Branson</option>
-              </select>
-            </div>
-          </div>';
-    $result = q_printCarsTable($conn, $company_id, $location);
+    // too buggy
+    // echo '<div id="locationSelect">
+    //         <div class="form-group">
+    //           <label for="sel1">Locations:</label>
+    //           <select onchange="getVal(this)" class="form-control" id="city_name">
+    //             <option value="St. Louis">St. Louis</option>
+    //             <option value="Cape Girardeau">Cape Girardeau</option>
+    //             <option value="Columbia">Columbia</option>
+    //             <option value="Jefferson City">Jefferson City</option>
+    //             <option value="Joplin">Joplin</option>
+    //             <option value="Kansas City">Kansas City</option>
+    //             <option value="Sedalia">Sedalia</option>
+    //             <option value="Springfield">Springfield</option>
+    //             <option value="Branson">Branson</option>
+    //           </select>
+    //         </div>
+    //       </div>';
+    $result = q_printCarsTable($conn, $company_id, 'all');
     if($result->num_rows > 0){
       // output data of each row
       echo "<div id='carsTable' class='row'><label>Number of total cars:</label> $result->num_rows";
