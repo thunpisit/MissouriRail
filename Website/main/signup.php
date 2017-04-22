@@ -207,7 +207,7 @@
                 break;
             }
 
-            if(signUp($conn, $type, $user, $pass, $add_equipment,
+            if(signUp($conn, $type, 'front', $user, $pass, $add_equipment,
             $add_conductor, $monitor_train, $add_train, $add_engineer,
             $reset_pass, $edit_user, $ssn) > 0){
 

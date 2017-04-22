@@ -1,5 +1,5 @@
 $(function(){
-  $("#companyForm, #locationSelect").hide();
+  $("#companyForm, #locationSelect, #password").hide();
     $.ajax({
        url: 'controller.php',
        data: {action: 'getInfo'},
@@ -10,6 +10,7 @@ $(function(){
     });
 
     $("#myReservation").click(function(){
+      $("#editBtn").hide();
       $.ajax({
          url: 'controller.php',
          data: {action: 'getMyReservations'},
@@ -145,6 +146,50 @@ $(function(){
 
 
 });// end document ready
+
+function resetPassword(user){
+  preloadModal = $(".modal-body").html();
+  $("#password").show().removeAttr("readonly");
+  $("#editBtn").html("Save Changes").show();
+  $(".modal-title").html('Reset Password');
+  $("#last_name, #passwordHide").hide();
+  $("#label1").html("User ID:");
+  $("#label2").html("Password:");
+  $("#first_name").val(user);
+
+  $("#editBtn").click(function(){
+    $("#password").attr("readonly", true);
+    pwd = $("#password").val();
+    $.ajax({
+      url: 'controller.php',
+      data: {action: 'updatePassword',
+             user: user,
+             pwd: pwd},
+      type: 'post',
+      success: function(output){
+        $("#closeModal").unbind("click");
+        $("#editBtn").hide();
+        $(".modal-body").html(output);
+        $("#closeModal").click(function(){
+          $.ajax({
+            url: 'controller.php',
+            data: {action: 'loginRedirect'},
+            type: 'post',
+            success: function(output){
+              window.location.replace('login.php');
+            }
+          });
+        });
+      }
+    });
+  });
+
+  $("#closeModal").click(function(){
+    $("#editBtn").unbind("click");
+    $(".modal-body").html(preloadModal);
+  });
+}
+
 
 function fillModalInfo(first_name, last_name, status, rank){
   $(".modal-title").html('Your Information');

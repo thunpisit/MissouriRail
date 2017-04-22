@@ -24,7 +24,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         $conn = connectDB();
         $user = $_POST['user_id'];
         $pass = $_POST['password'];
-        signUp($conn, $user, $pass, 0,
+        signUp($conn, 'customer', 'back', $user, $pass, 0,
         0, 0, 0, 0,
         0, 0, 0);
         break;
@@ -41,15 +41,47 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
 
       case 'updateInfo':
         session_start();
-        $user = $_SESSION['user_id'];
-        echo "user = " . $user;
-        $first_name = $_POST['first_name'];
-        $last_name = $_POST['last_name'];
-        $status = $_POST['status'];
-        $rank = $_POST['rank'];
-        $hours = $_POST['hours'];
+        // for admins
+        if(isset($_POST['type'])){
+          if($_POST['type'] == 'admin'){
+            $user = $_SESSION['user_id'];
+            $first_name = $_POST['fname'];
+            $last_name = $_POST['lname'];
+            $status = $_POST['status'];
+            $job_title = $_POST['title'];
+            updateEmployeeInfo($user, $first_name, $last_name, $status, $job_title, 0);
+          }
+        }
+        // everyone else
+        else {
+          $user = $_SESSION['user_id'];
+          $first_name = $_POST['first_name'];
+          $last_name = $_POST['last_name'];
+          $status = $_POST['status'];
+          $rank = $_POST['rank'];
+          $hours = $_POST['hours'];
+          updateEmployeeInfo($user, $first_name, $last_name, $status, $rank, $hours);
+        }
+        break;
 
-        updateEmployeeInfo($user, $first_name, $last_name, $status, $rank, $hours);
+      case 'loginRedirect':
+        session_start();
+        session_unset();
+        if (ini_get("session.use_cookies")) {
+          $params = session_get_cookie_params();
+          setcookie(session_name(), '', time() - 42000,
+            $params["path"], $params["domain"],
+            $params["secure"], $params["httponly"]);
+        }
+        session_destroy();
+        break;
+
+      case 'updatePassword':
+        session_start();
+        $user = $_POST['user'];
+        $pwd = htmlspecialchars($_POST['pwd']);
+        updatePassword($user, $pwd);
+        echo "<h2 class='text-center'>Password successfully updated.</h2><br><br><h3 class='text-center'>Account Must Relogin.</h3>";
         break;
 
       case 'printLog':
@@ -118,6 +150,11 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         } else {
           $_SESSION['customer'] = NULL;
         }
+        if(q_checkAdmin($conn, $user) == 1){
+          $_SESSION['admin'] = 1;
+        } else {
+          $_SESSION['admin'] = NULL;
+        }
         $permissions = q_getPermissions($conn, $user);
         $permissionsArray = $permissions->fetch_array();
         $counter = 0;
@@ -143,26 +180,30 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
   }
 
   // signs user up then returns 0 on fail
-  function signUp($conn, $typeOfUser, $user, $pass, $add_equipment,
+  function signUp($conn, $typeOfUser, $signUp, $user, $pass, $add_equipment,
   $add_conductor, $monitor_train, $add_train, $add_engineer,
   $reset_pass, $edit_user, $ssn){
-    $fname = $_POST['first_name'];
-    $lname = $_POST['last_name'];
     if(q_checkUser($conn, $user) < 1){
       switch ($typeOfUser) {
         case 'administrator':
+          $fname = $_POST['first_name'];
+          $lname = $_POST['last_name'];
           $status = $_POST['input3'];
           $title = $_POST['input4'];
           q_signUpAdmin($conn, $user, $fname, $lname, $status, $title);
           break;
 
         case 'conductor':
+          $fname = $_POST['first_name'];
+          $lname = $_POST['last_name'];
           $status = $_POST['input3'];
           $rank = $_POST['input4'];
           q_signUpConductor($conn, $user, $fname, $lname, $status, $rank);
           break;
 
         case 'engineer':
+          $fname = $_POST['first_name'];
+          $lname = $_POST['last_name'];
           $status = $_POST['input3'];
           $rank = $_POST['input4'];
           $hours = $_POST['input5'];
@@ -170,9 +211,13 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
           break;
 
         case 'customer':
-          $phone = $_POST['input3'];
-          $address = $_POST['input4'];
-          q_signUpCustomer($conn, $user, $fname, $lname, $phone, $address);
+          if($signUp == 'front'){
+            $fname = $_POST['first_name'];
+            $lname = $_POST['last_name'];
+            $phone = $_POST['input3'];
+            $address = $_POST['input4'];
+            q_signUpCustomer($conn, $user, $fname, $lname, $phone, $address);
+          }
           break;
 
         default:
@@ -292,6 +337,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         $x++;
       }
       echo "<th>Customer Information</th>";
+      echo "<th>Reset Password</th>";
       echo "</tr></thead><tbody>";
       while($row = $result->fetch_array(MYSQLI_NUM)) {
         echo "<tr>";
@@ -303,7 +349,10 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         $phone_number = "'" . $row[3] . "'";
         $address = "'" . $row[4] . "'";
         echo '<td>
-                <button type="button" onclick="modalFill('.$user_id.','.$first_name.','.$last_name.','.$phone_number.','.$address.')" class="btn btn-info btn-block" data-toggle="modal" data-target="#myModal">Customer Information</button>
+                <button type="button" onclick="modalFill('.$user_id.','.$first_name.','.$last_name.','.$phone_number.','.$address.')" class="btn btn-info" data-toggle="modal" data-target="#myModal">View</button>
+              </td>';
+        echo '<td>
+                <button type="button" onclick="resetPasswordAdmin('.$user_id.')" class="btn btn-danger" data-toggle="modal" data-target="#myModal">Reset</button>
               </td>';
         }
         echo "</tr>";

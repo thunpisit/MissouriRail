@@ -31,6 +31,18 @@
     return 0;
   }
 
+  function q_updatePassword($conn, $user, $pwd){
+    $password = password_hash($pwd, PASSWORD_DEFAULT);
+    $query = "UPDATE authentication SET password=? WHERE user_id = ?";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+      } else {
+        mysqli_stmt_bind_param($stmt, "ss", $password, $user);
+        $result = $stmt->execute();
+      }
+  }
+
   function q_signUpAdmin($conn, $user, $fname, $lname, $status, $title){
     $query = "INSERT INTO administrator (user_id, first_name, last_name, status, job_title) VALUES (?,?,?,?,?)";
     $stmt = $conn->stmt_init();
@@ -205,4 +217,18 @@
       $result = $stmt->get_result();
       return $result->num_rows;
     }
-  }?>
+  }
+
+  function q_checkAdmin($conn, $user){
+    $query = "SELECT * FROM administrator WHERE user_id=?";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        die("something went wrong");
+    } else {
+      mysqli_stmt_bind_param($stmt, "s", $user);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      return $result->num_rows;
+    }
+  }
+  ?>

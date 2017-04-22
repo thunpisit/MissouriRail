@@ -5,8 +5,19 @@
 
   function updateEmployeeInfo($user, $first_name, $last_name, $status, $rank, $hours){
     $conn = connectDB();
-    q_updateEmployeeInfo($conn, $user, $first_name, $last_name, $status, $rank, $hours);
-    q_getEmployeeInfo($conn, $user);
+    if(q_checkAdmin($conn, $user) > 0){
+      q_updateAdminInfo($conn, $user, $first_name, $last_name, $status, $rank);
+      getEmployeeInfo($user);
+    } else {
+      q_updateEmployeeInfo($conn, $user, $first_name, $last_name, $status, $rank, $hours);
+      q_getEmployeeInfo($conn, $user);
+    }
+    $conn->close();
+  }
+
+  function updatePassword($user, $pwd){
+    $conn = connectDB();
+    echo q_updatePassword($conn, $user, $pwd);
     $conn->close();
   }
 
@@ -20,13 +31,15 @@
         $items[] = $key;
       }
 
+      $user_id = "'" . $user . "'";
       $first_name = "'" . $items[0] . "'";
       $last_name = "'" . $items[1] . "'";
       $status = "'" . $items[2] . "'";
       $rank = "'" . $items[3] . "'";
       $hours = "'" . $items[4] . "'";
 
-      echo '<button id="basicInfoBtn" onclick="fillModalInfoEngineer('. $first_name .','. $last_name .','. $status .','. $rank .','. $hours. ')" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">View Basic Information</button><br><br>';
+      echo '<button id="basicInfoBtn" onclick="fillModalInfoEngineer('. $first_name .','. $last_name .','. $status .','. $rank .','. $hours. ')" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">View Basic Information</button><br><br>
+            <button id="resetPassword" onclick="resetPassword('.$user_id.')" type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#myModal">Change Your Password</button><br>';
       $conn->close();
     } else if($_SESSION['customer'] == 1){
       $conn = connectDB();
@@ -36,14 +49,33 @@
         $items[] = $key;
       }
 
+      $user_id = "'" . $user . "'";
       $first_name = "'" . $items[0] . "'";
       $last_name = "'" . $items[1] . "'";
       $phone_number = "'" . $items[2] . "'";
       $address = "'" . $items[3] . "'";
 
-      echo '<button id="basicInfoBtn" onclick="fillModalInfoCustomer('. $first_name .','. $last_name .','. $phone_number .','. $address .')" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">View Basic Information</button><br><br>';
+      echo '<button id="basicInfoBtn" onclick="fillModalInfoCustomer('. $first_name .','. $last_name .','. $phone_number .','. $address .')" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">View Basic Information</button><br><br>
+            <button id="resetPassword" onclick="resetPassword('.$user_id.')" type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#myModal">Change Your Password</button><br>';
       $conn->close();
 
+    } else if($_SESSION['admin'] == 1){
+      $conn = connectDB();
+      $result = q_getAdmin($conn, $user);
+
+      foreach ($result as $key) {
+        $items[] = $key;
+      }
+
+      $user_id = "'" . $user . "'";
+      $first_name = "'" . $items[0] . "'";
+      $last_name = "'" . $items[1] . "'";
+      $status = "'" . $items[2] . "'";
+      $title = "'" . $items[3] . "'";
+
+      echo '<button id="basicInfoBtn" onclick="fillModalInfo('. $user_id .','. $first_name .','. $last_name .','. $status .','. $title .')" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">View Basic Information</button><br><br>
+            <button id="resetPassword" onclick="resetPassword('.$user_id.')" type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#myModal">Change Your Password</button><br>';
+      $conn->close();
     }
     else {
     $conn = connectDB();
@@ -53,12 +85,14 @@
       $items[] = $key;
     }
 
+    $user_id = "'" . $user . "'";
     $first_name = "'" . $items[0] . "'";
     $last_name = "'" . $items[1] . "'";
     $status = "'" . $items[2] . "'";
     $rank = "'" . $items[3] . "'";
 
-    echo '<button id="basicInfoBtn" onclick="fillModalInfo('. $first_name .','. $last_name .','. $status .','. $rank .')" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">View Basic Information</button><br><br>';
+    echo '<button id="basicInfoBtn" onclick="fillModalInfo('. $first_name .','. $last_name .','. $status .','. $rank .')" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">View Basic Information</button><br><br>
+          <button id="resetPassword" onclick="resetPassword('.$user_id.')" type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#myModal">Change Your Password</button><br>';
     $conn->close();
     }
   }
@@ -150,8 +184,10 @@
   function printAllCustomersHTML(){
     echo '<button id="printCustomers" type="button" class="btn btn-warning btn-md" data-toggle="collapse" data-target="#collapseMe" name="button">Show Customers</button>
           <div id="collapseMe" class="collapse">
-            <div id="customerTable">
+            <div class="row">
+              <div id="customerTable">
 
+              </div>
             </div>
           </div>';
   }
@@ -177,37 +213,40 @@
                   <!-- first_name -->
                   <div class="row">
                     <div class="col-md-offset-2 col-md-3">
-                      <label for="usr">First Name:</label>
+                      <label id="first_nameLabel" for="usr">First Name:</label>
                     </div>
                     <div class="col-md-4">
+                      <input id="password" class="form-control" type="password" name="password" value="" readonly>
                       <input id="first_name" class="form-control modalInput" type="text" name="first_name" value="" readonly>
                     </div>
                   </div><hr>
-                  <!-- last_name -->
-                  <div class="row">
-                    <div class="col-md-offset-2 col-md-3">
-                      <label for="usr">Last Name:</label>
-                    </div>
-                    <div class="col-md-4">
-                      <input id="last_name" class="form-control modalInput" type="text" name="last_name" value="" readonly>
-                    </div>
-                  </div><hr>
-                  <!-- phone_number -->
-                  <div class="row">
-                    <div class="col-md-offset-2 col-md-3">
-                      <label for="usr">Phone Number:</label>
-                    </div>
-                    <div class="col-md-4">
-                      <input id="phone_number" class="form-control modalInput" type="text" name="phone_number" value="" readonly>
-                    </div>
-                  </div><hr>
-                  <!-- address -->
-                  <div class="row">
-                    <div class="col-md-offset-2 col-md-3">
-                      <label for="usr">Address:</label>
-                    </div>
-                    <div class="col-md-4">
-                      <input id="address" class="form-control modalInput" type="text" name="address" value="" readonly>
+                  <div id="passwordHide">
+                    <!-- last_name -->
+                    <div class="row">
+                      <div class="col-md-offset-2 col-md-3">
+                        <label for="usr">Last Name:</label>
+                      </div>
+                      <div class="col-md-4">
+                        <input id="last_name" class="form-control modalInput" type="text" name="last_name" value="" readonly>
+                      </div>
+                    </div><hr>
+                    <!-- phone_number -->
+                    <div class="row">
+                      <div class="col-md-offset-2 col-md-3">
+                        <label id="label4" for="usr">Phone Number:</label>
+                      </div>
+                      <div class="col-md-4">
+                        <input id="phone_number" class="form-control modalInput" type="text" name="phone_number" value="" readonly>
+                      </div>
+                    </div><hr>
+                    <!-- address -->
+                    <div class="row">
+                      <div class="col-md-offset-2 col-md-3">
+                        <label id="label5" for="usr">Address:</label>
+                      </div>
+                      <div class="col-md-4">
+                        <input id="address" class="form-control modalInput" type="text" name="address" value="" readonly>
+                      </div>
                     </div>
                   </div>
 
@@ -240,7 +279,7 @@
                   <!-- first_name -->
                   <div class="row">
                     <div class="col-md-offset-2 col-md-3">
-                      <label for="usr">First Name:</label>
+                      <label id="label1" for="usr">First Name:</label>
                     </div>
                     <div class="col-md-4">
                       <input id="first_name" class="form-control modalInput" type="text" name="first_name" value="" readonly>
@@ -249,12 +288,13 @@
                   <!-- last_name -->
                   <div class="row">
                     <div class="col-md-offset-2 col-md-3">
-                      <label for="usr">Last Name:</label>
+                      <label id="label2" for="usr">Last Name:</label>
                     </div>
                     <div class="col-md-4">
+                      <input id="password" class="form-control" type="password" name="password" value="" readonly>
                       <input id="last_name" class="form-control modalInput" type="text" name="last_name" value="" readonly>
                     </div>
-                  </div><hr>';
+                  </div><hr><div id="passwordHide">';
                   if($_SESSION['customer'] == NULL){
                     echo '<!-- status -->
                     <div class="row">
@@ -308,7 +348,7 @@
                     </div><hr>';
             }
 
-          echo '</div>
+          echo '</div></div>
                 <div class="modal-footer">
                     <button id="editBtn" type="button" class="btn btn-info">Edit</button>
                     <button id="closeModal" type="button" class="btn btn-default" data-dismiss="modal">Close</button>

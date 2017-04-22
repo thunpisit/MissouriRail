@@ -1,10 +1,18 @@
 $(function(){
-  $("#createBtn").hide();
+  $("#createBtn, #password").hide();
   modalCloseCleanup();
   printCustomers();
   createCustomer();
   viewEquipment();
+  $.ajax({
+     url: 'controller.php',
+     data: {action: 'getInfo'},
+     type: 'post',
+     success: function(output) {
+                $("#information").html(output);
+              }
   });
+});//end document ready
 
 function editCar(serial){
   preloadModal = $(".modal-body").html();
@@ -69,6 +77,7 @@ function viewEquipment(){
     $("#closeModal").click(function(){
       $(".modal-body").html(preloadBody);
       $("#deleteBtn, #editCustomerBtn, #createBtn").show();
+      $("#editCustomerBtn").unbind("click");
     });
   });
 }
@@ -136,6 +145,7 @@ function modalFill(email, first_name, last_name, phone_number, address){
              data: {action: 'printCustomers'},
              type: 'post',
              success: function(output) {
+                          $("#editCustomerBtn, #deleteBtn").unbind("click");
                           $("#customerTable").html(output);
                       }
           });
@@ -144,7 +154,6 @@ function modalFill(email, first_name, last_name, phone_number, address){
   });
 
   $("#deleteBtn").click(function(){
-
       if(confirm("Are you sure you want to delete " + $("#user_id").val() + "?")){
         email = $("#email").val();
         $.ajax({
@@ -162,8 +171,11 @@ function modalFill(email, first_name, last_name, phone_number, address){
                     }
                 });
       }
-
   });//end deleteBtn
+
+  $("#closeModal").click(function(){
+    $("#editCustomerBtn, #deleteBtn").unbind("click");
+  });
 
 }
 
@@ -253,6 +265,133 @@ function createCustomer(){
                 });
       }
     });//end create customer
+  }
+
+  function resetPasswordAdmin(user){
+    preloadModal = $(".modal-body").html();
+    $("#deleteBtn, #createBtn").hide();
+    $("#password").show().removeAttr("readonly");
+    $("#editCustomerBtn").html("Save Changes").show();
+    $(".modal-title").html('Reset Password');
+    $("#first_name, #passwordHide").hide();
+    $("#first_nameLabel").html("Password:");
+    $("#email").val(user);
+
+    $("#editCustomerBtn").click(function(){
+      $("#password").attr("readonly", true);
+      pwd = $("#password").val();
+      $.ajax({
+        url: 'controller.php',
+        data: {action: 'updatePassword',
+               user: user,
+               pwd: pwd},
+        type: 'post',
+        success: function(output){
+          $(".modal-body").html(output);
+        }
+      });
+    });
+
+    $("#closeModal").click(function(){
+      $("#editCustomerBtn").unbind("click");
+      $(".modal-body").html(preloadModal);
+    });
+  }//end resetPasswordAdmin
+
+  function resetPassword(user){
+    preloadModal = $(".modal-body").html();
+    $("#deleteBtn, #createBtn").hide();
+    $("#password").show().removeAttr("readonly");
+    $("#editCustomerBtn").html("Save Changes").show();
+    $(".modal-title").html('Reset Password');
+    $("#first_name, #passwordHide").hide();
+    $("#first_nameLabel").html("Password:");
+    $("#email").val(user);
+
+    $("#editCustomerBtn").click(function(){
+      $("#password").attr("readonly", true);
+      pwd = $("#password").val();
+      $.ajax({
+        url: 'controller.php',
+        data: {action: 'updatePassword',
+               pwd: pwd},
+        type: 'post',
+        success: function(output){
+          $("#closeModal").unbind("click");
+          $("#editCustomerBtn").hide();
+          $(".modal-body").html(output);
+          $("#closeModal").click(function(){
+            $.ajax({
+              url: 'controller.php',
+              data: {action: 'loginRedirect'},
+              type: 'post',
+              success: function(output){
+                window.location.replace('login.php');
+              }
+            });
+          });
+        }
+      });
+    });
+
+    $("#closeModal").click(function(){
+      $("#editCustomerBtn").unbind("click");
+      $(".modal-body").html(preloadModal);
+    });
+  }
+
+  function fillModalInfo(user_id, first_name, last_name, status, title){
+    preloadModal = $(".modal-body").html();
+    $(".modal-title").html('Your Information');
+    $("#editCustomerBtn").html("Edit");
+    $("#email").val(user_id).attr("readonly", true);
+    $("#first_name").val(first_name).attr("readonly", true);
+    $("#last_name").val(last_name).attr("readonly", true);
+    $("#phone_number").val(status).attr("readonly", true);
+    $("#address").val(title).attr("readonly", true);
+    $("#label4").html("Status");
+    $("#label5").html("Job Title");
+    $("#deleteBtn, #createBtn").hide();
+    $("#closeModal").click(function(){
+      $(".modal-body").html(preloadModal);
+      $("#editCustomerBtn").html("Edit").show();
+      $("#editCustomerBtn").unbind("click");
+    });
+    $("#editCustomerBtn").click(function(){
+      $("#editCustomerBtn").html("Save Changes");
+      $("#first_name").removeAttr("readonly");
+      $("#last_name").removeAttr("readonly");
+      $("#phone_number").removeAttr("readonly");
+      $("#address").removeAttr("readonly");
+      $("#editCustomerBtn").click(function(){
+        $("#first_name").attr("readonly", true);
+        $("#last_name").attr("readonly", true);
+        $("#phone_number").attr("readonly", true);
+        $("#address").attr("readonly", true);
+        user = $("#email").val();
+        fname = $("#first_name").val();
+        lname = $("#last_name").val();
+        status = $("#phone_number").val();
+        title = $("#address").val();
+        // console.log("user: " + user + " fname: " + fname + " lname: " + lname + " status: " + status + " title: " + title);
+        $.ajax({
+           url: 'controller.php',
+           data: {action: 'updateInfo',
+                  type: 'admin',
+                  user_id: user,
+                  fname: fname,
+                  lname: lname,
+                  status: status,
+                  title: title},
+           type: 'post',
+           success: function(output) {
+             $("#information").html(output);
+             $("#editCustomerBtn").hide();
+             $("#closeModal").focus();
+           }
+         });
+      })
+    });
   }
 
 

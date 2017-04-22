@@ -67,15 +67,7 @@
                    </div>
                    <div class="panel-body">
                        <div id="information" class="row">
-                           <!-- <button id="basicInfoBtn" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">View Basic Information</button><br><br> -->
-                       </div>
-                       <div>
-                        <?php
-                          if(isset($_SESSION['engineer'])){
-                            if($_SESSION['engineer'] == 1)
-                            echo "engineer here";
-                          }
-                         ?>
+
                        </div>
                    </div>
                </div>

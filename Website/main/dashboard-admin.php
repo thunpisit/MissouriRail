@@ -22,7 +22,7 @@
         overflow-y: auto;
         overflow-x: auto;
         width: auto;
-        min-width: 600px;
+        min-width: 65%;
       }
       .modal-body {
         position: relative;
@@ -68,7 +68,7 @@
         </div>
         <?php printModalHTML();?>
         <div class="container">
-            <div class="col-md-4">
+            <div class="row"><div class="col-md-4">
                 <div class="panel panel-default text-center">
                     <div class="panel-heading">
                         <h2 class="panel-title">Customer Widget</h2>
@@ -77,9 +77,9 @@
                         <div class="row">
                             <button id="createCustomerBtn" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Create Customer</button>
                         </div><br>
-                        <div class="row">
+                        <!-- <div class="row"> -->
                             <?php printAllCustomersHTML();?><!-- button also located here -->
-                        </div>
+                        <!-- </div> -->
                     </div>
                 </div>
             </div>
@@ -108,7 +108,8 @@
                     </div>
                 </div>
             </div>
-             <div class="col-md-4">
+          </div>
+             <div class="row"><div class="col-md-4">
                 <div class="panel panel-default text-center">
                     <div class="panel-heading">
                         <h2 class="panel-title">Schedule Widget</h2>
@@ -138,6 +139,7 @@
                 </div>
               </div>
             </div>
+          </div>
         </div>
 
 
