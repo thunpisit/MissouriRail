@@ -1,4 +1,8 @@
 <?php
+  include "controller.php";
+  topStart();
+  ?>
+  <?php
   if(isset($_SESSION['user_id'])){
     if($_SESSION['reset_pass']==1){
       header("Location: dashboard-admin.php");
@@ -9,5 +13,8 @@
     }
   }else{
     header("Location: login.php");
+  }
+  if(!isset($_SESSION['user_id'])){
+    session_destroy();
   }
 ?>

@@ -14,6 +14,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <script src="assets/javascript/scripts.js"></script>
     <script src="assets/javascript/signUpScripts.js"></script>
+    <link rel="icon"
+      type="image/png"
+      href="missourirail.png">
   </head>
   <body>
     <nav class="navbar navbar-default">

@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="../assets/css/stylesheet.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <script src="../assets/javascript/scripts.js"></script>
+    <link rel="icon"
+      type="image/png"
+      href="missourirail.png">
     <title>Contact</title>
     <style>
         .formwrapper{
@@ -82,7 +85,7 @@
       $name=$_POST['name'];
       $email=$_POST['email'];
       $subject=$_POST['subject'];
-      $message=$_POST['message'];
+      $message=$_POST['name'].''.$_POST['message'];
       mail("support@mail.missourirail.com",$subject,$message);
     }
 

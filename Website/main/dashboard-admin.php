@@ -15,6 +15,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="assets/javascript/customerScripts.js"></script>
     <script src="assets/javascript/logScripts.js"></script>
+    <link rel="icon"
+      type="image/png"
+      href="missourirail.png">
     <style>
       .modal-dialog{
         position: relative;
