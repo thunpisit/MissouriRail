@@ -26,6 +26,20 @@
     $result = $stmt->get_result();
   }
 
+  function q_updateTrainCompany($conn, $company, $train){
+    $query = "UPDATE train SET company_id=? WHERE train_num=?";
+    $stmt = $conn->stmt_init();
+
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+      return;
+    }
+
+    $stmt->bind_param("ss", $company, $train);
+    $stmt->execute();
+    $result = $stmt->get_result();
+  }
+
   function q_getDepartCity($conn, $train){
     $query = "SELECT dest_city FROM schedule WHERE train_num = ?
     ORDER BY `date` DESC, dest_time DESC LIMIT 1";
@@ -39,7 +53,11 @@
     $stmt->bind_param("s", $train);
     $stmt->execute();
     $result = $stmt->get_result();
-    return $result->fetch_assoc();
+    if($result->num_rows == 0){
+      return 0;
+    } else {
+      return $result->fetch_assoc();
+    }
   }
 
   function q_getTrainNumbers($conn){
@@ -66,10 +84,23 @@
     return $result;
   }
 
+  function q_getLastTrain($conn){
+    $query = "SELECT train_num FROM train ORDER BY train_num DESC";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+      return;
+    }
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_assoc();
+  }
+
   function q_getTrainSchedules($conn){
     $query = "SELECT train.train_num, train.company_id, company.name AS 'Company Name',
     company.address AS 'Company Address', company.email AS 'Email', company.phone_number
-    AS 'Phone Number' FROM train INNER JOIN company ON (train.company_id = company.company_id)";
+    AS 'Phone Number' FROM train LEFT JOIN company ON (train.company_id = company.company_id)";
+    //  INNER JOIN company ON (train.company_id = company.company_id)
     $stmt = $conn->stmt_init();
     if(!mysqli_stmt_prepare($stmt, $query)) {
         printf("Error: %s.\n", $stmt->error);
@@ -104,11 +135,11 @@
       return;
     }
 
-    $stmt->bind_param("is",$train, $user);
+    $stmt->bind_param("is",$train, $company);
     $stmt->execute();
     $result = $stmt->get_result();
 
-    return $result;
+    return '<h2 class="text-center">Train Successfully Added</h2>';
   }
 
   function q_editTrain($conn, $train, $newTrain_num, $company){
@@ -125,6 +156,19 @@
     $result = $stmt->get_result();
 
     return $result;
+  }
+
+  function q_getLocationsCity($conn){
+    $query = "SELECT city.name FROM city";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+      return;
+    }
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result;
+
   }
 
   function q_getLocation($conn, $train){

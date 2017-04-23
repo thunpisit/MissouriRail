@@ -122,6 +122,10 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
       case 'getDestCity' : getDestCity(); break;
       case 'createSchedule' : createSchedule(); break;
       case 'getAllTrains' : getAllTrains(); break;
+      case 'editTrainCompany' : editTrainCompany(); break;
+      case 'createTrainForm' : createTrainForm(); break;
+      case 'createTrain' : createTrain(); break;
+      case 'getAllCities' : createScheduleCities(); break;
 
 
       case 'getMyReservations':

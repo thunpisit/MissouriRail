@@ -1,5 +1,6 @@
 $(function(){
   $("#createBtn, #password").hide();
+  beginningModal = $(".modal-body").html();
   modalCloseCleanup();
   printCustomers();
   createCustomer();
@@ -103,17 +104,40 @@ function createSchedule(){
                    train: train},
             type: 'post',
             success: function(output){
-              $("#depart_city").val(output);
-              $.ajax({
-                 url: 'controller.php',
-                 data: {action: 'getDestCity',
-                        city: output},
-                 type: 'post',
-                 success: function(output2){
-                   $("#dest_city").html(output2);
-                 }
-              });
-            }
+              if(output == 0){
+                $.ajax({
+                  url: 'controller.php',
+                  data: {action: 'getAllCities'},
+                  type: 'post',
+                  success: function(output1){
+                    $("#departCityInput").html(output1);
+                    $("#depart_city").change(function(){
+                      city = $(this).val();
+                      $.ajax({
+                         url: 'controller.php',
+                         data: {action: 'getDestCity',
+                                city: city},
+                         type: 'post',
+                         success: function(output2){
+                           $("#dest_city").html(output2);
+                         }
+                      });
+                    });
+                  }
+                });
+              } else {
+                $("#depart_city").val(output);
+                $.ajax({
+                   url: 'controller.php',
+                   data: {action: 'getDestCity',
+                          city: output},
+                   type: 'post',
+                   success: function(output2){
+                     $("#dest_city").html(output2);
+                   }
+                });
+              }
+            }//end depart_city success function
          });
        });
        $("#editCustomerBtn").click(function(){
@@ -250,6 +274,39 @@ function viewEquipment(){
   });
 }//end viewEquipment
 
+function createTrain(){
+  preloadBody = $(".modal-body").html();
+  $(".modal-title").html("Create Train");
+  $("#deleteBtn, #createBtn").hide();
+  $("#editCustomerBtn").html("Create Train");
+  $.ajax({
+    url: 'controller.php',
+    data: {action: 'createTrainForm'},
+    type: 'post',
+    success: function(output){
+      $(".modal-body").html(output);
+      $("#closeModal").click(function(){
+        $(".modal-body").html(preloadBody);
+        $("#editCustomerBtn").unbind("click");
+      });
+      $("#editCustomerBtn").click(function(){
+        train = $("#train").val();
+        company = $("#company").val();
+        $.ajax({
+          url: 'controller.php',
+          data: {action: 'createTrain',
+                 train: train,
+                 company: company},
+          type: 'post',
+          success: function(output){
+            $(".modal-body").html(output);
+          }
+        });
+      });
+    }
+  });
+}
+
 function viewTrains(){
   preloadBody = $(".modal-body").html();
   $(".modal-title").html("View Trains");
@@ -260,12 +317,13 @@ function viewTrains(){
      type: 'post',
      success: function(output) {
                 $(".modal-body").html(output);
-                $("#closeModal").unbind("click");
+                // $("#closeModal").unbind("click");
               }
   });
 
   $("#closeModal").click(function(){
     $(".modal-body").html(preloadBody);
+    $("#editCustomerBtn").unbind("click");
   });
 
 }//end viewTrains
@@ -292,7 +350,7 @@ function printCustomers(){
 }
 
 function modalFillTrain(train_num, company_id, cName, cAddress, cEmail, cPhone){
-  preloadBody = $(".modal-body").html();
+  // preloadBody = $(".modal-body").html();
   $(".modal-title").html("Edit Train Details");
   $.ajax({
      url: 'controller.php',
@@ -302,15 +360,31 @@ function modalFillTrain(train_num, company_id, cName, cAddress, cEmail, cPhone){
      type: 'post',
      success: function(output) {
                   $(".modal-body").html(output);
+                  $("#editCustomerBtn").html("Submit Change").show();
+                  $("#editCustomerBtn").click(function(){
+                    company = $("#company").val();
+                    $.ajax({
+                      url: 'controller.php',
+                      data: {action: 'editTrainCompany',
+                             company: company,
+                             train: train_num},
+                      type: 'post',
+                      success: function(output){
+                        $.ajax({
+                           url: 'controller.php',
+                           data: {action: 'getAllTrains'},
+                           type: 'post',
+                           success: function(output) {
+                                      $("#editCustomerBtn").hide();
+                                      $(".modal-body").html(output);
+                                    }
+                        });
+                      }
+                    });
+                  });
               }
   });
-
-  $("#closeModal").click(function(){
-    $(".modal-body").html(preloadBody);
-  });
-
-
-}
+}//end modalFillTrain
 
 function modalFill(email, first_name, last_name, phone_number, address){
   $("#createBtn").hide();

@@ -621,7 +621,11 @@
     $train = htmlspecialchars($_POST['train']);
     $conn = connectDB();
     $city = q_getDepartCity($conn, $train);
-    echo $city['dest_city'];
+    if($city == 0){
+      echo 0;
+    } else {
+      echo $city['dest_city'];
+    }
   }
 
   function getDestCity(){
@@ -649,6 +653,42 @@
     $train = htmlspecialchars($_POST['train']);
     q_createSchedule($conn, $depart_city, $dest_city, $depart_time, $dest_time, $date, $train);
     echo "<h2 class='text-center'>Schedule Record Successfully Added</h2>";
+  }
+
+  function editTrainCompany(){
+    $conn = connectDB();
+    $company = htmlspecialchars($_POST['company']);
+    $train = htmlspecialchars($_POST['train']);
+    q_updateTrainCompany($conn, $company, $train);
+  }
+
+  function createTrainForm(){
+    $conn = connectDB();
+    $lastTrain = q_getLastTrain($conn);
+    $newTrainNum = $lastTrain['train_num'] + 1;
+    $result = q_getCompanies($conn);
+    echo '<!-- train_num -->
+          <div class="form-group">
+            <label for="train_num">Train Number:</label>
+            <input value="'.$newTrainNum.'" type="text" class="form-control" id="train" readonly>
+          </div>
+          <!-- company_id -->
+          <div class="form-group">
+            <label for="train_num">Company ID:</label>
+            <select id="company" class="form-control">';
+            while($row = $result->fetch_array(MYSQLI_NUM)){
+              foreach ($row as $data) {
+                echo '<option value="'.$data.'">'.$data.'</option>';
+              }
+            }
+    echo '</select></div>';
+  }
+
+  function createTrain(){
+    $conn = connectDB();
+    $train = htmlspecialchars($_POST['train']);
+    $company = htmlspecialchars($_POST['company']);
+    echo q_createTrain($conn, $train, $company);
   }
 
   function editTrainDetailsForm(){
@@ -708,6 +748,18 @@
 
   }//end getAllTrains
 
+  function createScheduleCities(){
+    $conn = connectDB();
+    $locations = q_getLocationsCity($conn);
+    echo '<select id="depart_city" class="form-control">';
+    while($row = $locations->fetch_array(MYSQLI_NUM)) {
+      foreach ($row as $data) {
+        echo "<option value='$data'>$data</option>";
+      }
+    }
+    echo '</select>';
+  }
+
   function createScheduleForm(){
     echo '<!-- train_num -->
           <div class="form-group">
@@ -717,7 +769,7 @@
           <!-- depart_city -->
           <div class="form-group">
             <label for="depart_city">Departing City:</label>
-            <input value="" type="text" class="form-control" id="depart_city" readonly>
+            <div id="departCityInput"><input value="" type="text" class="form-control" id="depart_city" readonly></div>
           </div>
           <!-- dest_city -->
           <div class="form-group">
