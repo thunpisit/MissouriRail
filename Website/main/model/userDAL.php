@@ -24,6 +24,18 @@
       }
   }
 
+  function q_getEmployees($conn){
+    $query = "SELECT * FROM employee";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+      } else {
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result;
+      }
+  }
+
   function q_loginUser($conn, $user, $pass){
     $query = "SELECT * FROM authentication WHERE user_id=?";
     $stmt = $conn->stmt_init();
@@ -186,8 +198,9 @@
 
   function q_getMyReservations($conn, $user){
     $query = "SELECT car.serial_num, car.load_capacity, car.type, car.location,
-    schedule.date, schedule.depart_time, schedule.dest_time, car.price FROM car, schedule
-    WHERE customer_id=? AND car.train_num = schedule.train_num";
+    schedule.date, schedule.depart_time, schedule.dest_time, car.price FROM car
+    INNER JOIN schedule ON(schedule.train_num = car.train_num) WHERE car.customer_id = ?
+    AND schedule.date > CURDATE() ORDER BY schedule.date DESC";
     $stmt = $conn->stmt_init();
     if(!mysqli_stmt_prepare($stmt, $query)) {
         die("table does not exist");
@@ -197,6 +210,54 @@
       $result = $stmt->get_result();
       return $result;
     }
+  }
+
+  function q_getMyAssignments($conn, $user){
+    $query = "SELECT employee.train_num, schedule.`date`, schedule.`depart_city`,
+    schedule.dest_city, schedule.depart_time, schedule.dest_time FROM employee
+    INNER JOIN `schedule` ON (employee.train_num = schedule.train_num)
+    WHERE employee.`user_id` = ?";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        die("table does not exist");
+    } else {
+      mysqli_stmt_bind_param($stmt, "s", $user);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      return $result;
+    }
+
+  }
+
+  function q_deleteUser($conn, $user){
+    $query = "DELETE FROM authentication WHERE user_id = ?";
+    $stmt = $conn->stmt_init();
+
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+      return;
+    }
+
+    $stmt->bind_param("s", $user);
+    $stmt->execute();
+  }
+
+  function q_assignTrain($conn, $user, $train){
+    // echo "user: $user, train: $train";
+    $query = "UPDATE employee SET train_num = ? WHERE user_id = ?";
+    $stmt = $conn->stmt_init();
+
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+      return;
+    }
+
+    $stmt->bind_param("is", $train, $user);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    return $result;
+
   }
 
   function q_putLog($conn, $ip, $action, $date_time, $user_id){

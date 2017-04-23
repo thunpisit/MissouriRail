@@ -41,6 +41,12 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         printCarsTable($conn, $company_id, $location);
         break;
 
+      case 'getMyAssignments':
+        session_start();
+        $user = $_SESSION['user_id'];
+        getMyAssignments($user);
+        break;
+
       case 'updateInfo':
         session_start();
         // for admins
@@ -126,6 +132,9 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
       case 'createTrainForm' : createTrainForm(); break;
       case 'createTrain' : createTrain(); break;
       case 'getAllCities' : createScheduleCities(); break;
+      case 'printEmployees' : printEmployees(); break;
+      case 'assignTrainForm' : assignTrainForm(); break;
+      case 'assignTrain' : assignTrain(); break;
 
 
       case 'getMyReservations':
@@ -403,14 +412,6 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
               <input id="password" class="form-control modalInput" type="pwd" name="password" value="">
             </div>
           </div><hr>';
-          // used to be this at bottom
-          // <div class="modal-footer">
-          //   <button id="createAuthenticationBtn" style="text-align: center;" type="button" class="btn btn-success">Submit</button>
-          //   <button id="closeModal" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          // </div>
-          // </div>
-          //   </div>
-          // </div>
   }
 
   function editCustomer(){
@@ -435,5 +436,6 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
     echo "customer editted";
     $id = $_POST['email'];
     q_deleteCustomer($conn, $id);
+    q_deleteUser($conn, $id);
     $conn->close();
   }?>

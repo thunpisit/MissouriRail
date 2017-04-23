@@ -662,6 +662,78 @@
     q_updateTrainCompany($conn, $company, $train);
   }
 
+  function printEmployees(){
+    $conn = connectDB();
+    $result = q_getEmployees($conn);
+    echo "<label>Total Employees:</label> $result->num_rows";
+    echo "<table class='table table-responsive table-hover table-bordered'><thead><tr>";
+    while($fieldName = mysqli_fetch_field($result)) {
+        echo "<th>" . $fieldName->name . "</th>";
+    }
+    echo "<th>Assign Train</th>";
+    echo "</tr>";
+    while($row = $result->fetch_array(MYSQLI_NUM)) {
+      echo "<tr>";
+      foreach ($row as $data) {
+        echo "<td>$data</td>";
+      }
+      $user = "'" . $row[0] . "'";
+      echo '<td>
+              <button type="button" id="assignTrainBtn" onclick="assignTrain('.$user.')" class="btn btn-info">Edit</button>
+            </td>';
+      echo "</tr>";
+    }
+    echo "</table>";
+  }
+
+  function assignTrainForm(){
+    $conn = connectDB();
+    $user = htmlspecialchars($_POST['user']);
+    $trains = q_getTrainNumbers($conn);
+    echo '<!-- user_id -->
+          <div class="form-group">
+            <label for="user_id">User ID:</label>
+            <input value="'.$user.'" type="text" class="form-control" id="user" readonly>
+          </div>
+          <!-- train_num -->
+          <div class="form-group">
+            <label for="train_num">Train Number:</label>
+            <select id="train" class="form-control">';
+            while($row = $trains->fetch_array(MYSQLI_NUM)){
+              foreach ($row as $data) {
+                echo '<option value="'.$data.'">'.$data.'</option>';
+              }
+            }
+      echo '</select></div>';
+  }
+
+  function assignTrain(){
+    $user = htmlspecialchars($_POST['user']);
+    $train = htmlspecialchars($_POST['train']);
+    $conn = connectDB();
+    q_assignTrain($conn, $user, $train);
+    echo "<h2 class='text-center'>Assignment Confirmed</h2>";
+  }
+
+  function getMyAssignments($user){
+    $conn = connectDB();
+    $result = q_getMyAssignments($conn, $user);
+    echo "<div class='row'><label>Total Number of Assignments:</label> $result->num_rows";
+    echo "<table class='table table-responsive table-hover table-bordered'><thead><tr>";
+    while($fieldName = mysqli_fetch_field($result)) {
+        echo "<th>" . $fieldName->name . "</th>";
+    }
+    echo "</tr></thead><tbody>";
+    while($row = $result->fetch_array(MYSQLI_NUM)) {
+      echo "<tr>";
+      foreach ($row as $data) {
+        echo "<td>" . $data . "</td>";
+      }
+      echo "</tr>";
+    }
+    echo "</tbody></table></div>";
+  }
+
   function createTrainForm(){
     $conn = connectDB();
     $lastTrain = q_getLastTrain($conn);

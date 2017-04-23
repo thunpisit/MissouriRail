@@ -193,7 +193,7 @@ function resetPassword(user){
 
 function fillModalInfo(first_name, last_name, status, rank){
   $(".modal-title").html('Your Information');
-  $("#editCustomerBtn").html("Edit");
+  $("#editBtn").html("Edit").show();
   $("#first_name").val(first_name).attr("readonly", true);
   $("#last_name").val(last_name).attr("readonly", true);
   $("#status").val(status).attr("readonly", true);
@@ -277,5 +277,20 @@ function reserveCar(serial_num){
       }
     });
   });
+}
 
+function getMyAssignments(){
+  preloadModal = $(".modal-body").html();
+  $.ajax({
+    url: 'controller.php',
+    data: {action: 'getMyAssignments'},
+    type: 'post',
+    success: function(output){
+      $(".modal-body").html(output);
+      $("#editBtn").hide();
+      $("#closeModal").click(function(){
+        $(".modal-body").html(preloadModal);
+      });
+    }
+  });
 }

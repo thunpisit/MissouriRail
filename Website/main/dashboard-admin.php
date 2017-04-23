@@ -94,8 +94,7 @@
                     <div class="panel-body">
                         <div class="row">
                             <button id="logBtn" type="button" class="btn btn-primary btn-block btn-md" data-toggle="modal" data-target="#myModal">View User Logs</button>
-                            Todo still
-                            <button id="viewEmployeesButton" type="button" class="btn btn-danger btn-block btn-md" data-toggle="modal" data-target="#myModal">View Employees</button>
+                            <button id="viewEmployeesButton" onclick="viewEmployees()" type="button" class="btn btn-danger btn-block btn-md" data-toggle="modal" data-target="#myModal">View Employees</button>
                         </div>
                     </div>
                 </div>
@@ -110,7 +109,7 @@
                             <button id="createEquipmentBtn" onclick="createCar()" type="button" class="btn btn-primary btn-block btn-md" data-toggle="modal" data-target="#myModal">Create Car</button>
                             <button id="viewEquipmentBtn" type="button" class="btn btn-warning btn-block btn-md" data-toggle="modal" data-target="#myModal">View Cars</button>
                         </div>
-                        <div class="row">Todo still
+                        <div class="row"><br>
                           <button id="createTrainBtn" onclick="createTrain()" type="button" class="btn btn-info btn-block btn-md" data-toggle="modal" data-target="#myModal">Create Train</button>
                           <button id="viewTrainsBtn" onclick="viewTrains()" type="button" class="btn btn-success btn-block btn-md" data-toggle="modal" data-target="#myModal">View Trains</button>
                         </div>

@@ -17,6 +17,14 @@
       type="image/png"
       href="missourirail.png">
     <style>
+      .modal-dialog{
+        position: relative;
+        display: table;
+        overflow-y: auto;
+        overflow-x: auto;
+        width: auto;
+        min-width: 600px;
+      }
       .modal-body {
         position: relative;
         overflow-y: auto;
@@ -78,12 +86,11 @@
              <div class="col-md-4">
                 <div class="panel panel-default text-center">
                     <div class="panel-heading">
-                        <h2 class="panel-title">Past Log</h2>
+                        <h2 class="panel-title">Assignments</h2>
                     </div>
                     <div class="panel-body">
-                        <div class="row">Todo still <br>
-                            <button id="logBtn" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Current Logs</button><br><br>
-                            <button id="logBtn" type="button" class="btn btn-warning btn-md" data-toggle="modal" data-target="#myModal">Past Logs</button>
+                        <div class="row">
+                            <button id="assignmentBtn" onclick="getMyAssignments()" type="button" class="btn btn-primary btn-md btn-block" data-toggle="modal" data-target="#myModal">Assignments</button>
                         </div>
                     </div>
                 </div>

@@ -170,6 +170,51 @@ function createSchedule(){
 });
 }
 
+function viewEmployees(){
+  preloadModal = $(".modal-body").html();
+  $.ajax({
+    url: 'controller.php',
+    data: {action: 'printEmployees'},
+    type: 'post',
+    success: function(output){
+      $("#deleteBtn, #createBtn, #editCustomerBtn").hide();
+      $(".modal-body").html(output);
+      $("#closeModal").click(function(){
+        $(".modal-body").html(preloadModal);
+      });
+    }
+  });
+}
+
+function assignTrain(user){
+  $.ajax({
+    url: 'controller.php',
+    data: {action: 'assignTrainForm',
+           user: user},
+    type: 'post',
+    success: function(output){
+      // console.log(output);
+      $(".modal-body").html(output);
+      $("#editCustomerBtn").html("Confirm Assignment").show();
+      $("#editCustomerBtn").click(function(){
+        user = $("#user").val();
+        train = $("#train").val();
+        $.ajax({
+          url: 'controller.php',
+          data: {action: 'assignTrain',
+                 user: user,
+                 train: train},
+          type: 'post',
+          success: function(output){
+            $(".modal-body").html(output);
+            $("#editCustomerBtn").hide();
+          }
+        });
+      });
+    }
+  });
+}
+
 
 function viewSchedule(){
   $("#createBtn").hide();
