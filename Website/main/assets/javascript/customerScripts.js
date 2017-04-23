@@ -19,6 +19,31 @@ function createCar(){
   preloadModal = $(".modal-body").html();
   $("#label1").html("Load Capacity:");
   $("#label2").html("Type:");
+
+  // fill in types
+  $.ajax({
+     url: 'controller.php',
+     data: {action: 'getCarTypes',},
+     type: 'post',
+     success: function(output){$("#allTypes").html(output);}
+  });
+
+  // fill in trains
+  $.ajax({
+     url: 'controller.php',
+     data: {action: 'getCarTrains',},
+     type: 'post',
+     success: function(output){$("#allTrains").html(output);}
+  });
+
+  // fill in customers
+  $.ajax({
+     url: 'controller.php',
+     data: {action: 'getCarCustomers',},
+     type: 'post',
+     success: function(output){$("#allCustomers").html(output);}
+  });
+
   $("#label3").html("Train Number:");
   $("#label4").html("Customer ID:");
   $("#label5").html("Price");
@@ -57,6 +82,63 @@ function createCar(){
   });
 }
 
+function createSchedule(){
+  preloadModal = $(".modal-body").html();
+  $.ajax({
+     url: 'controller.php',
+     data: {action: 'createScheduleForm',},
+     type: 'post',
+     success: function(output){
+       $(".modal-body").html(output);
+       $("#editCustomerBtn").html("Submit Record").show();
+       $("#deleteBtn").hide();
+       $("#last_name").change(function(){
+         train = $(this).val();
+         $.ajax({
+            url: 'controller.php',
+            data: {action: 'getDepartCity',
+                   train: train},
+            type: 'post',
+            success: function(output){
+              $("#depart_city").val(output);
+              $.ajax({
+                 url: 'controller.php',
+                 data: {action: 'getDestCity',
+                        city: output},
+                 type: 'post',
+                 success: function(output2){
+                   $("#dest_city").html(output2);
+                 }
+              });
+            }
+         });
+       });
+     }
+  });
+
+  $("#closeModal").click(function(){
+    $(".modal-body").html(preloadModal);
+  });
+
+}
+
+function viewSchedule(){
+  preloadModal = $(".modal-body").html();
+  $.ajax({
+     url: 'controller.php',
+     data: {action: 'viewSchedule',},
+     type: 'post',
+     success: function(output){
+       $(".modal-body").html(output);
+       $("#editCustomerBtn, #deleteBtn").hide();
+     }
+  });
+  $("#closeModal").click(function(){
+    $(".modal-body").html(preloadModal);
+  });
+
+}
+
 function editCar(serial){
   preloadModal = $(".modal-body").html();
   $.ajax({
@@ -70,8 +152,22 @@ function editCar(serial){
       $(".modal-body").html(output);
       $("#editCustomerBtn").html("Submit Changes").show();
       $(".editMe").removeAttr("readonly");
+      $("#location").change(function(){
+        // console.log($(this).val());
+        $.ajax({
+           url: 'controller.php',
+           data: {action: 'getCarTrain',
+                  train_location: $(this).val()},
+           type: 'post',
+           success: function(output){
+              $("#allTrains").html(output);
+          }
+        });
+      });
     }
   });
+
+
 
   $("#editCustomerBtn").click(function(){
     serial = $("#serial_num").val();

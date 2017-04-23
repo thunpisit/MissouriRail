@@ -13,6 +13,17 @@
     }
   }
 
+  function q_employeeSignup($conn, $user, $fname, $lname, $status){
+    $query = "INSERT INTO employee (user_id, first_name, last_name, status) VALUES (?,?,?,?)";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+      } else {
+        mysqli_stmt_bind_param($stmt, "ssss", $user, $fname, $lname, $status);
+        $stmt->execute();
+      }
+  }
+
   function q_loginUser($conn, $user, $pass){
     $query = "SELECT * FROM authentication WHERE user_id=?";
     $stmt = $conn->stmt_init();

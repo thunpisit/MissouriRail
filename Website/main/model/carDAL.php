@@ -34,7 +34,7 @@ function q_getAllCars($conn){
 }
 
 function q_getLocations($conn){
-  $query = "SELECT name FROM city";
+  $query = "SELECT DISTINCT depart_city FROM schedule";
   $stmt = $conn->stmt_init();
   if(!mysqli_stmt_prepare($stmt, $query)) {
       printf("Error: %s.\n", $stmt->error);

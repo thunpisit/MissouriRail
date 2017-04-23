@@ -1,4 +1,32 @@
 <?php
+  function q_getSchedule($conn){
+    $query = "SELECT * FROM schedule";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+      return;
+    }
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result;
+  }
+
+  function q_getDepartCity($conn, $train){
+    $query = "SELECT dest_city FROM schedule WHERE train_num = ?
+    ORDER BY `date` DESC, dest_time DESC LIMIT 1";
+    $stmt = $conn->stmt_init();
+
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+      return;
+    }
+
+    $stmt->bind_param("s", $train);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_assoc();
+  }
+
   function q_getTrainNumbers($conn){
     $query = "SELECT train_num FROM train";
     $stmt = $conn->stmt_init();
@@ -6,6 +34,21 @@
         printf("Error: %s.\n", $stmt->error);
       return;
     }
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result;
+  }
+
+  function q_trainNumber($conn, $location){
+    $query = "SELECT train_num FROM schedule WHERE depart_city = ?";
+    $stmt = $conn->stmt_init();
+
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+      return;
+    }
+
+    $stmt->bind_param("s", $location);
     $stmt->execute();
     $result = $stmt->get_result();
     return $result;

@@ -111,6 +111,16 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         getCarInfo($conn, $serial_num, $type);
         break;
 
+      case 'getCarTypes' : getCarTypes(); break;
+      case 'getCarTrains' : getCarTrains(); break;
+      case 'getCarCustomers' : getCarCustomers(); break;
+      case 'getCarTrain' : getCarTrain(); break;
+      case 'viewSchedule' : viewSchedule(); break;
+      case 'createScheduleForm' : createScheduleForm(); break;
+      case 'getDepartCity' : getDepartCity(); break;
+      case 'getDestCity' : getDestCity(); break;
+
+
       case 'getMyReservations':
         session_start();
         $conn = connectDB();
@@ -200,6 +210,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
           $status = $_POST['input3'];
           $rank = $_POST['input4'];
           q_signUpConductor($conn, $user, $fname, $lname, $status, $rank);
+          q_employeeSignup($conn, $user, $fname, $lname, $status);
           break;
 
         case 'engineer':
@@ -209,6 +220,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
           $rank = $_POST['input4'];
           $hours = $_POST['input5'];
           q_signUpEngineer($conn, $user, $fname, $lname, $status, $rank, $hours);
+          q_employeeSignup($conn, $user, $fname, $lname, $status);
           break;
 
         case 'customer':

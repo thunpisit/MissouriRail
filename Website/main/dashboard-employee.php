@@ -81,7 +81,7 @@
                         <h2 class="panel-title">Past Log</h2>
                     </div>
                     <div class="panel-body">
-                        <div class="row">
+                        <div class="row">Todo still <br>
                             <button id="logBtn" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Current Logs</button><br><br>
                             <button id="logBtn" type="button" class="btn btn-warning btn-md" data-toggle="modal" data-target="#myModal">Past Logs</button>
                         </div>

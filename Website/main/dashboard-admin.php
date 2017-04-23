@@ -93,7 +93,9 @@
                     </div>
                     <div class="panel-body">
                         <div class="row">
-                            <button id="logBtn" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">View User Logs</button>
+                            <button id="logBtn" type="button" class="btn btn-primary btn-block btn-md" data-toggle="modal" data-target="#myModal">View User Logs</button>
+                            Todo still
+                            <button id="viewEmployeesButton" type="button" class="btn btn-danger btn-block btn-md" data-toggle="modal" data-target="#myModal">View Employees</button>
                         </div>
                     </div>
                 </div>
@@ -105,8 +107,12 @@
                     </div>
                     <div class="panel-body">
                         <div class="row">
-                            <button id="createEquipmentBtn" onclick="createCar()" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Create Equipment</button><br><br>
-                            <button id="viewEquipmentBtn" type="button" class="btn btn-warning btn-md" data-toggle="modal" data-target="#myModal">View Equipment</button>
+                            <button id="createEquipmentBtn" onclick="createCar()" type="button" class="btn btn-primary btn-block btn-md" data-toggle="modal" data-target="#myModal">Create Car</button>
+                            <button id="viewEquipmentBtn" type="button" class="btn btn-warning btn-block btn-md" data-toggle="modal" data-target="#myModal">View Cars</button>
+                        </div>
+                        <div class="row">Todo still
+                          <button id="createTrainBtn" onclick="createTrain()" type="button" class="btn btn-info btn-block btn-md" data-toggle="modal" data-target="#myModal">Create Train</button>
+                          <button id="viewTrainsBtn" type="button" class="btn btn-success btn-block btn-md" data-toggle="modal" data-target="#myModal">View Trains</button>
                         </div>
                     </div>
                 </div>
@@ -118,9 +124,9 @@
                         <h2 class="panel-title">Schedule Widget</h2>
                     </div>
                     <div class="panel-body">
-                        <div class="row">
-                            <button id="logBtn" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Create Schedule</button><br><br>
-                            <button id="logBtn" type="button" class="btn btn-warning btn-md" data-toggle="modal" data-target="#myModal">View Schedules</button>
+                        <div class="row">Todo still
+                            <button id="createScheduleBtn" onclick="createSchedule()" type="button" class="btn btn-primary btn-block btn-md" data-toggle="modal" data-target="#myModal">Create Schedule</button>
+                            <button id="viewScheduleBtn" onclick="viewSchedule()" type="button" class="btn btn-warning btn-block btn-md" data-toggle="modal" data-target="#myModal">View Schedules</button>
                         </div>
                     </div>
                 </div>

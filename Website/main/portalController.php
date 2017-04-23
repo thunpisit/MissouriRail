@@ -216,6 +216,7 @@
                   <h4 class="modal-title">Customer Information</h4>
                 </div>
                 <div class="modal-body">
+                <!--load capacity -->
                   <div class="row">
                     <div class="col-md-offset-2 col-md-3">
                       <label id="label1" for="usr">User:</label>
@@ -224,6 +225,7 @@
                       <input id="email" class="form-control" type="text" name="email" value="" readonly>
                     </div>
                   </div><hr>
+                  <!--type -->
                   <!-- first_name -->
                   <div class="row">
                     <div class="col-md-offset-2 col-md-3">
@@ -231,28 +233,33 @@
                     </div>
                     <div class="col-md-4">
                       <input id="password" class="form-control" type="password" name="password" value="" readonly>
-                      <input id="first_name" class="form-control modalInput" type="text" name="first_name" value="" readonly>
+                      <div id="allTypes">
+                        <input id="first_name" class="form-control modalInput" type="text" name="first_name" value="" readonly>
+                      </div>
                     </div>
                   </div><hr>
                   <div id="passwordHide">
+                  <!--train number -->
                     <!-- last_name -->
                     <div class="row">
                       <div class="col-md-offset-2 col-md-3">
                         <label id="label3" for="usr">Last Name:</label>
                       </div>
-                      <div class="col-md-4">
+                      <div id="allTrains" class="col-md-4">
                         <input id="last_name" class="form-control modalInput" type="text" name="last_name" value="" readonly>
                       </div>
                     </div><hr>
+                    <!--customer id -->
                     <!-- phone_number -->
                     <div class="row">
                       <div class="col-md-offset-2 col-md-3">
                         <label id="label4" for="usr">Phone Number:</label>
                       </div>
-                      <div class="col-md-4">
+                      <div id="allCustomers" class="col-md-4">
                         <input id="phone_number" class="form-control modalInput" type="text" name="phone_number" value="" readonly>
                       </div>
                     </div><hr>
+                    <!--price -->
                     <!-- address -->
                     <div class="row">
                       <div class="col-md-offset-2 col-md-3">
@@ -374,6 +381,59 @@
           <input id="typeOfUser" type="hidden" name="typeOfUser" value="">';
   }
 
+  function getCarTypes(){
+    $conn = connectDB();
+    $typesResult = q_getTypes($conn);
+    echo '<select class="form-control" id="first_name">';
+    while($typeRow = $typesResult->fetch_array(MYSQLI_NUM)){
+      foreach($typeRow as $type){
+        echo '<option value="'.$type.'">'.$type.'</option>';
+      }
+    }
+    echo '</select>';
+  }
+
+  function getCarTrains(){
+    $conn = connectDB();
+    $trainsResult = q_getTrainNumbers($conn);
+    echo '<select class="form-control" id="last_name">';
+    echo '<option></option>';
+    while($trainRow = $trainsResult->fetch_array(MYSQLI_NUM)){
+      foreach($trainRow as $train){
+        echo '<option value="'.$train.'">'.$train.'</option>';
+      }
+    }
+    echo '</select>';
+  }
+
+  function getCarTrain(){
+    $conn = connectDB();
+    $location = $_POST['train_location'];
+    $trains = q_trainNumber($conn, $location);
+    // print_r($trains);
+    echo '<select class="form-control" id="train_num">';
+    while($trainRow = $trains->fetch_array(MYSQLI_NUM)){
+      foreach($trainRow as $train){
+        // echo $train;
+        echo '<option value="'.$train.'">'.$train.'</option>';
+      }
+    }
+    echo '</select>';
+  }
+
+  function getCarCustomers(){
+    $conn = connectDB();
+    $customersResult = q_getCustomerID($conn);
+    echo '<select class="form-control editMe" id="phone_number">';
+    while($customerRow = $customersResult->fetch_array(MYSQLI_NUM)){
+      foreach($customerRow as $customer){
+        echo '<option value="'.$customer.'">'.$customer.'</option>';
+      }
+    }
+      echo '<option value="0">No Customer</option>';
+    echo '</select>';
+  }
+
   function getCarInfo($conn, $serial, $type){
     $carInfo = q_getCarInfo($conn, $serial, $type);
     switch ($type) {
@@ -451,6 +511,7 @@
                 <!-- train_num -->
                 <div class="form-group">
                   <label for="serial">Train Number:</label>
+                  <div id="allTrains">
                   <select class="form-control editMe" id="train_num">
                     <option value="'.$carInfo[4].'">'.$carInfo[4].'</option>';
                     while($trainRow = $trainsResult->fetch_array(MYSQLI_NUM)){
@@ -459,7 +520,7 @@
                       }
                     }
                     echo '<option value="-1">No Train</option>';
-            echo' </select></div>
+            echo' </select></div></div>
                 <!-- customer_id -->
                 <div class="form-group">
                   <label for="serial">Customer ID:</label>
@@ -535,6 +596,81 @@
   function reserveCar($conn, $customer_id, $serial){
     q_reserveCar($conn, $customer_id, $serial);
     echo '<h2 style="text-align: center;">Reservation Confirmed</h2>';
+  }
+
+  function viewSchedule(){
+    $conn = connectDB();
+    $schedule = q_getSchedule($conn);
+    echo "<div class='row'><label>Total Number of Reservations:</label> $schedule->num_rows";
+    echo "<table class='table table-responsive table-hover table-bordered'><thead><tr>";
+    while($fieldName = mysqli_fetch_field($schedule)) {
+        echo "<th>" . $fieldName->name . "</th>";
+    }
+    echo "</tr></thead><tbody>";
+    while($row = $schedule->fetch_array(MYSQLI_NUM)) {
+      echo "<tr>";
+      foreach ($row as $data) {
+        echo "<td>" . $data . "</td>";
+      }
+      echo "</tr>";
+    }
+    echo "</tbody></table></div>";
+  }
+
+  function getDepartCity(){
+    $train = htmlspecialchars($_POST['train']);
+    $conn = connectDB();
+    $city = q_getDepartCity($conn, $train);
+    echo $city['dest_city'];
+  }
+
+  function getDestCity(){
+    $depart_city = htmlspecialchars($_POST['city']);
+    $conn = connectDB();
+    $result = q_getLocations($conn);
+    while($row = $result->fetch_array(MYSQLI_NUM)) {
+      foreach ($row as $data) {
+        if($data == $depart_city){
+
+        } else {
+          echo '<option value="'.$data.'">'.$data.'</option>';
+        }
+      }
+    }
+
+  }
+
+  function createScheduleForm(){
+    echo '<!-- train_num -->
+          <div class="form-group">
+            <label for="train">Train:</label>';
+            getCarTrains();
+    echo '</div>
+          <!-- depart_city -->
+          <div class="form-group">
+            <label for="depart_city">Departing City:</label>
+            <input value="" type="text" class="form-control" id="depart_city" readonly>
+          </div>
+          <!-- dest_city -->
+          <div class="form-group">
+            <label for="dest_city">Destination City:</label>
+            <select id="dest_city" class="form-control"></select>
+          </div>
+          <!-- depart_time -->
+          <div class="form-group">
+            <label for="depart_time">Departing Time:</label>
+            <input value="" type="text" class="form-control" id="depart_time">
+          </div>
+          <!-- dest_time -->
+          <div class="form-group">
+            <label for="dest_time">Destination Time:</label>
+            <input value="" type="text" class="form-control" id="dest_time">
+          </div>
+          <!-- date -->
+          <div class="form-group">
+            <label for="date">Date:</label>
+            <input value="" type="text" class="form-control" id="date">
+          </div>';
   }
 
   function getMyReservations($conn, $user){
