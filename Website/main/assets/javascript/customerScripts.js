@@ -14,6 +14,10 @@ $(function(){
   });
 });//end document ready
 
+function createCar(){
+  preloadModal = $(".modal-body").html();
+}
+
 function editCar(serial){
   preloadModal = $(".modal-body").html();
   $.ajax({
@@ -274,7 +278,7 @@ function createCustomer(){
     $("#editCustomerBtn").html("Save Changes").show();
     $(".modal-title").html('Reset Password');
     $("#first_name, #passwordHide").hide();
-    $("#first_nameLabel").html("Password:");
+    $("#label2").html("Password:");
     $("#email").val(user);
 
     $("#editCustomerBtn").click(function(){
@@ -305,7 +309,7 @@ function createCustomer(){
     $("#editCustomerBtn").html("Save Changes").show();
     $(".modal-title").html('Reset Password');
     $("#first_name, #passwordHide").hide();
-    $("#first_nameLabel").html("Password:");
+    $("#label2").html("Password:");
     $("#email").val(user);
 
     $("#editCustomerBtn").click(function(){

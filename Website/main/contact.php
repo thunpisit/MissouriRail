@@ -8,9 +8,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="../assets/css/stylesheet.css">
+    <link rel="stylesheet" href="assets/css/stylesheet.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-    <script src="../assets/javascript/scripts.js"></script>
+    <script src="assets/javascript/scripts.js"></script>
     <link rel="icon"
       type="image/png"
       href="missourirail.png">
@@ -52,8 +52,7 @@
               <li><a href="contact.php">Contact us</a></li>
             </ul>
             <form class="navbar-form navbar-right">
-              <a class="btn btn-default btn-md" href="login.php" role="button">Login</a>
-              <a class="btn btn-primary btn-md" href="signup.php" role="button">Signup</a>
+              <?php menuBar();?>
             </form>
           </div><!-- /.navbar-collapse -->
 <!--              </div> /.container-fluid -->

@@ -105,7 +105,7 @@
                     </div>
                     <div class="panel-body">
                         <div class="row">
-                            <button id="createEquipmentBtn" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Create Equipment</button><br><br>
+                            <button id="createEquipmentBtn" onclick="createCar()" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Create Equipment</button><br><br>
                             <button id="viewEquipmentBtn" type="button" class="btn btn-warning btn-md" data-toggle="modal" data-target="#myModal">View Equipment</button>
                         </div>
                     </div>

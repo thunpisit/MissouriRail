@@ -2,6 +2,9 @@
 <?php
   include("controller.php");
   topStart();
+  if(isset($_SESSION['user_id'])){
+    header("Location: reservation.php");
+  }
   // adminOnly();
  ?>
 <html>
@@ -10,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/css/stylesheet.css">
+    <link rel="stylesheet" href="assets/css/stylesheet.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <script src="assets/javascript/scripts.js"></script>
     <script src="assets/javascript/signUpScripts.js"></script>

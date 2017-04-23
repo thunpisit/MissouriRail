@@ -204,7 +204,7 @@
                 <div class="modal-body">
                   <div class="row">
                     <div class="col-md-offset-2 col-md-3">
-                      <label for="usr">User:</label>
+                      <label id="label1" for="usr">User:</label>
                     </div>
                     <div class="col-md-4">
                       <input id="email" class="form-control" type="text" name="email" value="" readonly>
@@ -213,7 +213,7 @@
                   <!-- first_name -->
                   <div class="row">
                     <div class="col-md-offset-2 col-md-3">
-                      <label id="first_nameLabel" for="usr">First Name:</label>
+                      <label id="label2" for="usr">First Name:</label>
                     </div>
                     <div class="col-md-4">
                       <input id="password" class="form-control" type="password" name="password" value="" readonly>
@@ -224,7 +224,7 @@
                     <!-- last_name -->
                     <div class="row">
                       <div class="col-md-offset-2 col-md-3">
-                        <label for="usr">Last Name:</label>
+                        <label id="label3" for="usr">Last Name:</label>
                       </div>
                       <div class="col-md-4">
                         <input id="last_name" class="form-control modalInput" type="text" name="last_name" value="" readonly>

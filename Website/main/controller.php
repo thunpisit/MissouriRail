@@ -249,23 +249,13 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
     }
   }
 
-  function primaryMenuBar(){
+  function menuBar(){
     if(isset($_SESSION['user_id'])){
-      echo '<form action="../model/logout.php" method="post">
-              <span class=navbar-btn>
-                <input id="height100" type="submit" name="submit" class="btn btn-danger" value="Logout">
-              </span>
-            </form>';
+      $currentPage = $_SERVER['PHP_SELF'];
+      echo '<a class="btn btn-danger btn-md" href="logout.php?page='.$currentPage.'" role="button">Logout</a>';
     } else {
-      echo '<a id="text-white" class="btn btn-success" href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a>';
-    }
-  }
-
-  function secondaryMenuBar(){
-    if($_SESSION['reset_pass'] != 1){
-      echo '<a href="#">Portal</a>';
-    } else {
-      echo '<a href="adminlog.php">Admin Portal</a>';
+      echo '<a class="btn btn-default btn-md" href="login.php" role="button">Login</a>
+            <a class="btn btn-primary btn-md" href="signup.php" role="button">Signup</a>';
     }
   }
 
