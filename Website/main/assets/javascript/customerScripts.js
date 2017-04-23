@@ -17,6 +17,7 @@ $(function(){
 function createCar(){
   $("#createBtn").unbind("click");
   preloadModal = $(".modal-body").html();
+  $(".modal-title").html("Create a Car");
   $("#label1").html("Load Capacity:");
   $("#label2").html("Type:");
 
@@ -83,7 +84,9 @@ function createCar(){
 }
 
 function createSchedule(){
+  $("#createBtn").hide();
   preloadModal = $(".modal-body").html();
+  $(".modal-title").html("Create Schedule Record");
   $.ajax({
      url: 'controller.php',
      data: {action: 'createScheduleForm',},
@@ -113,17 +116,41 @@ function createSchedule(){
             }
          });
        });
-     }
+       $("#editCustomerBtn").click(function(){
+         train = $("#last_name").val();
+         depart_city = $("#depart_city").val();
+         dest_city = $("#dest_city").val();
+         depart_time = $("#depart_time").val();
+         dest_time = $("#dest_time").val();
+         date = $("#date").val();
+         $.ajax({
+            url: 'controller.php',
+            data: {action: 'createSchedule',
+                   depart_city: depart_city,
+                   dest_city: dest_city,
+                   depart_time: depart_time,
+                   dest_time: dest_time,
+                   date: date,
+                   train: train},
+            type: 'post',
+            success: function(output){
+              $(".modal-body").html(output);
+              }
+       });
   });
 
   $("#closeModal").click(function(){
     $(".modal-body").html(preloadModal);
   });
-
+}
+});
 }
 
+
 function viewSchedule(){
+  $("#createBtn").hide();
   preloadModal = $(".modal-body").html();
+  $(".modal-title").html("View Schedule Records");
   $.ajax({
      url: 'controller.php',
      data: {action: 'viewSchedule',},
@@ -141,6 +168,7 @@ function viewSchedule(){
 
 function editCar(serial){
   preloadModal = $(".modal-body").html();
+  $(".modal-title").html("Edit Car");
   $.ajax({
     url: 'controller.php',
     data:{action: 'getCarInfo',
@@ -204,6 +232,7 @@ function editCar(serial){
 function viewEquipment(){
   $("#viewEquipmentBtn").click(function(){
     preloadBody = $(".modal-body").html();
+    $(".modal-title").html("View Cars");
     $("#deleteBtn, #editCustomerBtn, #createBtn").hide();
     $.ajax({
        url: 'controller.php',
@@ -219,7 +248,27 @@ function viewEquipment(){
       $("#editCustomerBtn").unbind("click");
     });
   });
-}
+}//end viewEquipment
+
+function viewTrains(){
+  preloadBody = $(".modal-body").html();
+  $(".modal-title").html("View Trains");
+  $("#editCustomerBtn, #deleteBtn, #createBtn").hide();
+  $.ajax({
+     url: 'controller.php',
+     data: {action: 'getAllTrains'},
+     type: 'post',
+     success: function(output) {
+                $(".modal-body").html(output);
+                $("#closeModal").unbind("click");
+              }
+  });
+
+  $("#closeModal").click(function(){
+    $(".modal-body").html(preloadBody);
+  });
+
+}//end viewTrains
 
 function modalCloseCleanup(){
   $("#closeModal").click(function(){
@@ -240,6 +289,27 @@ function printCustomers(){
     });
 
   });
+}
+
+function modalFillTrain(train_num, company_id, cName, cAddress, cEmail, cPhone){
+  preloadBody = $(".modal-body").html();
+  $(".modal-title").html("Edit Train Details");
+  $.ajax({
+     url: 'controller.php',
+     data: {action: 'editTrainDetailsForm',
+            train: train_num,
+            company: company_id},
+     type: 'post',
+     success: function(output) {
+                  $(".modal-body").html(output);
+              }
+  });
+
+  $("#closeModal").click(function(){
+    $(".modal-body").html(preloadBody);
+  });
+
+
 }
 
 function modalFill(email, first_name, last_name, phone_number, address){
@@ -366,6 +436,7 @@ function createCustomer(){
            type: 'post',
            success: function(output) {
                         $(".modal-body").html(output);
+                        $(".modal-title").html("Create Customer Authentication");
                         $("#createBtn").click(function(){
                         if(form_validation('.modalInput') == false){
                           alert('Fill out customer information completely or NA if not known');
@@ -408,6 +479,7 @@ function createCustomer(){
 
   function resetPasswordAdmin(user){
     preloadModal = $(".modal-body").html();
+    $(".modal-title").html("Reset User Password");
     $("#deleteBtn, #createBtn").hide();
     $("#password").show().removeAttr("readonly");
     $("#editCustomerBtn").html("Save Changes").show();
@@ -439,6 +511,7 @@ function createCustomer(){
 
   function resetPassword(user){
     preloadModal = $(".modal-body").html();
+    $(".modal-title").html("Reset My Password");
     $("#deleteBtn, #createBtn").hide();
     $("#password").show().removeAttr("readonly");
     $("#editCustomerBtn").html("Save Changes").show();

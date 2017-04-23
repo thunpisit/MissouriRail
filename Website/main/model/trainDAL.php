@@ -1,6 +1,6 @@
 <?php
   function q_getSchedule($conn){
-    $query = "SELECT * FROM schedule";
+    $query = "SELECT * FROM schedule ORDER BY `date` DESC";
     $stmt = $conn->stmt_init();
     if(!mysqli_stmt_prepare($stmt, $query)) {
         printf("Error: %s.\n", $stmt->error);
@@ -9,6 +9,21 @@
     $stmt->execute();
     $result = $stmt->get_result();
     return $result;
+  }
+
+  function q_createSchedule($conn, $depart_city, $dest_city, $depart_time, $dest_time, $date, $train){
+    $query = "INSERT INTO schedule (depart_city, dest_city, depart_time, dest_time, `date`, train_num)
+    VALUES (?,?,?,?,?,?)";
+    $stmt = $conn->stmt_init();
+
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+      return;
+    }
+
+    $stmt->bind_param("sssssi", $depart_city, $dest_city, $depart_time, $dest_time, $date, $train);
+    $stmt->execute();
+    $result = $stmt->get_result();
   }
 
   function q_getDepartCity($conn, $train){
@@ -29,6 +44,32 @@
 
   function q_getTrainNumbers($conn){
     $query = "SELECT train_num FROM train";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+      return;
+    }
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result;
+  }
+
+  function q_getCompanies($conn){
+    $query = "SELECT company_id FROM company";
+    $stmt = $conn->stmt_init();
+    if(!mysqli_stmt_prepare($stmt, $query)) {
+        printf("Error: %s.\n", $stmt->error);
+      return;
+    }
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result;
+  }
+
+  function q_getTrainSchedules($conn){
+    $query = "SELECT train.train_num, train.company_id, company.name AS 'Company Name',
+    company.address AS 'Company Address', company.email AS 'Email', company.phone_number
+    AS 'Phone Number' FROM train INNER JOIN company ON (train.company_id = company.company_id)";
     $stmt = $conn->stmt_init();
     if(!mysqli_stmt_prepare($stmt, $query)) {
         printf("Error: %s.\n", $stmt->error);

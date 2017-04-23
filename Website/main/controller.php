@@ -32,6 +32,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
       case 'editCustomer' : editCustomer(); break;
       case 'deleteCustomer': deleteCustomer(); break;
       case 'updateCar': updateCar(); break;
+      case 'editTrainDetailsForm': editTrainDetailsForm(); break;
 
       case 'getCars':
         $conn = connectDB();
@@ -119,6 +120,8 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
       case 'createScheduleForm' : createScheduleForm(); break;
       case 'getDepartCity' : getDepartCity(); break;
       case 'getDestCity' : getDestCity(); break;
+      case 'createSchedule' : createSchedule(); break;
+      case 'getAllTrains' : getAllTrains(); break;
 
 
       case 'getMyReservations':

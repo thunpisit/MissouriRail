@@ -1,6 +1,7 @@
 $(function(){
   $("#logBtn").click(function(){
     preLogModalBody = $(".modal-body").html();
+    $(".modal-title").html("User Logs");
     $("#deleteBtn, #createBtn, #editCustomerBtn").hide();
     $.ajax({
        url: 'controller.php',

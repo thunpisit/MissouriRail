@@ -112,7 +112,7 @@
                         </div>
                         <div class="row">Todo still
                           <button id="createTrainBtn" onclick="createTrain()" type="button" class="btn btn-info btn-block btn-md" data-toggle="modal" data-target="#myModal">Create Train</button>
-                          <button id="viewTrainsBtn" type="button" class="btn btn-success btn-block btn-md" data-toggle="modal" data-target="#myModal">View Trains</button>
+                          <button id="viewTrainsBtn" onclick="viewTrains()" type="button" class="btn btn-success btn-block btn-md" data-toggle="modal" data-target="#myModal">View Trains</button>
                         </div>
                     </div>
                 </div>
@@ -124,7 +124,7 @@
                         <h2 class="panel-title">Schedule Widget</h2>
                     </div>
                     <div class="panel-body">
-                        <div class="row">Todo still
+                        <div class="row">
                             <button id="createScheduleBtn" onclick="createSchedule()" type="button" class="btn btn-primary btn-block btn-md" data-toggle="modal" data-target="#myModal">Create Schedule</button>
                             <button id="viewScheduleBtn" onclick="viewSchedule()" type="button" class="btn btn-warning btn-block btn-md" data-toggle="modal" data-target="#myModal">View Schedules</button>
                         </div>

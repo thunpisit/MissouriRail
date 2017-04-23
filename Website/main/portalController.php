@@ -637,8 +637,76 @@
         }
       }
     }
-
   }
+
+  function createSchedule(){
+    $conn = connectDB();
+    $depart_city = htmlspecialchars($_POST['depart_city']);
+    $dest_city = htmlspecialchars($_POST['dest_city']);
+    $depart_time = htmlspecialchars($_POST['depart_time']);
+    $dest_time = htmlspecialchars($_POST['dest_time']);
+    $date = htmlspecialchars($_POST['date']);
+    $train = htmlspecialchars($_POST['train']);
+    q_createSchedule($conn, $depart_city, $dest_city, $depart_time, $dest_time, $date, $train);
+    echo "<h2 class='text-center'>Schedule Record Successfully Added</h2>";
+  }
+
+  function editTrainDetailsForm(){
+    $conn = connectDB();
+    $train = htmlspecialchars($_POST['train']);
+    $company = htmlspecialchars($_POST['company']);
+    $result = q_getCompanies($conn);
+    echo '<!-- train_num -->
+          <div class="form-group">
+            <label for="train_num">Train Number:</label>
+            <input value="'.$train.'" type="text" class="form-control" id="train_num" readonly>
+          </div>
+          <!-- company_id -->
+          <div class="form-group">
+            <label for="company_id">Company ID:</label>
+              <select id="company" class="form-control">
+                <option value="'.$company.'">'.$company.'</option>';
+              while($row = $result->fetch_array(MYSQLI_NUM)){
+                foreach ($row as $data) {
+                  echo '<option value="'.$data.'">'.$data.'</option>';
+                }
+              }
+    echo '</select></div>';
+  }
+
+  function getAllTrains(){
+    $conn = connectDB();
+    $result = q_getTrainSchedules($conn);
+    if($result->num_rows > 0){
+      // output data of each row
+      echo "<label>Total Trains:</label> $result->num_rows";
+      echo "<table class='table table-responsive table-hover table-bordered'><thead><tr>";
+      while($fieldName = mysqli_fetch_field($result)) {
+          echo "<th>" . $fieldName->name . "</th>";
+      }
+      echo "<th>Edit Details</th>";
+      echo "</tr></thead><tbody>";
+      while($row = $result->fetch_array(MYSQLI_NUM)) {
+        echo "<tr>";
+        foreach ($row as $data) {
+          echo "<td>$data</td>";
+        }
+          $train = "'" . $row[0] . "'";
+          $company = "'" . $row[1] . "'";
+          $cName = "'" . $row[2] . "'";
+          $cAddress = "'" . $row[3] . "'";
+          $cEmail = "'" . $row[4] . "'";
+          $cPhone = "'" . $row[5] . "'";
+
+          echo '<td>
+                  <button type="button" id="trainEditBtn" onclick="modalFillTrain('.$train.','.$company.','.$cName.','.$cAddress.','.$cEmail.','.$cPhone.')" class="btn btn-info">Edit</button>
+                </td>';
+        echo "</tr>";
+      }
+      echo "</tbody></table>";
+      }
+
+  }//end getAllTrains
 
   function createScheduleForm(){
     echo '<!-- train_num -->
@@ -659,17 +727,17 @@
           <!-- depart_time -->
           <div class="form-group">
             <label for="depart_time">Departing Time:</label>
-            <input value="" type="text" class="form-control" id="depart_time">
+            <input value="" placeholder="HH:MM:SS" type="text" class="form-control" id="depart_time">
           </div>
           <!-- dest_time -->
           <div class="form-group">
             <label for="dest_time">Destination Time:</label>
-            <input value="" type="text" class="form-control" id="dest_time">
+            <input value="" placeholder="HH:MM:SS" type="text" class="form-control" id="dest_time">
           </div>
           <!-- date -->
           <div class="form-group">
             <label for="date">Date:</label>
-            <input value="" type="text" class="form-control" id="date">
+            <input value="" placeholder="YYYY-MM-DD" type="text" class="form-control" id="date">
           </div>';
   }
 
