@@ -97,6 +97,20 @@
     }
   }
 
+  function createCar(){
+    $conn = connectDB();
+    $load = htmlspecialchars($_POST['load']);
+    $type = htmlspecialchars($_POST['type']);
+    $train = htmlspecialchars($_POST['train']);
+    $customer = htmlspecialchars($_POST['customer']);
+    $price = htmlspecialchars($_POST['price']);
+    // echo "New Car to be added: $load, $type, $train, $customer, $price";
+    $serial = q_getNewCarSerial($conn);
+    $location = q_getNewCarLocation($conn, $train);
+    q_createCar($conn, $serial, $load, $type, $location, $train, $customer, $price);
+    echo "car added";
+  }
+
   function updateCar(){
     $conn = connectDB();
     $serial = $_POST['serial_num'];

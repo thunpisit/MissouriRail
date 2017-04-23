@@ -171,10 +171,24 @@ function q_carInfo($conn, $serial){
 
 }
 
-//when putting into this function both train and customer_id aren't inserted into because
-//they only get values after reserved and that doesn't happen the moment the car is created
-function q_createCar($conn, $serial, $load, $type, $location, $manufacturer, $price){
-  $query = "INSERT INTO car (serial_num, load_capacity, type, location, manufacturer, price) VALUES(?, ?, ?, ?, ?, ?)";
+function q_getNewCarSerial($conn){
+  $query = "SELECT serial_num FROM car ORDER BY serial_num DESC LIMIT 1";
+  $stmt = $conn->stmt_init();
+
+  if(!mysqli_stmt_prepare($stmt, $query)) {
+      printf("Error: %s.\n", $stmt->error);
+    return;
+  }
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $array = $result->fetch_array();
+  $newInt = $array[0] + 1;
+  $newSerial = "00".$newInt;
+  return $newSerial;
+}
+
+function q_getNewCarLocation($conn, $train){
+  $query = "SELECT depart_city FROM schedule WHERE train_num = ?";
   $stmt = $conn->stmt_init();
 
   if(!mysqli_stmt_prepare($stmt, $query)) {
@@ -182,7 +196,27 @@ function q_createCar($conn, $serial, $load, $type, $location, $manufacturer, $pr
     return;
   }
 
-  $stmt->bind_param("sssssd", $serial, $load, $type, $location, $manufacturer, $price);
+  $stmt->bind_param("i", $train);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $array = $result->fetch_array();
+  $location = $array[0];
+  return $location;
+}
+
+//when putting into this function both train and customer_id aren't inserted into because
+//they only get values after reserved and that doesn't happen the moment the car is created
+function q_createCar($conn, $serial, $load, $type, $location, $train, $customer, $price){
+  $query = "INSERT INTO car (serial_num, load_capacity, type, location, price, train_num, customer_id)
+  VALUES(?, ?, ?, ?, ?, ?, ?)";
+  $stmt = $conn->stmt_init();
+
+  if(!mysqli_stmt_prepare($stmt, $query)) {
+      printf("Error: %s.\n", $stmt->error);
+    return;
+  }
+
+  $stmt->bind_param("ssssdis", $serial, $load, $type, $location, $price, $train, $customer);
   $stmt->execute();
   $result = $stmt->get_result();
 

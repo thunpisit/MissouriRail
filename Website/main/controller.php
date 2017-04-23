@@ -11,6 +11,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
   switch($action) {
       case 'printCustomers' : printCustomers(); break;
       case 'createCustomer' : createCustomer(); break;
+      case 'createCar' : createCar(); break;
       case 'getAllReservations':
         $conn = connectDB();
         getAllCars($conn);

@@ -15,7 +15,46 @@ $(function(){
 });//end document ready
 
 function createCar(){
+  $("#createBtn").unbind("click");
   preloadModal = $(".modal-body").html();
+  $("#label1").html("Load Capacity:");
+  $("#label2").html("Type:");
+  $("#label3").html("Train Number:");
+  $("#label4").html("Customer ID:");
+  $("#label5").html("Price");
+  $("#modal-title").html("Create a Car");
+  $("#editCustomerBtn, #deleteBtn").hide();
+  $("#createBtn").show().html("Create Car");
+  $(".modalInput, #email").removeAttr("readonly");
+  $("#createBtn").click(function(){
+    $(".modalInput, #email").attr("readonly", true);
+    load = $("#email").val();
+    type = $("#first_name").val();
+    train = $("#last_name").val();
+    customer = $("#phone_number").val();
+    price = $("#address").val();
+
+    $.ajax({
+       url: 'controller.php',
+       data: {action: 'createCar',
+              load: load,
+              type: type,
+              train: train,
+              customer: customer,
+              price: price},
+       type: 'post',
+       success: function(output) {
+                  console.log(output);
+                }
+    });
+  });
+
+  $("#closeModal").click(function(){
+    $(".modal-body").html(preloadModal);
+    $("#editCustomerBtn, #deleteBtn").show();
+    $("#createBtn").hide().html("Submit");
+    $(".modalInput, #email").attr("readonly", true);
+  });
 }
 
 function editCar(serial){
