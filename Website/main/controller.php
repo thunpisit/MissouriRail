@@ -409,7 +409,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
               <label for="usr">Password:</label>
             </div>
             <div class="col-md-4">
-              <input id="password" class="form-control modalInput" type="pwd" name="password" value="">
+              <input id="password" class="form-control modalInput" type="password" name="password" value="">
             </div>
           </div><hr>';
   }
