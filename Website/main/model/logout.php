@@ -12,6 +12,6 @@ function logout(){
       $params["secure"], $params["httponly"]);
   }
   session_destroy();
-  header("Location: ../views/login.php");
+  header("Location: ../login.php");
 }
  ?>

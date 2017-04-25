@@ -10,9 +10,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>MissouriRail : About US</title>
-    <link rel="icon"
-      type="image/png"
-      href="missourirail.png">
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -26,6 +23,9 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <link rel="icon"
+      type="image/png"
+      href="missourirail.png">
     <style>
         .guilliams {
             height: 150px;
@@ -62,26 +62,43 @@
 <!--              </div> /.container-fluid -->
           </nav>
 
-        <div class="container">
-            <div class="jumbotron text-center">
-                <h2>45 years ago,</h2><br>
-                <p>We connected the United States from east to west<br>
-                    by world innovated invention called “Trains”.</p><br>
-                <a class="btn btn-primary btn-md" type="button" href="about.php">Learn more</a>
+        <div class="container text-center">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Missions & Visions</h3>
+              </div>
+              <div class="panel-body">
+                The railroad industry in the United States is huge. There are over 1.1 million rail cars in the country. MissouriRail is one of the biggest rail cars operator  in the United States based in Columbia, Missouri.As we always says always on schedule-ish.
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Message from our founder</h3>
+              </div>
+              <div class="panel-body">
+                <p>"Do what you love and you will become success.<br>Managing railway and body building are my passion.<br> Today I am succesful in what I love XOXO"</p><br>
+                <img class="guilliams" src="assets/images/guilliams-muscle.png"><br><br><br>
+                <p><b>Professor. Donald Joe Guilliams. PhD</b><br>Founder of MissouriRail, <br>Professor at Universiy of Missouri - Columbia & Body building since 1940.</p>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Board of Directors</h3>
+              </div>
+              <div class="panel-body">
+                <a href="mailto:taf5c@missourirail.com">Thunpisit Amnuaikiatloet</a><br>
+                <a href="mailto:dc23b@missourirail.com">Devin Cargill</a><br>
+                <a href="mailto:jy6vd@missourirail.com">Jonathan Yee</a><br>
+                <a href="mailto:jeb@missourirail.com">Jeb Robertson</a><br>
+                <a href="mailto:scjc68@missourirail.com">Seth John</a><br>
+                </ul>
+              </div>
             </div>
         </div>
 
-          <div style="text-align:center;">
-          <p>
-            We are a 45 year old railway company.
-            <br />We were founded by Donald Joe Guillium.
-            Our goal is to deliever your merchanises or yourself in a timely manner.<br />
-            We have trains that can reach across the whole United States of America.
-          </p>
-
-          </div>
-
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <!-- <script src="js/bootstrap.min.js"></script> -->
     </body>
 </html>

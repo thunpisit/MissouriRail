@@ -27,10 +27,11 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style>
-        .guilliams {
-            height: 150px;
-            width: 150px;
-        }
+      img{
+        height:100px;
+        width:200px;
+        margin:auto;
+      }
     </style>
   </head>
       <body>
@@ -62,26 +63,44 @@
 <!--              </div> /.container-fluid -->
           </nav>
 
-        <div class="container">
-            <div class="jumbotron text-center">
-                <h2>45 years ago,</h2><br>
-                <p>We connected the United States from east to west<br>
-                    by world innovated invention called “Trains”.</p><br>
-                <a class="btn btn-primary btn-md" type="button" href="about.php">Learn more</a>
+        <div class="container text-center">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Premium Quality Fleet</h3>
+              </div>
+              <div class="panel-body">
+                In our company, we have many different types of Cars that serve different purposes. We are proud to annonce that all of our trains are MADE IN U.S.A. with the best company in the world.
+              </div>
             </div>
-        </div>
-
-          <div style="text-align:center;">
-          <p>
-            We are a 45 year old railway company.
-            <br />We were founded by Donald Joe Guillium.
-            Our goal is to deliever your merchanises or yourself in a timely manner.<br />
-            We have trains that can reach across the whole United States of America.
-          </p>
-
-          </div>
-
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Our Fleets</h3>
+              </div>
+              <div class="panel-body">
+                <p>
+                  <img src="assets/images/passengercar.jpeg" alt="Passenger Car" />
+                  <br><br>
+                  <b>Passenger Car</b><br><br>Our passenger car holds maximum of 60 people. Furnished with the most comfortable chairs in the world.
+                  We provides drinks and snacks to our customers. Cost is $1.20/mile.
+                  <br><br>
+                  <img src="assets/images/coalcar.jpeg" alt="Coal Car" />
+                  <br><br>
+                  <b>Coal Cargo Car</b><br><br>We transport the majority of coals in the United States of America across the nation. Our coal cargo car is the newest model and can hold approximately 2 tons.
+                  Transportation cost is $.40/mile.
+                   <br><br>
+                   <img src="assets/images/flatbedcar.jpeg" alt="Flatbed Car" />
+                   <br><br>
+                    <b>Steel Cargo Car</b><br><br>Our steel cargo car are flatbed. They can hold any shape. Can hold approximately 1 ton. Transportation cost is $.40/mile.
+                   <br><br>
+                   <img src="assets/images/boxcar.jpeg" alt="Freight Car" />
+                   <br><br>
+                   <b>Freight Car</b><br><br>These type of cars can hold any product, such as laptops. The cost of transporation is $.65/mile.<br>
+                </p>
+              </div>
+            </div>
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <!-- <script src="js/bootstrap.min.js"></script> -->
     </body>
 </html>

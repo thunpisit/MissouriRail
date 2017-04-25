@@ -2,13 +2,161 @@
 # This is the Business Logic Layer to handle everything between the front end
 # and the database connectivity in the model
 include("model/userDAL.php");
+include("model/customerDAL.php");
+include("portalController.php");
+include 'model/carDAL.php';
+
+if(isset($_POST['action']) && !empty($_POST['action'])) {
+  $action = $_POST['action'];
+  switch($action) {
+      case 'printCustomers' : printCustomers(); break;
+      case 'createCustomer' : createCustomer(); break;
+      case 'createCar' : createCar(); break;
+      case 'getAllReservations':
+        $conn = connectDB();
+        getAllCars($conn);
+        break;
+      case 'reserveCarsForm':
+        $serial_num = $_POST['serial_num'];
+        $conn = connectDB();
+        reserveCarsForm($conn, $serial_num);
+        break;
+      case 'createCustomerAuthentication':
+        $conn = connectDB();
+        $user = $_POST['user_id'];
+        $pass = $_POST['password'];
+        signUp($conn, 'customer', 'back', $user, $pass, 0,
+        0, 0, 0, 0,
+        0, 0, 0);
+        break;
+      case 'editCustomer' : editCustomer(); break;
+      case 'deleteCustomer': deleteCustomer(); break;
+      case 'updateCar': updateCar(); break;
+      case 'editTrainDetailsForm': editTrainDetailsForm(); break;
+
+      case 'getCars':
+        $conn = connectDB();
+        $company_id = $_POST['company_id'];
+        $location = $_POST['location'];
+        printCarsTable($conn, $company_id, $location);
+        break;
+
+      case 'getMyAssignments':
+        session_start();
+        $user = $_SESSION['user_id'];
+        getMyAssignments($user);
+        break;
+
+      case 'updateInfo':
+        session_start();
+        // for admins
+        if(isset($_POST['type'])){
+          if($_POST['type'] == 'admin'){
+            $user = $_SESSION['user_id'];
+            $first_name = $_POST['fname'];
+            $last_name = $_POST['lname'];
+            $status = $_POST['status'];
+            $job_title = $_POST['title'];
+            updateEmployeeInfo($user, $first_name, $last_name, $status, $job_title, 0);
+          }
+        }
+        // everyone else
+        else {
+          $user = $_SESSION['user_id'];
+          $first_name = $_POST['first_name'];
+          $last_name = $_POST['last_name'];
+          $status = $_POST['status'];
+          $rank = $_POST['rank'];
+          $hours = $_POST['hours'];
+          updateEmployeeInfo($user, $first_name, $last_name, $status, $rank, $hours);
+        }
+        break;
+
+      case 'loginRedirect':
+        session_start();
+        session_unset();
+        if (ini_get("session.use_cookies")) {
+          $params = session_get_cookie_params();
+          setcookie(session_name(), '', time() - 42000,
+            $params["path"], $params["domain"],
+            $params["secure"], $params["httponly"]);
+        }
+        session_destroy();
+        break;
+
+      case 'updatePassword':
+        session_start();
+        $user = $_POST['user'];
+        $pwd = htmlspecialchars($_POST['pwd']);
+        updatePassword($user, $pwd);
+        echo "<h2 class='text-center'>Password successfully updated.</h2><br><br><h3 class='text-center'>Account Must Relogin.</h3>";
+        break;
+
+      case 'printLog':
+        $conn = connectDB();
+        printTable($conn, 'log');
+        break;
+
+      case 'getInfo' :
+        session_start();
+        $user = $_SESSION['user_id'];
+        getEmployeeInfo($user);
+        break;
+
+      case 'reserveCar':
+        session_start();
+        $conn = connectDB();
+        $customer_id = $_SESSION['user_id'];
+        $serial = $_POST['serial_num'];
+        reserveCar($conn, $customer_id, $serial);
+        break;
+
+      case 'getCarInfo':
+        $serial_num = $_POST['serial_num'];
+        $type = $_POST['type'];
+        $conn = connectDB();
+        getCarInfo($conn, $serial_num, $type);
+        break;
+
+      case 'getCarTypes' : getCarTypes(); break;
+      case 'getCarTrains' : getCarTrains(); break;
+      case 'getCarCustomers' : getCarCustomers(); break;
+      case 'getCarTrain' : getCarTrain(); break;
+      case 'viewSchedule' : viewSchedule(); break;
+      case 'createScheduleForm' : createScheduleForm(); break;
+      case 'getDepartCity' : getDepartCity(); break;
+      case 'getDestCity' : getDestCity(); break;
+      case 'createSchedule' : createSchedule(); break;
+      case 'getAllTrains' : getAllTrains(); break;
+      case 'editTrainCompany' : editTrainCompany(); break;
+      case 'createTrainForm' : createTrainForm(); break;
+      case 'createTrain' : createTrain(); break;
+      case 'getAllCities' : createScheduleCities(); break;
+      case 'printEmployees' : printEmployees(); break;
+      case 'assignTrainForm' : assignTrainForm(); break;
+      case 'assignTrain' : assignTrain(); break;
+
+
+      case 'getMyReservations':
+        session_start();
+        $conn = connectDB();
+        $customer_id = $_SESSION['user_id'];
+        getMyReservations($conn, $customer_id);
+        break;
+
+      default:
+        echo "action post set and messed up your function call";
+      break;
+  }
+}
+
   function topStart(){
     ob_start();
     session_start();
   }
 
   function connectDB(){
-    include("secure/database.php");
+    require_once("secure/database.php");
     $conn = new mysqli(HOST, USERNAME, PASSWORD, DBNAME);
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
@@ -16,29 +164,40 @@ include("model/userDAL.php");
     return $conn;
   }
 
-  function login($conn, $user, $pass){
+  function loginUser($conn, $user, $pass){
     if(q_checkUser($conn ,$user) > 0){
       if(q_loginUser($conn, $user, $pass) == 1){
-        $add_equipmentArray = q_addEquipment($conn, $user);
-        $add_conductorArray = q_addConductor($conn, $user);
-        $monitor_trainArray = q_monitorTrain($conn, $user);
-        $add_trainArray = q_addTrain($conn, $user);
-        $add_engineerArray = q_addEnginner($conn, $user);
-        $reset_passArray = q_resetPass($conn, $user);
-        $edit_userArray = q_editUser($conn, $user);
-
+        if(q_checkEngineer($conn, $user) == 1){
+          $_SESSION['engineer'] = 1;
+        } else {
+          $_SESSION['engineer'] = NULL;
+        }
+        if(q_checkCustomer($conn, $user) == 1){
+          $_SESSION['customer'] = 1;
+        } else {
+          $_SESSION['customer'] = NULL;
+        }
+        if(q_checkAdmin($conn, $user) == 1){
+          $_SESSION['admin'] = 1;
+        } else {
+          $_SESSION['admin'] = NULL;
+        }
+        $permissions = q_getPermissions($conn, $user);
+        $permissionsArray = $permissions->fetch_array();
+        $counter = 0;
+        while($fieldName = mysqli_fetch_field($permissions)) {
+            $_SESSION[$fieldName->name] = $permissionsArray[$counter];
+            $counter++;
+        }
         $_SESSION['user_id'] = $user;
-        $_SESSION['reset_pass'] = $reset_passArray[0];
-        $_SESSION['add_equipment'] = $add_equipmentArray[0];
-        $_SESSION['add_conductor'] = $add_conductorArray[0];
-        $_SESSION['monitor_train'] = $monitor_trainArray[0];
-        $_SESSION['add_train'] = $add_trainArray[0];
-        $_SESSION['add_engineer'] = $add_engineerArray[0];
-        $_SESSION['edit_user'] = $edit_userArray[0];
-        $action = $_SESSION['action'];
-
-        getLog($conn, $user, $action);
-        header("Location: dashboard.php");
+        getLog($conn, $user, 'login on ');
+        if($_SESSION['reset_pass'] == 1){
+          header("Location: dashboard-admin.php");
+        } else if($_SESSION['monitor_train'] == 1){
+          header("Location: dashboard-employee.php");
+        } else {
+          header("Location: dashboard-customer.php");
+        }
       } else {
         echo "password incorrect";
       }
@@ -47,20 +206,59 @@ include("model/userDAL.php");
     }
   }
 
-  // signs user up then returns 1 on success and 0 on fail
-  function signUp($conn, $user){
-    // include("model/userDAL.php");
+  // signs user up then returns 0 on fail
+  function signUp($conn, $typeOfUser, $signUp, $user, $pass, $add_equipment,
+  $add_conductor, $monitor_train, $add_train, $add_engineer,
+  $reset_pass, $edit_user, $ssn){
     if(q_checkUser($conn, $user) < 1){
-      q_signUp($conn, $user, htmlspecialchars($_POST['pwd']), htmlspecialchars($_POST['add_equipment']),
-      htmlspecialchars($_POST['add_conductor']), htmlspecialchars($_POST['monitor_train']),
-      htmlspecialchars($_POST['add_train']), htmlspecialchars($_POST['add_engineer']),
-      htmlspecialchars($_POST['reset_pass']), htmlspecialchars($_POST['edit_user']),
-      htmlspecialchars($_POST['ssn']));
+      switch ($typeOfUser) {
+        case 'administrator':
+          $fname = $_POST['first_name'];
+          $lname = $_POST['last_name'];
+          $status = $_POST['input3'];
+          $title = $_POST['input4'];
+          q_signUpAdmin($conn, $user, $fname, $lname, $status, $title);
+          break;
 
-      $user = $_SESSION['signup_user'];
-      $action = 'signup by user on ';
+        case 'conductor':
+          $fname = $_POST['first_name'];
+          $lname = $_POST['last_name'];
+          $status = $_POST['input3'];
+          $rank = $_POST['input4'];
+          q_signUpConductor($conn, $user, $fname, $lname, $status, $rank);
+          q_employeeSignup($conn, $user, $fname, $lname, $status);
+          break;
+
+        case 'engineer':
+          $fname = $_POST['first_name'];
+          $lname = $_POST['last_name'];
+          $status = $_POST['input3'];
+          $rank = $_POST['input4'];
+          $hours = $_POST['input5'];
+          q_signUpEngineer($conn, $user, $fname, $lname, $status, $rank, $hours);
+          q_employeeSignup($conn, $user, $fname, $lname, $status);
+          break;
+
+        case 'customer':
+          if($signUp == 'front'){
+            $fname = $_POST['first_name'];
+            $lname = $_POST['last_name'];
+            $phone = $_POST['input3'];
+            $address = $_POST['input4'];
+            q_signUpCustomer($conn, $user, $fname, $lname, $phone, $address);
+          }
+          break;
+
+        default:
+          echo "Error: $typeOfUser is not specified in controller";
+          break;
+      }
+      q_signUp($conn, $user, $pass, $add_equipment,
+      $add_conductor, $monitor_train, $add_train, $add_engineer,
+      $reset_pass, $edit_user, $ssn);
+
+      $action = "signup for $typeOfUser account on ";
       getLog($conn, $user, $action);
-      header("Location: login.php");
     } else {
       return 0;
     }
@@ -80,23 +278,13 @@ include("model/userDAL.php");
     }
   }
 
-  function primaryMenuBar(){
+  function menuBar(){
     if(isset($_SESSION['user_id'])){
-      echo '<form action="../model/logout.php" method="post">
-              <span class=navbar-btn>
-                <input id="height100" type="submit" name="submit" class="btn btn-danger" value="Logout">
-              </span>
-            </form>';
+      $currentPage = $_SERVER['PHP_SELF'];
+      echo '<a class="btn btn-danger btn-md" href="logout.php?page='.$currentPage.'" role="button">Logout</a>';
     } else {
-      echo '<a id="text-white" class="btn btn-success" href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a>';
-    }
-  }
-
-  function secondaryMenuBar(){
-    if($_SESSION['reset_pass'] != 1){
-      echo '<a href="#">Portal</a>';
-    } else {
-      echo '<a href="adminlog.php">Admin Portal</a>';
+      echo '<a class="btn btn-default btn-md" href="login.php" role="button">Login</a>
+            <a class="btn btn-primary btn-md" href="signup.php" role="button">Signup</a>';
     }
   }
 
@@ -104,8 +292,8 @@ include("model/userDAL.php");
     $result = q_printTable($conn, $table);
     if($result->num_rows > 0){
       // output data of each row
-      echo "<label>Number of rows in result:</label> $result->num_rows";
-      echo "<table class='table table-striped table-bordered'><thead><tr>";
+      echo "<div class='row'><label>Number of rows in result:</label> $result->num_rows";
+      echo "<table class='table table-responsive table-hover table-bordered'><thead><tr>";
       while($fieldName = mysqli_fetch_field($result)) {
           echo "<th>" . $fieldName->name . "</th>";
       }
@@ -117,7 +305,7 @@ include("model/userDAL.php");
         }
         echo "</tr>";
       }
-      echo "</tbody></table>";
+      echo "</tbody></table></div>";
     }
   }
 
@@ -150,4 +338,104 @@ include("model/userDAL.php");
   function getDateTime(){
     $date = time();
     return $date;
+  }
+
+  function printCustomers(){
+
+    $conn = connectDB();
+    $result = q_getCustomers($conn);
+    if($result->num_rows > 0){
+      // output data of each row
+      echo "<label>Total Customers:</label> $result->num_rows";
+      echo "<table class='table table-responsive table-hover table-bordered'><thead><tr>";
+      $x = 0;
+      while($fieldName = mysqli_fetch_field($result)) {
+        if($x == 1 || $x == 2){
+          echo "<th>" . $fieldName->name . "</th>";
+        }
+        $x++;
+      }
+      echo "<th>Customer Information</th>";
+      echo "<th>Reset Password</th>";
+      echo "</tr></thead><tbody>";
+      while($row = $result->fetch_array(MYSQLI_NUM)) {
+        echo "<tr>";
+        echo "<td>" . $row[1] . "</td>";
+        echo "<td>" . $row[2] . "</td>";
+        $user_id = "'" . $row[0] . "'";
+        $first_name = "'" . $row[1] . "'";
+        $last_name = "'" . $row[2] . "'";
+        $phone_number = "'" . $row[3] . "'";
+        $address = "'" . $row[4] . "'";
+        echo '<td>
+                <button type="button" onclick="modalFill('.$user_id.','.$first_name.','.$last_name.','.$phone_number.','.$address.')" class="btn btn-info" data-toggle="modal" data-target="#myModal">View</button>
+              </td>';
+        echo '<td>
+                <button type="button" onclick="resetPasswordAdmin('.$user_id.')" class="btn btn-danger" data-toggle="modal" data-target="#myModal">Reset</button>
+              </td>';
+        }
+        echo "</tr>";
+      }
+      echo "</tbody></table>";
+    }
+
+
+  function createCustomer(){
+    $conn = connectDB();
+    $id = $_POST['email'];
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
+    $phone_number = $_POST['phone_number'];
+    $address = $_POST['address'];
+
+    q_createCustomer($conn, $id, $first_name, $last_name, $phone_number, $address);
+    // used to be this at top
+    // <div class="modal-content">
+    //         <div class="modal-header">
+    //           <button type="button" class="close" data-dismiss="modal">&times;</button>
+    //           <h4 class="modal-title">Customer Information</h4>
+    //         </div>
+    //         <div class="modal-body">
+    echo '<div class="row">
+            <div class="col-md-offset-2 col-md-3">
+              <label for="usr">User:</label>
+            </div>
+            <div class="col-md-4">
+              <input id="user_id" class="form-control" type="text" name="user_id" value="'.$id.'" readonly>
+            </div>
+          </div><hr>
+          <div class="row">
+            <div class="col-md-offset-2 col-md-3">
+              <label for="usr">Password:</label>
+            </div>
+            <div class="col-md-4">
+              <input id="password" class="form-control modalInput" type="password" name="password" value="">
+            </div>
+          </div><hr>';
+  }
+
+  function editCustomer(){
+    session_start();
+    $conn = connectDB();
+    echo "customer editted";
+    if(isset($_POST['email'])){
+      $id = $_POST['email'];
+    } else {
+      $id = $_SESSION['user_id'];
+    }
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
+    $phone_number = $_POST['phone_number'];
+    $address = $_POST['address'];
+    q_editCustomer($conn, $id, $first_name, $last_name, $phone_number, $address);
+    $conn->close();
+  }
+
+  function deleteCustomer(){
+    $conn = connectDB();
+    echo "customer editted";
+    $id = $_POST['email'];
+    q_deleteCustomer($conn, $id);
+    q_deleteUser($conn, $id);
+    $conn->close();
   }?>

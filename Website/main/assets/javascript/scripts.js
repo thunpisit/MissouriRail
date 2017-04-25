@@ -1,4 +1,3 @@
-
 function form_submission(){
   var inputs = document.getElementsByClassName("form-control");
   for(var i = 0; i < inputs.length; i++){
